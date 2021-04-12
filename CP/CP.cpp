@@ -16,5 +16,6 @@ int main()
 	db0.Unload(dataBaseFilePath);
 	//cout <<"\n\n\n\n" <<sizeof(list<double>)<<"\n\n\n\n";
 	//cout << sizeof('\n');
+	system("cls");
 	return 0;
 }

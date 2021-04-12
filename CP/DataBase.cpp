@@ -82,6 +82,7 @@ void DataBase::AuthorizationMenu()
 	short userChoice;
 	Student* currentStudent = nullptr;
 	Teacher* currentTeacher = nullptr;
+	system("cls");
 	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам?\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n\n";
 	cin >> userChoice;
 	switch (userChoice)
@@ -91,7 +92,7 @@ void DataBase::AuthorizationMenu()
 		currentTeacher = nullptr;
 		return;
 	case REGISTRATION:
-		Registration(&currentStudent, &currentTeacher);//overload
+		Registration(&currentStudent, &currentTeacher);
 		if (currentStudent)
 		{
 			(currentStudent)->Menu(LoadTestsWithFilter((currentStudent)->GetCourse(), (currentStudent)->GetPtrSubjectList()));

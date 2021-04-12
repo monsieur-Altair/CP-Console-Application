@@ -80,42 +80,42 @@ DataBase::~DataBase()
 void DataBase::AuthorizationMenu()
 {
 	short userChoice;
-	Student** currentStudent = nullptr;
-	Teacher** currentTeacher = nullptr;
+	Student* currentStudent = nullptr;
+	Teacher* currentTeacher = nullptr;
 	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам?\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n\n";
 	cin >> userChoice;
 	switch (userChoice)
 	{
 	case EXIT:
-		*currentStudent = nullptr;
-		*currentTeacher = nullptr;
+		currentStudent = nullptr;
+		currentTeacher = nullptr;
 		return;
 	case REGISTRATION:
-		Registration(currentStudent, currentTeacher);//overload
-		if (*currentStudent)
+		Registration(&currentStudent, &currentTeacher);//overload
+		if (currentStudent)
 		{
-			(*currentStudent)->Menu(LoadTestsWithFilter((*currentStudent)->GetCourse(), (*currentStudent)->GetPtrSubjectList()));
+			(currentStudent)->Menu(LoadTestsWithFilter((currentStudent)->GetCourse(), (currentStudent)->GetPtrSubjectList()));
 		}
 		else
 		{
-			(*currentTeacher)->Menu();
+			(currentTeacher)->Menu();
 		}
 		break;
 	case LOGIN:
-		while (!Login(currentStudent, currentTeacher))
+		while (!Login(&currentStudent, &currentTeacher))
 			cout << "\nПользователь не найден, убедитесь, что вы ввели верные данные и являетесь зарегистрированным\n";
-		if (*currentStudent)
+		if (currentStudent)
 		{
-			(*currentStudent)->Menu(LoadTestsWithFilter((*currentStudent)->GetCourse(), (*currentStudent)->GetPtrSubjectList()));
+			(currentStudent)->Menu(LoadTestsWithFilter((currentStudent)->GetCourse(), (currentStudent)->GetPtrSubjectList()));
 		}
 		else
 		{
-			(*currentTeacher)->Menu();
+			(currentTeacher)->Menu();
 		}
 		break;
 	default:
-		*currentStudent = nullptr;
-		*currentTeacher = nullptr;
+		currentStudent = nullptr;
+		currentTeacher = nullptr;
 		cout << "\nНеверный ввод\n";
 		return;
 	}
@@ -229,7 +229,7 @@ bool DataBase::SearchUser(int id, string password, Student** userStudent, Teache
 	{
 		if ((*iter)->Searching(id, password))
 		{
-			userStudent = &(*iter);
+			*userStudent = (*iter);
 			cout << "\nПользователь найден\n";
 			return true;
 		}
@@ -238,7 +238,7 @@ bool DataBase::SearchUser(int id, string password, Student** userStudent, Teache
 	{
 		if ((*iter)->Searching(id, password))
 		{
-			userTeacher = &(*iter);
+			*userTeacher = (*iter);
 			cout << "\nПользователь найден\n";
 			return true;
 		}

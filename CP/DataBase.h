@@ -16,9 +16,9 @@ public:
 	void PrintAllTests();
 	void PrintAllStudents();
 	void PrintAllTeachers();
-	void Registration(Student*, Teacher*);
-	bool Login(Student*, Teacher*);
-	bool SearchUser(int, string, Student*, Teacher*);
+	void Registration(Student**, Teacher**);
+	bool Login(Student**, Teacher**);
+	bool SearchUser(int, string, Student**, Teacher**);
 	void Unload(string);
 	list<Test*>* LoadTestsWithFilter(int, list<string>*);
 };

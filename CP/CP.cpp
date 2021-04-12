@@ -9,9 +9,10 @@ int main()
 	SetConsoleOutputCP(1251);
 	const string dataBaseFilePath = "D:\\OOP\\CP\\DataBaseFile.txt";
 	DataBase db0(dataBaseFilePath);
-	db0.PrintAllTests();
-	db0.PrintAllStudents();
-	db0.PrintAllTeachers();
+	db0.AuthorizationMenu();
+	//db0.PrintAllTests();
+	//db0.PrintAllStudents();
+	//db0.PrintAllTeachers();
 	db0.Unload(dataBaseFilePath);
 	//cout <<"\n\n\n\n" <<sizeof(list<double>)<<"\n\n\n\n";
 	//cout << sizeof('\n');

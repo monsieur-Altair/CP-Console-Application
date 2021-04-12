@@ -1,0 +1,3 @@
+D:\OOP\CP\тееест1.txt
+D:\OOP\CP\тееест2.txt
+D:\OOP\CP\тееест3.txt

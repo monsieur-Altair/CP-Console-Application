@@ -55,6 +55,11 @@ void Student::Menu(list<Test*>* ptr)
 			break;
 		}
 		case VIEW_ALL_AVAIBLE_TEST:
+			if (!ptrFilteredTestList->size())
+			{
+				cout << "\nДоступных тестов нет\n";
+				break;
+			}
 			for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
 				(*iter)->PrintTestBriefly();
 			break;
@@ -62,6 +67,11 @@ void Student::Menu(list<Test*>* ptr)
 			this->PrintInformation();
 			break;
 		case VIEW_SOLVED_TESTS:
+			if (!SolvedTestList.size())
+			{
+				cout << "\nРешенных тестов нет\n";
+				break;
+			}
 			for (auto iter = SolvedTestList.begin(); iter != SolvedTestList.end(); iter++)
 				(*iter)->PrintBriefly();
 			break;

@@ -357,7 +357,7 @@ Teacher* CreateTeacherFromFile(string filePath)
 Student* CreateStudentFromFile(string filePath)
 {
 	ifstream file;
-	string name, password, faculty,shortDiscription;
+	string name, password, faculty;
 	list<string>* ptrSubjectList = new list<string>;
 	int id, group, course, listSize;
 

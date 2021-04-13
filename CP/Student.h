@@ -6,7 +6,7 @@ class Student : public User
     string faculty;
     int group, course;
     list<string>* ptrSubjectList;
-    list<SolvedTest*> SolvedTestList;
+    list<SolvedTest*>* ptrSolvedTestList;
     enum MenuChoice
     {
         SOLVE_TEST = 1,
@@ -24,12 +24,14 @@ public:
         int,    //id
         int,    //group
         int,    //course
-        list<string>* //strings for list
+        list<string>*, //strings for list
+        list<SolvedTest*>*
     );
     ~Student();
     void Menu(list<Test*>*);
     void PrintInformation() override;
     list<string>* GetPtrSubjectList();
     int GetCourse();
+    void Unload(string);
 };
 

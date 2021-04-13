@@ -41,7 +41,11 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	studentFile.open(allStudentFilePath);
 	if (!studentFile.is_open())
 		exit(-10);
-	while (!studentFile.eof())
+	studentFile.seekg(0, ios::end);
+	size = studentFile.tellg();
+	studentFile.seekg(0, ios::beg);
+
+	while (studentFile.tellg()<size)
 	{
 		getline(studentFile, someStudentFilePath);
 		listOfStudents.push_back(CreateStudentFromFile(someStudentFilePath));
@@ -50,11 +54,12 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 
 
 	teacherFile.open(allTeacherFilePath);
+	if (!teacherFile.is_open())
+		exit(-10);
 	teacherFile.seekg(0, ios::end);
 	size = teacherFile.tellg();
 	teacherFile.seekg(0, ios::beg);
-	if (!teacherFile.is_open())
-		exit(-10);
+
 	while (teacherFile.tellg() < (size))
 	{
 		getline(teacherFile, someTeacherFilePath);
@@ -172,6 +177,7 @@ void DataBase::Registration(Student** userStudent, Teacher** userTeacher)
 	{
 		string faculty;
 		list<string>* ptrList = new list<string>;
+		list<SolvedTest*>* ptrSolvedTestList=new list<SolvedTest*>;
 		int group, course;//CHECK
 		cout << "\n¬ведите факультет\n";
 		cin >> faculty;
@@ -189,7 +195,7 @@ void DataBase::Registration(Student** userStudent, Teacher** userTeacher)
 				break;
 			ptrList->push_back(subject);
 		}
-		*userStudent = new Student(fullName, password, faculty, id, group, course, ptrList);
+		*userStudent = new Student(fullName, password, faculty, id, group, course, ptrList, ptrSolvedTestList);
 		listOfStudents.push_back(*userStudent);
 	}
 	if (userChoice == TEACHER)
@@ -253,7 +259,7 @@ void DataBase::Unload(string dataBaseFilePath)
 	string allTestFilePath, allStudentFilePath, allTeacherFilePath;
 	string someTestFilePath, someStudentFilePath, someTeacherFilePath;
 	ifstream dataBaseFile;
-	ofstream allTestFile, studentFile, allTeacherFile;
+	ofstream allTestFile, allStudentFile, allTeacherFile;
 	int i = 1;
 	string currPath;
 
@@ -286,7 +292,20 @@ void DataBase::Unload(string dataBaseFilePath)
 		allTeacherFile << currPath << "\n";
 		(*iter)->Unload(currPath);
 	}
-	allTestFile.close();
+	allTeacherFile.close();
+
+	i = 1;
+
+	allStudentFile.open(allStudentFilePath);
+	if (!allStudentFile.is_open())
+		exit(-10);
+	for (auto iter = listOfStudents.begin(); iter != listOfStudents.end(); iter++)
+	{
+		currPath= "D:\\OOP\\CP\\стууудент" + to_string(i++) + ".txt";
+		allStudentFile << currPath << "\n";
+		(*iter)->Unload(currPath);
+	}
+	allStudentFile.close();
 }
 
 list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList)
@@ -338,24 +357,51 @@ Teacher* CreateTeacherFromFile(string filePath)
 Student* CreateStudentFromFile(string filePath)
 {
 	ifstream file;
-	string name, password, faculty;
-	list<string>* ptrList = new list<string>;
+	string name, password, faculty,shortDiscription;
+	list<string>* ptrSubjectList = new list<string>;
 	int id, group, course, listSize;
+
+	string shortDiscription, uniqueID;
+	list<int>* answers=new list<int>;
+	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
+	int maxPoints, receivedPoints;
+
 	file.open(filePath);
 	if (!file.is_open())
 		exit(-9);
 	getline(file, name);
 	getline(file, password);
+	file >> id;
+	file.seekg(sizeof("\n"), ios::cur);
 	getline(file, faculty);
-	file >> id >> group >> course >> listSize;
+	file >> group >> course >> listSize;
 	file.seekg(sizeof("\n"), ios::cur);
 	for (int i = 0; i < listSize; i++)
 	{
 		string subject;
 		getline(file, subject);
-		ptrList->push_back(subject);
+		ptrSubjectList->push_back(subject);
+	}
+	file >> listSize;
+	file.seekg(sizeof("\n"), ios::cur);
+	for (int i = 0; i < listSize; i++)
+	{
+		getline(cin, uniqueID);
+		getline(cin, shortDiscription);
+		file >> receivedPoints >> maxPoints;
+		file.seekg(sizeof("\n"), ios::cur);
+		int sizeAnswers,oneAnswer;
+		file >> sizeAnswers;
+		for (int j = 0; j < sizeAnswers; j++)
+		{
+			file >> oneAnswer;
+			answers->push_back(oneAnswer);
+		}
+		file.seekg(sizeof("\n"), ios::cur);
+		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, receivedPoints, maxPoints));
 	}
 	file.close();
-	return new Student(name, password, faculty, id, group, course, ptrList);
+
+	return new Student(name, password, faculty, id, group, course, ptrSubjectList, ptrSolvedTestList);
 }
 

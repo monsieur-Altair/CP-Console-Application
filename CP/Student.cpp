@@ -8,19 +8,21 @@ Student::Student() :User()
 	cout << "\nКонструктор STUDENT " << this;
 }
 
-Student::Student(string name, string password, string faculty, int id, int group, int course, list<string>* listPtr) :User(name, password, id)
+Student::Student(string name, string password, string faculty, int id, int group, int course, list<string>* listPtr, list<SolvedTest*>* ptrSolvedTest) :User(name, password, id)
 {
 	this->group = group;
 	this->faculty = faculty;
 	this->course = course;
 	this->ptrSubjectList = listPtr;
+	this->ptrSolvedTestList = ptrSolvedTest;
 	cout << "\nКонструктор STUDENT " << this;
 }
 
 Student::~Student()
 {
-	for (auto iter = SolvedTestList.begin(); iter != SolvedTestList.end(); iter++)
+	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
 		delete* iter;
+	delete ptrSolvedTestList;
 	ptrSubjectList->clear();
 	delete ptrSubjectList;
 	cout << "\nДеструктор STUDENT " << this;
@@ -55,7 +57,7 @@ void Student::Menu(list<Test*>* ptr)
 				if (testID == (*iter)->GetID())
 				{
 					currentTest = (*iter);
-					SolvedTestList.push_back(currentTest->Solving());
+					ptrSolvedTestList->push_back(currentTest->Solving());
 					break;
 				}
 			break;
@@ -73,12 +75,12 @@ void Student::Menu(list<Test*>* ptr)
 			this->PrintInformation();
 			break;
 		case VIEW_SOLVED_TESTS:
-			if (!SolvedTestList.size())
+			if (!ptrSolvedTestList->size())
 			{
 				cout << "\nРешенных тестов нет\n";
 				break;
 			}
-			for (auto iter = SolvedTestList.begin(); iter != SolvedTestList.end(); iter++)
+			for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
 				(*iter)->PrintBriefly();
 			break;
 		default:
@@ -107,4 +109,19 @@ list<string>* Student::GetPtrSubjectList()
 int Student::GetCourse()
 {
 	return this->course;
+}
+
+void Student::Unload(string path)
+{
+	ofstream file;
+	file.open(path);
+	if (!file.is_open())
+		exit(-11);
+	User::Unload(file);
+	file << this->faculty << this->group << " " << this->course << " " << ptrSubjectList->size()<<"\n";
+	for (auto iter=ptrSubjectList->begin(); iter!=ptrSubjectList->end(); iter++)
+	{
+		file << (*iter)<<"\n";
+	}
+	file << ptrSolvedTestList->size();
 }

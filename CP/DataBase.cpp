@@ -383,11 +383,12 @@ Student* CreateStudentFromFile(string filePath)
 		ptrSubjectList->push_back(subject);
 	}
 	file >> listSize;
-	file.seekg(sizeof("\n"), ios::cur);
+	//file.seekg(sizeof("\n"), ios::cur);
 	for (int i = 0; i < listSize; i++)
 	{
-		getline(cin, uniqueID);
-		getline(cin, shortDiscription);
+		file.seekg(sizeof("\n"), ios::cur);
+		getline(file, uniqueID);
+		getline(file, shortDiscription);
 		file >> receivedPoints >> maxPoints;
 		file.seekg(sizeof("\n"), ios::cur);
 		int sizeAnswers,oneAnswer;
@@ -397,7 +398,6 @@ Student* CreateStudentFromFile(string filePath)
 			file >> oneAnswer;
 			answers->push_back(oneAnswer);
 		}
-		file.seekg(sizeof("\n"), ios::cur);
 		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, receivedPoints, maxPoints));
 	}
 	file.close();

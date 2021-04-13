@@ -15,6 +15,7 @@ public:
 	~SolvedTest();
 	void PrintAnswer();
 	void PrintBriefly();
-	friend ofstream& operator<<(ofstream& file, const SolvedTest& solvedTest);
+	friend ofstream& operator<<(ofstream&, const SolvedTest&);
+	friend ostream& operator<<(ostream&, const SolvedTest&);
 };
 

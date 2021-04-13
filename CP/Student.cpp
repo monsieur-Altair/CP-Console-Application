@@ -87,7 +87,7 @@ void Student::Menu(list<Test*>* ptr)
 			delete ptrFilteredTestList;
 			return;
 		}
-		cout << "\n";
+		cout << "\n\n";
 		system("pause");
 	}
 
@@ -118,12 +118,12 @@ void Student::Unload(string path)
 	if (!file.is_open())
 		exit(-11);
 	User::Unload(file);
-	file << this->faculty << this->group << " " << this->course << " " << ptrSubjectList->size()<<"\n";
+	file << this->faculty <<"\n"<<this->group << " " << this->course << " " << ptrSubjectList->size()<<"\n";
 	for (auto iter=ptrSubjectList->begin(); iter!=ptrSubjectList->end(); iter++)
 	{
 		file << (*iter)<<"\n";
 	}
-	file << ptrSolvedTestList->size()<<"\n";
+	file << ptrSolvedTestList->size();
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
-		file << (*iter)<<"\n";
+		file << "\n" << *(*iter) ;
 }

@@ -34,6 +34,16 @@ ofstream& operator<<(ofstream& file, const SolvedTest& obj)
 	file << obj.receivedPoints << " " << obj.maxPoints << "\n";
 	file << obj.answers->size();
 	for (auto iter = obj.answers->begin(); iter != obj.answers->end(); iter++)
-		file << " " << (*iter);
+		file << " "<< (*iter);
 	return file;
+}
+
+ostream& operator<<(ostream& out, const SolvedTest& obj)
+{
+	out << obj.uniqueID << "\n" << obj.shortDiscription << "\n";
+	out << obj.receivedPoints << " " << obj.maxPoints << "\n";
+	out << obj.answers->size();
+	for (auto iter = obj.answers->begin(); iter != obj.answers->end(); iter++)
+		out << " " << (*iter);
+	return out;
 }

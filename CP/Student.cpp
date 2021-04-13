@@ -123,5 +123,7 @@ void Student::Unload(string path)
 	{
 		file << (*iter)<<"\n";
 	}
-	file << ptrSolvedTestList->size();
+	file << ptrSolvedTestList->size()<<"\n";
+	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
+		file << (*iter)<<"\n";
 }

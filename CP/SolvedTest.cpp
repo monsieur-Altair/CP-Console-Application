@@ -27,3 +27,13 @@ void SolvedTest::PrintBriefly()
 {
 	cout << "\n" << this->uniqueID << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
 }
+
+ofstream& operator<<(ofstream& file, const SolvedTest& obj)
+{
+	file << obj.uniqueID << "\n" << obj.shortDiscription<<"\n";
+	file << obj.receivedPoints << " " << obj.maxPoints << "\n";
+	file << obj.answers->size();
+	for (auto iter = obj.answers->begin(); iter != obj.answers->end(); iter++)
+		file << " " << (*iter);
+	return file;
+}

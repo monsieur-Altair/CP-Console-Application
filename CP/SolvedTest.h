@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <list>
+#include <string>
+#include <fstream>
 using namespace std;
 
 class SolvedTest
@@ -13,5 +15,6 @@ public:
 	~SolvedTest();
 	void PrintAnswer();
 	void PrintBriefly();
+	friend ofstream& operator<<(ofstream& file, const SolvedTest& solvedTest);
 };
 

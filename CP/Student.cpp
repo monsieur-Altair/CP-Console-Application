@@ -41,6 +41,11 @@ void Student::Menu(list<Test*>* ptr)
 		case SOLVE_TEST:
 		{
 			string testID;
+			if (!ptrFilteredTestList->size())
+			{
+				cout << "\nДоступных тестов нет\n";
+				break;
+			}
 			for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
 				(*iter)->PrintTestBriefly();
 			cout << "\n\nВведите ID желаемого теста (1 колонка)\n";
@@ -80,6 +85,8 @@ void Student::Menu(list<Test*>* ptr)
 			delete ptrFilteredTestList;
 			return;
 		}
+		cout << "\n";
+		system("pause");
 	}
 
 }

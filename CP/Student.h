@@ -33,5 +33,7 @@ public:
     list<string>* GetPtrSubjectList();
     int GetCourse();
     void Unload(string);
+    list<SolvedTest*>* GetPtrSolvedTestList();
+    bool CheckSolvedTestList(Test*);
 };
 

@@ -28,6 +28,11 @@ void SolvedTest::PrintBriefly()
 	cout << "\n" << this->uniqueID << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
 }
 
+string SolvedTest::GetID()
+{
+	return this->uniqueID;
+}
+
 ofstream& operator<<(ofstream& file, const SolvedTest& obj)
 {
 	file << obj.uniqueID << "\n" << obj.shortDiscription<<"\n";

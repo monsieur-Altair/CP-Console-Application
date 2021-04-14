@@ -100,7 +100,7 @@ void DataBase::AuthorizationMenu()
 		Registration(&currentStudent, &currentTeacher);
 		if (currentStudent)
 		{
-			(currentStudent)->Menu(LoadTestsWithFilter((currentStudent)->GetCourse(), (currentStudent)->GetPtrSubjectList()));
+			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList(),currentStudent->GetPtrSolvedTestList()));
 		}
 		else
 		{
@@ -112,7 +112,7 @@ void DataBase::AuthorizationMenu()
 			cout << "\nѕользователь не найден, убедитесь, что вы ввели верные данные и €вл€етесь зарегистрированным\n";
 		if (currentStudent)
 		{
-			(currentStudent)->Menu(LoadTestsWithFilter((currentStudent)->GetCourse(), (currentStudent)->GetPtrSubjectList()));
+			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList(), currentStudent->GetPtrSolvedTestList()));
 		}
 		else
 		{
@@ -308,20 +308,41 @@ void DataBase::Unload(string dataBaseFilePath)
 	allStudentFile.close();
 }
 
-list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList)
+//list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList)
+//{
+//	list<Test*>* ptrFilterTestList = new list<Test*>;
+//	for (auto someTestIter = listOfTests.begin(); someTestIter != listOfTests.end(); someTestIter++)
+//	{
+//		if (course != (*someTestIter)->GetCourse())
+//			continue;
+//		else
+//		{
+//			string subject = (*someTestIter)->GetSubject();
+//			for (auto someSubjectIter = ptrSubjList->begin(); someSubjectIter != ptrSubjList->end(); someSubjectIter++)
+//				if (*someSubjectIter == subject)
+//				{
+//					ptrFilterTestList->push_back(*someTestIter);
+//					break;
+//				}
+//		}
+//	}
+//	return ptrFilterTestList;
+//}
+
+list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList, list<SolvedTest*>* ptrSolvedTestList)//убрать последний аргумент
 {
 	list<Test*>* ptrFilterTestList = new list<Test*>;
-	for (auto iter = listOfTests.begin(); iter != listOfTests.end(); iter++)
+	for (auto somePtrTestIter = listOfTests.begin(); somePtrTestIter != listOfTests.end(); somePtrTestIter++)
 	{
-		if (course != (*iter)->GetCourse())
+		if (course != (*somePtrTestIter)->GetCourse())
 			continue;
 		else
 		{
-			string subject = (*iter)->GetSubject();
-			for (auto iter2 = ptrSubjList->begin(); iter2 != ptrSubjList->end(); iter2++)
-				if (*iter2 == subject)
+			string subject = (*somePtrTestIter)->GetSubject();
+			for (auto someSubjectIter = ptrSubjList->begin(); someSubjectIter != ptrSubjList->end(); someSubjectIter++)
+				if (*someSubjectIter == subject)
 				{
-					ptrFilterTestList->push_back(*iter);
+					ptrFilterTestList->push_back(*somePtrTestIter);
 					break;
 				}
 		}

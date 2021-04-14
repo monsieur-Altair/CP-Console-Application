@@ -20,7 +20,8 @@ public:
 	bool Login(Student**, Teacher**);
 	bool SearchUser(int, string, Student**, Teacher**);
 	void Unload(string);
-	list<Test*>* LoadTestsWithFilter(int, list<string>*);
+	list<Test*>* LoadTestsWithFilter(int, list<string>*, list<SolvedTest*>*);
+
 };
 
 Teacher* CreateTeacherFromFile(string);

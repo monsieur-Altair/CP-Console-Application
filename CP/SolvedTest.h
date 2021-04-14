@@ -15,6 +15,7 @@ public:
 	~SolvedTest();
 	void PrintAnswer();
 	void PrintBriefly();
+	string GetID();
 	friend ofstream& operator<<(ofstream&, const SolvedTest&);
 	friend ostream& operator<<(ostream&, const SolvedTest&);
 };

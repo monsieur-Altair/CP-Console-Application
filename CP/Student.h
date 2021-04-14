@@ -12,7 +12,8 @@ class Student : public User
         SOLVE_TEST = 1,
         VIEW_ALL_AVAIBLE_TEST,
         VIEW_OWN_INF,
-        VIEW_SOLVED_TESTS
+        VIEW_ALL_SOLVED_TESTS_BRIEFLY,
+        VIEW_ONE_SOLVED_TEST_FULLY
     };
 public:
     Student();
@@ -35,5 +36,9 @@ public:
     void Unload(string);
     list<SolvedTest*>* GetPtrSolvedTestList();
     bool CheckSolvedTestList(Test*);
+    bool PrintAvailableAndNoSolvedTest(list<Test*>*);
+    bool PrintAllSolvedTestBriefly();
+    SolvedTest* SearchSolvedTestWithID(string);
 };
 
+Test* SearchTestWithID(list<Test*>*,string);

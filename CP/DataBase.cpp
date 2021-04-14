@@ -100,7 +100,7 @@ void DataBase::AuthorizationMenu()
 		Registration(&currentStudent, &currentTeacher);
 		if (currentStudent)
 		{
-			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList(),currentStudent->GetPtrSolvedTestList()));
+			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList()));
 		}
 		else
 		{
@@ -112,7 +112,7 @@ void DataBase::AuthorizationMenu()
 			cout << "\nПользователь не найден, убедитесь, что вы ввели верные данные и являетесь зарегистрированным\n";
 		if (currentStudent)
 		{
-			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList(), currentStudent->GetPtrSolvedTestList()));
+			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList()));
 		}
 		else
 		{
@@ -329,7 +329,7 @@ void DataBase::Unload(string dataBaseFilePath)
 //	return ptrFilterTestList;
 //}
 
-list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList, list<SolvedTest*>* ptrSolvedTestList)//убрать последний аргумент
+list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList)//убрать последний аргумент
 {
 	list<Test*>* ptrFilterTestList = new list<Test*>;
 	for (auto somePtrTestIter = listOfTests.begin(); somePtrTestIter != listOfTests.end(); somePtrTestIter++)

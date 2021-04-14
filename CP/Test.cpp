@@ -137,3 +137,21 @@ SolvedTest* Test::Solving()
 	cout << "\nТест пройден, спасибо за потраченное время, ваши ответы записаны";
 	return new SolvedTest(answers, this->shortDescription, this->uniqueID, receivedPoints, this->maxPointsPerTest);
 }
+
+void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrTest)
+{
+	int correctAnswer, userAnswer, pointsForQuestion;
+	auto answerIter = ptrSolvedTest->answers->begin();
+	for (auto ptrQuestionIter = ptrTest->questionList.begin(); ptrQuestionIter != ptrTest->questionList.end(); ptrQuestionIter++)
+	{
+		correctAnswer = (*ptrQuestionIter)->GetCorrectAnswerOption();
+		userAnswer = (*answerIter++);
+		(*ptrQuestionIter)->PrintQuestion();
+		cout << "\nПравильный ответ: " << correctAnswer;
+		cout << "\nВаш ответ: " << userAnswer;
+		pointsForQuestion = (correctAnswer == userAnswer) ? (*ptrQuestionIter)->GetPoints() : 0;
+		cout << "\nВы получили: " << pointsForQuestion<<" баллов\n";
+		system("pause");
+		system("cls");
+	}
+}

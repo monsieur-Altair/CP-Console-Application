@@ -24,6 +24,7 @@ public:
 	int GetCourse();
 	string GetID();
 	SolvedTest* Solving();
+	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
 };
 
 

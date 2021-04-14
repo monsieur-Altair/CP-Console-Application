@@ -5,6 +5,8 @@
 #include <fstream>
 using namespace std;
 
+class Test;
+
 class SolvedTest
 {
 	string shortDiscription, uniqueID;
@@ -18,5 +20,6 @@ public:
 	string GetID();
 	friend ofstream& operator<<(ofstream&, const SolvedTest&);
 	friend ostream& operator<<(ostream&, const SolvedTest&);
+	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
 };
 

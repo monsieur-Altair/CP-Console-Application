@@ -121,6 +121,7 @@ SolvedTest* Test::Solving()
 	int answ, receivedPoints = 0;
 	for (auto iter = questionList.begin(); iter != questionList.end(); iter++)
 	{
+		system("cls");
 		(*iter)->PrintQuestion();
 		cout << "\nВаш ответ: ";
 		cin >> answ;
@@ -129,12 +130,14 @@ SolvedTest* Test::Solving()
 		{
 			int points = (*iter)->GetPoints();
 			receivedPoints += points;
-			cout << "\nОтвет верный - вы получаете " << points << " баллов";
+			cout << "\nОтвет верный - вы получаете " << points << " баллов\n";
 		}
 		else
-			cout << "\nОтвет неверный - вы получаете 0 баллов";
+			cout << "\nОтвет неверный - вы получаете 0 баллов\n";
+		system("pause");
 	}
-	cout << "\nТест пройден, спасибо за потраченное время, ваши ответы записаны";
+	system("cls");
+	cout << "\nТест пройден, спасибо за потраченное время, ваши ответы записаны\n";
 	return new SolvedTest(answers, this->shortDescription, this->uniqueID, receivedPoints, this->maxPointsPerTest);
 }
 

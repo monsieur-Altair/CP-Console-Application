@@ -383,7 +383,6 @@ Student* CreateStudentFromFile(string filePath)
 	int id, group, course, listSize;
 
 	string shortDiscription, uniqueID;
-	list<int>* answers=new list<int>;
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
 	int maxPoints, receivedPoints;
 
@@ -407,6 +406,7 @@ Student* CreateStudentFromFile(string filePath)
 	//file.seekg(sizeof("\n"), ios::cur);
 	for (int i = 0; i < listSize; i++)
 	{
+		list<int>* answers = new list<int>;
 		file.seekg(sizeof("\n"), ios::cur);
 		getline(file, uniqueID);
 		getline(file, shortDiscription);
@@ -420,6 +420,7 @@ Student* CreateStudentFromFile(string filePath)
 			answers->push_back(oneAnswer);
 		}
 		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, receivedPoints, maxPoints));
+		//answers->clear();
 	}
 	file.close();
 

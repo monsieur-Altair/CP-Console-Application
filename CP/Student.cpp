@@ -71,12 +71,21 @@ void Student::Menu(list<Test*>* ptr)
 			break;
 		case VIEW_ONE_SOLVED_TEST_FULLY:
 		{
+			if (!this->PrintAllSolvedTestBriefly())
+				break;
 			string testID;
 			cout << "\n\n¬ведите ID желаемого теста (1 колонка)\n";
 			cin >> testID;
+			system("cls");
 			SolvedTest* ptrSolvedTest = this->SearchSolvedTestWithID(testID);
+			if (!ptrSolvedTest)
+			{
+				cout << "\n”казанный тест не найден\n";
+				break;
+			}
 			Test* ptrOriginalTest = SearchTestWithID(ptrFilteredTestList, testID);
 			ViewQuestionAndUserAnswer(ptrSolvedTest, ptrOriginalTest);
+			break;
 		}
 		default:
 			delete ptrFilteredTestList;

@@ -197,6 +197,11 @@ bool Student::PrintAllSolvedTestBriefly()
 	return true;
 }
 
+bool Student::PrintAllSolvedTestBriefly(string subject)
+{
+	return false;
+}
+
 SolvedTest* Student::SearchSolvedTestWithID(string testID)
 {
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)

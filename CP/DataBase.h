@@ -16,9 +16,16 @@ public:
 	void PrintAllTests();
 	void PrintAllStudents();
 	void PrintAllTeachers();
-	void Registration(Student**, Teacher**);
-	bool Login(Student**, Teacher**);
-	bool SearchUser(int, string, Student**, Teacher**);
+
+	Teacher* Registration(Teacher*);
+	Teacher* Login(Teacher*);
+	//Teacher* SearchUser(Teacher*);
+
+	Student* Registration(Student*);
+	Student* Login(Student*);
+	//Student* SearchUser(Student*);
+	//bool Login(Student**, Teacher**);
+	//bool SearchUser(int, string, Student**, Teacher**);
 	void Unload(string);
 	list<Test*>* LoadTestsWithFilter(int, list<string>*);
 	list<Test*>* LoadTestsWithFilter(string);
@@ -33,10 +40,11 @@ enum MenuChoice
 	EXIT, REGISTRATION, LOGIN
 };
 
-enum RoleChoice
+enum UserType
 {
 	STUDENT = 1, TEACHER
 };
+
 
 
 

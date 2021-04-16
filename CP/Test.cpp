@@ -11,18 +11,30 @@ Test::Test()
 	cout << "\nКонструктор TEST " << this;
 }
 
+Test::Test(string uniqueID, string shortDiscription, string subject, int course, list<Question*>* ptrQuestionList)
+{
+	this->course = course;
+	this->ptrQuestionList = ptrQuestionList;
+	this->numberOfQuestions = this->ptrQuestionList->size();
+	this->shortDescription = shortDiscription;
+	this->subject = subject;
+	this->uniqueID = uniqueID;
+	this->SetMaxPointsPerTest();
+}
+
 Test::Test(string DataFilePath)
 {
 	this->DownloadFromFile(DataFilePath);
 	this->SetMaxPointsPerTest();
-	this->numberOfQuestions = questionList.size();
+	this->numberOfQuestions = ptrQuestionList->size();
 	cout << "\nКонструктор TEST " << this;
 }
 
 Test::~Test()
 {
-	for (auto iter = questionList.begin(); iter != questionList.end(); iter++)
+	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 		delete (*iter);
+	delete ptrQuestionList;
 	cout << "\nДеструктор TEST " << this;
 }
 
@@ -30,7 +42,7 @@ void Test::PrintTest()
 {
 	cout << "\nТЕСТ " << this->uniqueID << "\nПредмет: " << this->subject;
 	cout << "\nКурс: " << this->course << "\nКраткое описание: " << shortDescription;
-	for (auto iter = questionList.begin(); iter != questionList.end(); iter++)
+	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 		(*iter)->PrintQuestion();
 }
 
@@ -47,7 +59,7 @@ void Test::PrintTestBriefly()
 
 void Test::SetMaxPointsPerTest()
 {
-	for (auto iter = questionList.begin(); iter != questionList.end(); iter++)
+	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 		this->maxPointsPerTest += (*iter)->GetPoints();
 }
 
@@ -56,10 +68,10 @@ void Test::UnloadTest(string Path)
 {
 	ofstream file;
 	file.open(Path);
-	auto iter1 = questionList.begin();
+	auto iter1 = ptrQuestionList->begin();
 	file << (*iter1)->GetNumberOfAnswers() << " " << this->course << "\n";
 	file << this->uniqueID << "\n" << this->subject << "\n" << this->shortDescription;
-	for (auto iter = questionList.begin(); iter != questionList.end(); iter++)
+	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 		(*iter)->UnloadQuestion(file);
 	file.close();
 }
@@ -94,7 +106,7 @@ void Test::DownloadFromFile(string dataFilePath)
 			getline(dataFile, answ[i++]);//считываем ответы на вопрос
 
 		dataFile >> pointPerQuestion >> correctAnswer;
-		questionList.push_back(new Question(question, answ, correctAnswer, pointPerQuestion, numberOfAnswers));
+		ptrQuestionList->push_back(new Question(question, answ, correctAnswer, pointPerQuestion, numberOfAnswers));
 		dataFile.seekg(2, ios::cur);
 	}
 	dataFile.close();
@@ -119,7 +131,7 @@ SolvedTest* Test::Solving()
 {
 	list<int>* answers = new list<int>;
 	int answ, receivedPoints = 0;
-	for (auto iter = questionList.begin(); iter != questionList.end(); iter++)
+	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 	{
 		system("cls");
 		(*iter)->PrintQuestion();
@@ -145,7 +157,7 @@ void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrT
 {
 	int correctAnswer, userAnswer, pointsForQuestion;
 	auto answerIter = ptrSolvedTest->answers->begin();
-	for (auto ptrQuestionIter = ptrTest->questionList.begin(); ptrQuestionIter != ptrTest->questionList.end(); ptrQuestionIter++)
+	for (auto ptrQuestionIter = ptrTest->ptrQuestionList->begin(); ptrQuestionIter != ptrTest->ptrQuestionList->end(); ptrQuestionIter++)
 	{
 		correctAnswer = (*ptrQuestionIter)->GetCorrectAnswerOption();
 		userAnswer = (*answerIter++);

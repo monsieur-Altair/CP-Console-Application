@@ -21,5 +21,6 @@ public:
 	void PrintUserInformation();
 	void Unload(ofstream&);
 	bool Searching(int, string);
+	int GetID();
 };
 

@@ -38,6 +38,8 @@ public:
     bool CheckSolvedTestList(Test*);
     bool PrintAvailableAndNoSolvedTest(list<Test*>*);
     bool PrintAllSolvedTestBriefly();
+    bool PrintAllSolvedTestBriefly(string);
+    //string GetID();
     list<string>*       GetPtrSubjectList();
     list<SolvedTest*>*  GetPtrSolvedTestList();
     SolvedTest*         SearchSolvedTestWithID(string);

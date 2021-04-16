@@ -27,7 +27,7 @@ public:
     );
 
     ~Teacher();
-    void Menu(list<Test*>*,list<Student*>*);
+    void Menu(list<Test*>**,list<Student*>*);
     void PrintInformation() override;
     void Unload(string);
     string GetSubject();

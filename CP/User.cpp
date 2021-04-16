@@ -36,3 +36,8 @@ bool User::Searching(int id, string password)
 	return ((this->id == id) && (this->password == password));
 }
 
+int User::GetID()
+{
+	return this->id;
+}
+

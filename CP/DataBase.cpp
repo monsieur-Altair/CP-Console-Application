@@ -45,7 +45,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	size = studentFile.tellg();
 	studentFile.seekg(0, ios::beg);
 
-	while (studentFile.tellg()<size)
+	while (studentFile.tellg() < size)
 	{
 		getline(studentFile, someStudentFilePath);
 		listOfStudents.push_back(CreateStudentFromFile(someStudentFilePath));
@@ -82,57 +82,94 @@ DataBase::~DataBase()
 	cout << "\nДеструктор DATABASE " << this;
 }
 
+//void DataBase::AuthorizationMenu()
+//{
+//	short userChoice;
+//	Student* currentStudent = nullptr;
+//	Teacher* currentTeacher = nullptr;
+//	system("cls");
+//	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам?\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n\n";
+//	cin >> userChoice;
+//	switch (userChoice)
+//	{
+//	case EXIT:
+//		currentStudent = nullptr;
+//		currentTeacher = nullptr;
+//		return;
+//	case REGISTRATION:
+//		Registration(&currentStudent, &currentTeacher);
+//		if (currentStudent)
+//			//проверить вдруг в меню грузится пустой список;
+//			currentStudent->Menu
+//			(
+//				LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList())
+//			);
+//		else
+//		{
+//			string teacherSubject = currentTeacher->GetSubject();
+//			list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
+//			currentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, currentTeacher->ptrGetGroupList()));
+//			this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+//		}
+//		break;
+//	case LOGIN:
+//		while (!Login(&currentStudent, &currentTeacher))
+//			cout << "\nПользователь не найден, убедитесь, что вы ввели верные данные и являетесь зарегистрированным\n";
+//		if (currentStudent)
+//			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList()));
+//		else
+//		{
+//			string teacherSubject = currentTeacher->GetSubject();
+//			list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
+//			currentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, currentTeacher->ptrGetGroupList()));
+//			this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+//		}
+//		break;
+//	default:
+//		currentStudent = nullptr;
+//		currentTeacher = nullptr;
+//		cout << "\nНеверный ввод\n";
+//		return;
+//	}
+//}
+
 void DataBase::AuthorizationMenu()
 {
-	short userChoice;
-	Student* currentStudent = nullptr;
-	Teacher* currentTeacher = nullptr;
+	short userChoice, userType;
 	system("cls");
-	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам?\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n\n";
+	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам!";
+	cout << "\nВыберите тип пользователя:\n 1 - студент\n2 - преподаватель\n0 - выйти";
+	cin >> userType;
+	cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n\n";
 	cin >> userChoice;
-	switch (userChoice)
+	switch (userType)
 	{
-	case EXIT:
-		currentStudent = nullptr;
-		currentTeacher = nullptr;
-		return;
-	case REGISTRATION:
-		Registration(&currentStudent, &currentTeacher);
-		if (currentStudent)
-			//проверить вдруг в меню грузится пустой список;
-			currentStudent->Menu
-			(
-				LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList())
-			);
-		else
-		{
-			string teacherSubject = currentTeacher->GetSubject();
-			currentTeacher->Menu
-			(
-				LoadTestsWithFilter(teacherSubject),
-				LoadStudentsFilter(teacherSubject,currentTeacher->ptrGetGroupList())
-			);
-		}
+	case STUDENT:
+	{
+		Student* ptrCurrentStudent = nullptr;
+		if (userChoice == REGISTRATION)
+			ptrCurrentStudent = Registration(ptrCurrentStudent);
+		if (userChoice == LOGIN)
+			ptrCurrentStudent = Login(ptrCurrentStudent);
+		ptrCurrentStudent->Menu(LoadTestsWithFilter(ptrCurrentStudent->GetCourse(), ptrCurrentStudent->GetPtrSubjectList()));
+		ptrCurrentStudent = nullptr;
 		break;
-	case LOGIN:
-		while (!Login(&currentStudent, &currentTeacher))
-			cout << "\nПользователь не найден, убедитесь, что вы ввели верные данные и являетесь зарегистрированным\n";
-		if (currentStudent)
-			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList()));
-		else
-		{
-			string teacherSubject = currentTeacher->GetSubject();
-			currentTeacher->Menu
-			(
-				LoadTestsWithFilter(teacherSubject),
-				LoadStudentsFilter(teacherSubject, currentTeacher->ptrGetGroupList())
-			);
-		}
+	}
+	case TEACHER:
+	{
+		Teacher* ptrCurrentTeacher = nullptr;
+		if (userChoice == REGISTRATION)
+			ptrCurrentTeacher = Registration(ptrCurrentTeacher);
+		if (userChoice == LOGIN)
+			ptrCurrentTeacher = Login(ptrCurrentTeacher);
+		string teacherSubject = ptrCurrentTeacher->GetSubject();
+		list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
+		ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
+		this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+		ptrCurrentTeacher = nullptr;
 		break;
+	}
 	default:
-		currentStudent = nullptr;
-		currentTeacher = nullptr;
-		cout << "\nНеверный ввод\n";
 		return;
 	}
 }
@@ -167,7 +204,107 @@ void DataBase::PrintAllTeachers()
 	}
 }
 
-void DataBase::Registration(Student** userStudent, Teacher** userTeacher)
+//void DataBase::Registration(Student** userStudent, Teacher** userTeacher)
+//{
+//	//create BOOL
+//	short userChoice;
+//	string fullName, password;
+//	int id;
+//	cout << "\nУкажите тип пользователя\n1 - Студент\t2 - Преподаватель\n";
+//	cin >> userChoice;
+//	//check value
+//	cout << "\nВведите ФИО\n";
+//	cin >> fullName;
+//	cout << "\nВведите пароль\n";
+//	cin >> password;
+//	cout << "\nВведите ID\n";
+//	cin >> id;
+//
+//	if (userChoice == STUDENT)
+//	{
+//		string faculty;
+//		list<string>* ptrList = new list<string>;
+//		list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
+//		int group, course;//CHECK
+//		cout << "\nВведите факультет\n";
+//		cin >> faculty;
+//		cout << "\nВведите группу\n";
+//		cin >> group;
+//		cout << "\nВведите курс\n";
+//		cin >> course;
+//		cout << "\nВведите свою учебную дисцпиплину\nВыйти - 0\n";
+//		while (true)
+//		{
+//			string subject;
+//			cout << "\nПредмет: ";
+//			cin >> subject;
+//			if (subject == "0")
+//				break;
+//			ptrList->push_back(subject);
+//		}
+//		*userStudent = new Student(fullName, password, faculty, id, group, course, ptrList, ptrSolvedTestList);
+//		listOfStudents.push_back(*userStudent);
+//	}
+//	if (userChoice == TEACHER)
+//	{
+//		string subject;
+//		list<int>* ptrGroupList = new list<int>;
+//		cout << "\nВведите преподаваемую дисциплину: \n";
+//		cin >> subject;
+//		cout << "\nВведите группы, в которых преподаете\nВыйти - 0\n";
+//		while (true)
+//		{
+//			int group;
+//			cout << "\nГруппа: ";
+//			cin >> group;
+//			if (!group)
+//				break;
+//			ptrGroupList->push_back(group);
+//		}
+//		*userTeacher = new Teacher(fullName, password, id, subject, ptrGroupList);
+//		listOfTeachers.push_back(*userTeacher);
+//	}
+//}
+
+Student* DataBase::Registration(Student* ptrStudent)
+{
+	//create BOOL
+	string fullName, password;
+	int id;
+	//check value
+	cout << "\nВведите ФИО\n";
+	cin >> fullName;
+	cout << "\nВведите пароль\n";
+	cin >> password;
+	cout << "\nВведите ID\n";
+	cin >> id;
+
+	string faculty;
+	list<string>* ptrList = new list<string>;
+	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
+	int group, course;//CHECK
+	cout << "\nВведите факультет\n";
+	cin >> faculty;
+	cout << "\nВведите группу\n";
+	cin >> group;
+	cout << "\nВведите курс\n";
+	cin >> course;
+	cout << "\nВведите свою учебную дисцпиплину\nВыйти - 0\n";
+	while (true)
+	{
+		string subject;
+		cout << "\nПредмет: ";
+		cin >> subject;
+		if (subject == "0")
+			break;
+		ptrList->push_back(subject);
+	}
+	ptrStudent = new Student(fullName, password, faculty, id, group, course, ptrList, ptrSolvedTestList);
+	listOfStudents.push_back(ptrStudent);
+	return ptrStudent;
+}
+
+Teacher* DataBase::Registration(Teacher* ptrTeacher)
 {
 	//create BOOL
 	short userChoice;
@@ -183,53 +320,82 @@ void DataBase::Registration(Student** userStudent, Teacher** userTeacher)
 	cout << "\nВведите ID\n";
 	cin >> id;
 
-	if (userChoice == STUDENT)
+	string subject;
+	list<int>* ptrGroupList = new list<int>;
+	cout << "\nВведите преподаваемую дисциплину: \n";
+	cin >> subject;
+	cout << "\nВведите группы, в которых преподаете\nВыйти - 0\n";
+	while (true)
 	{
-		string faculty;
-		list<string>* ptrList = new list<string>;
-		list<SolvedTest*>* ptrSolvedTestList=new list<SolvedTest*>;
-		int group, course;//CHECK
-		cout << "\nВведите факультет\n";
-		cin >> faculty;
-		cout << "\nВведите группу\n";
+		int group;
+		cout << "\nГруппа: ";
 		cin >> group;
-		cout << "\nВведите курс\n";
-		cin >> course;
-		cout << "\nВведите свою учебную дисцпиплину\nВыйти - 0\n";
-		while (true)
-		{
-			string subject;
-			cout << "\nПредмет: ";
-			cin >> subject;
-			if (subject == "0")
-				break;
-			ptrList->push_back(subject);
-		}
-		*userStudent = new Student(fullName, password, faculty, id, group, course, ptrList, ptrSolvedTestList);
-		listOfStudents.push_back(*userStudent);
+		if (!group)
+			break;
+		ptrGroupList->push_back(group);
 	}
-	if (userChoice == TEACHER)
-	{
-		string subject;
-		list<int>* ptrGroupList = new list<int>;
-		cout << "\nВведите преподаваемую дисциплину: \n";
-		cin >> subject;
-		cout << "\nВведите группы, в которых преподаете\nВыйти - 0\n";
-		while (true)
-		{
-			int group;
-			cout << "\nГруппа: ";
-			cin >> group;
-			if (!group)
-				break;
-			ptrGroupList->push_back(group);
-		}
-		*userTeacher = new Teacher(fullName, password, id, subject, ptrGroupList);
-		listOfTeachers.push_back(*userTeacher);
-	}
+	ptrTeacher = new Teacher(fullName, password, id, subject, ptrGroupList);
+	listOfTeachers.push_back(ptrTeacher);
+	return ptrTeacher;
 }
 
-bool DataBase::Login(Student** userStudent, Teacher** userTeacher)
+//bool DataBase::Login(Student** userStudent, Teacher** userTeacher)
+//{
+//	int id;
+//	string password;
+//	cout << "\nВведите свой ID ";
+//	cin >> id;
+//	cout << "\nВведите свой пароль ";
+//	cin >> password;
+//	return SearchUser(id, password, userStudent, userTeacher);
+//}
+//
+//bool DataBase::SearchUser(int id, string password, Student** userStudent, Teacher** userTeacher)
+//{
+//	for (auto iter = listOfStudents.begin(); iter != listOfStudents.end(); iter++)
+//	{
+//		if ((*iter)->Searching(id, password))
+//		{
+//			*userStudent = (*iter);
+//			cout << "\nПользователь найден\n";
+//			return true;
+//		}
+//	}
+//	for (auto iter = listOfTeachers.begin(); iter != listOfTeachers.end(); iter++)
+//	{
+//		if ((*iter)->Searching(id, password))
+//		{
+//			*userTeacher = (*iter);
+//			cout << "\nПользователь найден\n";
+//			return true;
+//		}
+//	}
+//	cout << "\nПользователь не найден\n";
+//	return false;
+//}
+
+Student* DataBase::Login(Student* userStudent)
+{
+	int id;
+	string password;
+	//while(true)
+	cout << "\nВведите свой ID ";
+	cin >> id;
+	cout << "\nВведите свой пароль ";
+	cin >> password;
+	for (auto ptrStudent : listOfStudents)
+	{
+		if (ptrStudent->Searching(id, password))
+		{
+			cout << "\nПользователь найден\n";
+			return ptrStudent;
+		}
+	}
+	cout << "\nПользователь не найден\n";
+	return nullptr;
+}
+
+Teacher* DataBase::Login(Teacher* userTeacher)
 {
 	int id;
 	string password;
@@ -237,31 +403,16 @@ bool DataBase::Login(Student** userStudent, Teacher** userTeacher)
 	cin >> id;
 	cout << "\nВведите свой пароль ";
 	cin >> password;
-	return SearchUser(id, password, userStudent, userTeacher);
-}
-
-bool DataBase::SearchUser(int id, string password, Student** userStudent, Teacher** userTeacher)
-{
-	for (auto iter = listOfStudents.begin(); iter != listOfStudents.end(); iter++)
+	for (auto ptrTeacher : listOfTeachers)
 	{
-		if ((*iter)->Searching(id, password))
+		if (ptrTeacher->Searching(id, password))
 		{
-			*userStudent = (*iter);
 			cout << "\nПользователь найден\n";
-			return true;
-		}
-	}
-	for (auto iter = listOfTeachers.begin(); iter != listOfTeachers.end(); iter++)
-	{
-		if ((*iter)->Searching(id, password))
-		{
-			*userTeacher = (*iter);
-			cout << "\nПользователь найден\n";
-			return true;
+			return ptrTeacher;
 		}
 	}
 	cout << "\nПользователь не найден\n";
-	return false;
+	return nullptr;
 }
 
 void DataBase::Unload(string dataBaseFilePath)
@@ -311,7 +462,7 @@ void DataBase::Unload(string dataBaseFilePath)
 		exit(-10);
 	for (auto iter = listOfStudents.begin(); iter != listOfStudents.end(); iter++)
 	{
-		currPath= "D:\\OOP\\CP\\стууудент" + to_string(i++) + ".txt";
+		currPath = "D:\\OOP\\CP\\стууудент" + to_string(i++) + ".txt";
 		allStudentFile << currPath << "\n";
 		(*iter)->Unload(currPath);
 	}
@@ -363,8 +514,8 @@ list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList
 list<Test*>* DataBase::LoadTestsWithFilter(string subject)
 {
 	list<Test*>* ptrFilteredTestList = new list<Test*>;
-	for(auto iter=listOfTests.begin();iter!=listOfTests.end();iter++)
-		if((*iter)->GetSubject()==subject)
+	for (auto iter = listOfTests.begin(); iter != listOfTests.end(); iter++)
+		if ((*iter)->GetSubject() == subject)
 			ptrFilteredTestList->splice(ptrFilteredTestList->end(), listOfTests, iter);
 	return ptrFilteredTestList;
 }
@@ -390,7 +541,7 @@ list<Student*>* DataBase::LoadStudentsFilter(string subject, list<int>* ptrGroup
 			continue;
 
 		list<string>* ptrSubjectList = (*iter)->GetPtrSubjectList();
-		for(auto subj:*ptrSubjectList)
+		for (auto subj : *ptrSubjectList)
 			if (subject == subj)
 			{
 				isFindSubject = true;
@@ -467,7 +618,7 @@ Student* CreateStudentFromFile(string filePath)
 		getline(file, shortDiscription);
 		file >> receivedPoints >> maxPoints;
 		file.seekg(sizeof("\n"), ios::cur);
-		int sizeAnswers,oneAnswer;
+		int sizeAnswers, oneAnswer;
 		file >> sizeAnswers;
 		for (int j = 0; j < sizeAnswers; j++)
 		{

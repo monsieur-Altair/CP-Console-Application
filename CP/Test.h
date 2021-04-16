@@ -6,11 +6,12 @@
 
 class Test
 {
-	list<Question*> questionList;
+	list<Question*> *ptrQuestionList;
 	string shortDescription, subject, uniqueID;
 	int maxPointsPerTest, numberOfQuestions, course;
 public:
 	Test();
+	Test(string, string, string, int, list<Question*>*);
 	Test(string);
 	~Test();
 	void PrintTest();

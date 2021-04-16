@@ -99,24 +99,34 @@ void DataBase::AuthorizationMenu()
 	case REGISTRATION:
 		Registration(&currentStudent, &currentTeacher);
 		if (currentStudent)
-		{
-			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList()));
-		}
+			//проверить вдруг в меню грузитс€ пустой список;
+			currentStudent->Menu
+			(
+				LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList())
+			);
 		else
 		{
-			(currentTeacher)->Menu();
+			string teacherSubject = currentTeacher->GetSubject();
+			currentTeacher->Menu
+			(
+				LoadTestsWithFilter(teacherSubject),
+				LoadStudentsFilter(teacherSubject,currentTeacher->ptrGetGroupList())
+			);
 		}
 		break;
 	case LOGIN:
 		while (!Login(&currentStudent, &currentTeacher))
 			cout << "\nѕользователь не найден, убедитесь, что вы ввели верные данные и €вл€етесь зарегистрированным\n";
 		if (currentStudent)
-		{
 			(currentStudent)->Menu(LoadTestsWithFilter(currentStudent->GetCourse(), currentStudent->GetPtrSubjectList()));
-		}
 		else
 		{
-			(currentTeacher)->Menu();
+			string teacherSubject = currentTeacher->GetSubject();
+			currentTeacher->Menu
+			(
+				LoadTestsWithFilter(teacherSubject),
+				LoadStudentsFilter(teacherSubject, currentTeacher->ptrGetGroupList())
+			);
 		}
 		break;
 	default:
@@ -348,6 +358,51 @@ list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList
 		}
 	}
 	return ptrFilterTestList;
+}
+
+list<Test*>* DataBase::LoadTestsWithFilter(string subject)
+{
+	list<Test*>* ptrFilteredTestList = new list<Test*>;
+	for(auto iter=listOfTests.begin();iter!=listOfTests.end();iter++)
+		if((*iter)->GetSubject()==subject)
+			ptrFilteredTestList->splice(ptrFilteredTestList->end(), listOfTests, iter);
+	return ptrFilteredTestList;
+}
+
+list<Student*>* DataBase::LoadStudentsFilter(string subject, list<int>* ptrGroupList)
+{
+	bool isFindGroup;
+	bool isFindSubject;
+	list<Student*>* ptrFilteredStudentList = new list<Student*>;
+	for (auto iter = listOfStudents.begin(); iter != listOfStudents.end(); iter++)
+	{
+		isFindGroup = false;
+		isFindSubject = false;
+
+		int group = (*iter)->GetGroup();
+		for (auto gr : *ptrGroupList)
+			if (group == gr)
+			{
+				isFindGroup = true;
+				break;
+			}
+		if (!isFindGroup)
+			continue;
+
+		list<string>* ptrSubjectList = (*iter)->GetPtrSubjectList();
+		for(auto subj:*ptrSubjectList)
+			if (subject == subj)
+			{
+				isFindSubject = true;
+				break;
+			}
+		if (!isFindSubject)
+			continue;
+
+		ptrFilteredStudentList->push_back((*iter));
+	}
+
+	return ptrFilteredStudentList;
 }
 
 Teacher* CreateTeacherFromFile(string filePath)

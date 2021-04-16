@@ -21,7 +21,8 @@ public:
 	bool SearchUser(int, string, Student**, Teacher**);
 	void Unload(string);
 	list<Test*>* LoadTestsWithFilter(int, list<string>*);
-
+	list<Test*>* LoadTestsWithFilter(string);
+	list<Student*>* LoadStudentsFilter(string, list<int>*);
 };
 
 Teacher* CreateTeacherFromFile(string);

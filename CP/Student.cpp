@@ -8,7 +8,18 @@ Student::Student() :User()
 	cout << "\nКонструктор STUDENT " << this;
 }
 
-Student::Student(string name, string password, string faculty, int id, int group, int course, list<string>* listPtr, list<SolvedTest*>* ptrSolvedTest) :User(name, password, id)
+Student::Student
+(
+	string name, 
+	string password, 
+	string faculty, 
+	int id, 
+	int group, 
+	int course, 
+	list<string>* listPtr, 
+	list<SolvedTest*>* ptrSolvedTest
+) 
+	:User(name, password, id)
 {
 	this->group = group;
 	this->faculty = faculty;
@@ -28,9 +39,9 @@ Student::~Student()
 	cout << "\nДеструктор STUDENT " << this;
 }
 
-void Student::Menu(list<Test*>* ptr)
+void Student::Menu(list<Test*>* ptrFilteredTestList)
 {
-	list<Test*>* ptrFilteredTestList = ptr;
+	//list<Test*>* ptrFilteredTestList = ptrFilteredTestList;
 	while (true)
 	{
 		short choice;
@@ -94,7 +105,6 @@ void Student::Menu(list<Test*>* ptr)
 		cout << "\n\n";
 		system("pause");
 	}
-
 }
 
 void Student::PrintInformation()
@@ -113,6 +123,11 @@ list<string>* Student::GetPtrSubjectList()
 int Student::GetCourse()
 {
 	return this->course;
+}
+
+int Student::GetGroup()
+{
+	return this->group;
 }
 
 void Student::Unload(string path)

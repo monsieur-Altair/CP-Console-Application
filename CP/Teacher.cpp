@@ -21,9 +21,45 @@ Teacher::~Teacher()
 	cout << "\nДеструктор TEACHER " << this;
 }
 
-void Teacher::Menu()
+void Teacher::Menu(list<Test*>* ptrFilterdTestList, list<Student*>* ptrFilteredStudentList)
 {
-	return;
+	//list<Test*>* ptrFilteredTestList;
+	while (true)
+	{
+		short choice;
+		system("cls");
+		cout << "\nВы вошли как преподаватель\nВыберите желаемое действие:\n1 - создать тест";
+		cout << "\n2 - удалить тест\n3 - просмотреть информацию о себе\n4 - редактировать конкретный тест";
+		cout << "\n5 - просмотреть доступные тесты\n6 - просмотреть студентов своих групп";
+		cout << "\n7 - просмотреть конкретного студента\n0 - Выйти\n\n";
+		cin >> choice;
+		system("cls");
+		switch (choice)
+		{
+		case CREATE_TEST:
+		{
+
+			break;
+		}
+		case DELETE_TEST:
+			break;
+		case VIEW_OWN_INF:
+			break;
+		case EDIT_TEST:
+			break;
+		case VIEW_ALL_AVAIBLE_TEST:
+			break;
+		case VIEW_ALL_STUDENTS:
+			break;
+		case VIEW_ONE_STUDENT:
+			break;
+		default:
+			break;
+		}
+		cout << "\n\n";
+		system("pause");
+	}
+
 }
 
 
@@ -46,5 +82,15 @@ void Teacher::Unload(string path)
 	for (auto iter = ptrGroupList->begin(); iter != ptrGroupList->end(); iter++)
 		file << " " << (*iter);
 	file.close();
+}
+
+string Teacher::GetSubject()
+{
+	return this->subject;
+}
+
+list<int>* Teacher::ptrGetGroupList()
+{
+	return this->ptrGroupList;
 }
 

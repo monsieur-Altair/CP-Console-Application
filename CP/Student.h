@@ -29,16 +29,18 @@ public:
         list<SolvedTest*>*
     );
     ~Student();
+
+    int  GetCourse();
+    int  GetGroup();
     void Menu(list<Test*>*);
     void PrintInformation() override;
-    list<string>* GetPtrSubjectList();
-    int GetCourse();
     void Unload(string);
-    list<SolvedTest*>* GetPtrSolvedTestList();
     bool CheckSolvedTestList(Test*);
     bool PrintAvailableAndNoSolvedTest(list<Test*>*);
     bool PrintAllSolvedTestBriefly();
-    SolvedTest* SearchSolvedTestWithID(string);
+    list<string>*       GetPtrSubjectList();
+    list<SolvedTest*>*  GetPtrSolvedTestList();
+    SolvedTest*         SearchSolvedTestWithID(string);
 };
 
 Test* SearchTestWithID(list<Test*>*,string);

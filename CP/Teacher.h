@@ -1,10 +1,20 @@
 #pragma once
-#include "User.h"
+#include "Student.h"
 
 class Teacher : public User
 {
     string subject;
     list<int>* ptrGroupList;//список групп препода, мб список спецух 
+    enum MenuChoice
+    {
+        CREATE_TEST = 1,
+        DELETE_TEST,
+        VIEW_OWN_INF,
+        EDIT_TEST,
+        VIEW_ALL_AVAIBLE_TEST,
+        VIEW_ALL_STUDENTS,
+        VIEW_ONE_STUDENT
+    };
 public:
     Teacher();
     Teacher
@@ -17,8 +27,10 @@ public:
     );
 
     ~Teacher();
-    void Menu();
+    void Menu(list<Test*>*,list<Student*>*);
     void PrintInformation() override;
     void Unload(string);
+    string GetSubject();
+    list<int>* ptrGetGroupList();
 };
 

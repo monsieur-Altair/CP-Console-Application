@@ -4,6 +4,7 @@
 #include "SolvedTest.h"
 
 
+
 class Test
 {
 	list<Question*> *ptrQuestionList;
@@ -26,6 +27,7 @@ public:
 	string GetID();
 	SolvedTest* Solving();
 	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
+	friend void EditTest(Teacher*, Test*);
 };
 
 

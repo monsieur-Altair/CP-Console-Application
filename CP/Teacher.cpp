@@ -1,5 +1,6 @@
 #include "Teacher.h"
 
+
 Teacher::Teacher() :User()
 {
 	this->subject = "";
@@ -45,7 +46,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		{
 			string uniqueID;
 			PrintAvailableTest(ptrFilteredTestList);
-			cout << "\nВведите ID теста, которого хотите удалить (1 колонка)\n";
+			cout << "\nВведите ID теста (1 колонка)\n";
 			cin >> uniqueID;
 			for (auto iter = (*ptrFilteredTestList)->begin(); iter != (*ptrFilteredTestList)->end(); iter++)
 			{
@@ -62,9 +63,12 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			this->PrintInformation();
 			break;
 		case EDIT_TEST:
+		{
 			PrintAvailableTest(ptrFilteredTestList);
-
+			Test* test = SearchAvailableTest(ptrFilteredTestList);
+			EditTest(this, test);
 			break;
+		}
 		case VIEW_ALL_AVAIBLE_TEST:
 			PrintAvailableTest(ptrFilteredTestList);
 			break;
@@ -88,18 +92,9 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		case VIEW_ONE_TEST_FULLY:
 		{
 			PrintAvailableTest(ptrFilteredTestList);
-			string uniqueID;
-			cout << "\nВведите ID теста, которого хотите удалить (1 колонка)\n";
-			cin >> uniqueID;
-			for (auto test : **ptrFilteredTestList)
-			{
-				if (test->GetID() == uniqueID)
-				{
-					test->PrintTest();
-					break;
-				}
-			}
-			cout << "\nТест не найден\n";
+			Test* test = SearchAvailableTest(ptrFilteredTestList);
+			if (test)
+				test->PrintTest();
 			break;
 		}
 		default:
@@ -155,7 +150,7 @@ Test* Teacher::CreateTest()
 	cin >> course;
 	cout << "\nВведите количество ответов на вопрос (для каждого вопроса будет установлено это значение количества ответов): ";
 	cin >> answersNumber;
-	bool isContinue=true;
+	bool isContinue = true;
 	do
 	{
 		ptrQuestionList->push_back(CreateQuestion(answersNumber));
@@ -216,7 +211,89 @@ void Teacher::PrintOwnStudents(list<Student*>* ptrFilteredStudentList)
 	}
 }
 
-Test* Teacher::SearchAvailableTest(list<Test*>**)
+Test* Teacher::SearchAvailableTest(list<Test*>** ptrFilteredTestList)
 {
+	string uniqueID;
+	cout << "\nВведите ID теста (1 колонка)\n";
+	cin >> uniqueID;
+	for (auto test : **ptrFilteredTestList)
+		if (test->GetID() == uniqueID)
+			return test;
+	cout << "\nТест не найден\n";
+	return nullptr;
 }
+
+void EditTest(Teacher* ptrTeacher, Test* ptrTest)
+{
+	string password;
+	cout << "\n\n";
+	cin >> password;
+	if (password != ptrTeacher->GetPassword())
+	{
+		cout << "\nВ доступе отказано\n";
+		return;
+	}
+	int value;
+	cout << "\nВыберите поле изменения:\n1 - Краткое описание\n2 - Вопрос\n0 - Выйти\n";
+	cin >> value;
+	system("cls");
+	switch (value)
+	{
+	case 1:
+		cout << "\nВведите новое краткое описание\n";
+		cin >> ptrTest->shortDescription;
+		break;
+	case 2:
+	{
+		int i = 1, number;
+		for (auto q : *(ptrTest->ptrQuestionList))
+			cout << "\nВопрос № " << i << ": " << q->question;
+		cout << "\n\nВведите номер вопроса: ";
+		cin >> number;
+		auto iter = ptrTest->ptrQuestionList->begin();
+		advance(iter, number - 1);
+		cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
+		cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n0 - Выйти\n\n";
+		cin >> value;
+		switch (value)
+		{
+		case 1:
+			delete * iter;
+			ptrTest->ptrQuestionList->erase(iter);
+			break;
+		case 2:
+			cout << "\nВведите новый вопрос: ";
+			cin >> (*iter)->question;
+			break;
+		case 3:
+			for (int i = 0; i < (*iter)->numberOfAnswers; i++)
+				cout << "\nОтвет №" << i + 1 << (*iter)->answerOptions[i];
+			cout << "\n\nВведите номер ответа для изменения: ";
+			cin >> number;
+			cin.ignore();
+			cout << "\nВведите новый ответ: ";
+			getline(cin, (*iter)->answerOptions[number - 1]);
+			break;
+		case 4:
+			cout << "\nВведите новый правильный вариант ответа: ";
+			cin >> (*iter)->correctAnswerOption;
+			break;
+		case 5:
+			cout << "\nВведите новое количество баллов за вопрос: ";
+			cin >> (*iter)->pointsPerQuestion;
+			break;
+		default:
+			return;
+		}
+	}
+	default:
+		return;
+	}
+}
+
+string Teacher::GetPassword()
+{
+	return User::GetPassword();
+}
+
 

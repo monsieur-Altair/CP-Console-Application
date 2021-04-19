@@ -4,6 +4,9 @@
 #include <fstream>
 using namespace std;
 
+class Teacher;
+class Test;
+
 class Question
 {
 	int numberOfAnswers;
@@ -20,5 +23,7 @@ public:
 	void PrintCorrectAnswer();
 	int GetNumberOfAnswers();
 	void UnloadQuestion(ofstream&);
+	friend void EditTest(Teacher*, Test*);
+	//void PrintQuestionOnly();
 };
 

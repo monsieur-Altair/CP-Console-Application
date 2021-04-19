@@ -60,3 +60,8 @@ void Question::UnloadQuestion(ofstream& file)
 		file << this->answerOptions[i] << "\n";
 	file << this->pointsPerQuestion << " " << this->correctAnswerOption;
 }
+
+//void Question::PrintQuestionOnly()
+//{
+//	cout<<this->
+//}

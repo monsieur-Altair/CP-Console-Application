@@ -31,12 +31,15 @@ public:
     void Menu(list<Test*>**,list<Student*>*);
     void PrintInformation() override;
     void Unload(string);
-    string GetSubject();
+
     list<int>* ptrGetGroupList();
     Test* CreateTest();
     Question* CreateQuestion(int);
     void PrintAvailableTest(list<Test*>**);
     void PrintOwnStudents(list<Student*>*);
     Test* SearchAvailableTest(list<Test*>**);
+    friend void EditTest(Teacher*, Test*);
+    string GetSubject();
+    string GetPassword();
 };
 

@@ -22,5 +22,6 @@ public:
 	void Unload(ofstream&);
 	bool Searching(int, string);
 	int GetID();
+	string GetPassword();
 };
 

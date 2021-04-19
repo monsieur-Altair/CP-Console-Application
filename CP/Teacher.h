@@ -13,7 +13,8 @@ class Teacher : public User
         EDIT_TEST,
         VIEW_ALL_AVAIBLE_TEST,
         VIEW_ALL_STUDENTS,
-        VIEW_ONE_STUDENT
+        VIEW_ONE_STUDENT,
+        VIEW_ONE_TEST_FULLY
     };
 public:
     Teacher();
@@ -32,5 +33,10 @@ public:
     void Unload(string);
     string GetSubject();
     list<int>* ptrGetGroupList();
+    Test* CreateTest();
+    Question* CreateQuestion(int);
+    void PrintAvailableTest(list<Test*>**);
+    void PrintOwnStudents(list<Student*>*);
+    Test* SearchAvailableTest(list<Test*>**);
 };
 

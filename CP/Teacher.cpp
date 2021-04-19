@@ -30,62 +30,21 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		system("cls");
 		cout << "\nВы вошли как преподаватель\nВыберите желаемое действие:\n1 - создать тест";
 		cout << "\n2 - удалить тест\n3 - просмотреть информацию о себе\n4 - редактировать конкретный тест";
-		cout << "\n5 - просмотреть доступные тесты\n6 - просмотреть студентов своих групп";
-		cout << "\n7 - просмотреть конкретного студента\n0 - Выйти\n\n";
+		cout << "\n5 - просмотреть все доступные тесты\n6 - просмотреть всех студентов своих групп";
+		cout << "\n7 - просмотреть конкретного студента\n8 - просмотреть вопросы одного теста\n0 - Выйти\n\n";
 		cin >> choice;
 		system("cls");
 		switch (choice)
 		{
 		case CREATE_TEST:
 		{
-			string uniqueID, shortDiscription, subject = this->subject;
-			int course, answersNumber;
-			list<Question*>* ptrQuestionList = new list<Question*>;
-			cout << "\nВведите уникальный ID теста:\n";
-			cin >> uniqueID;
-			cout << "\nВведите короткое описание теста:\n";
-			cin >> shortDiscription;
-			cout << "\nВведите курс: ";
-			cin >> course;
-			cout << "\nВведите количество ответов на вопрос (для каждого вопроса будет установлено это значение количества ответов: ";
-			cin >> answersNumber;
-			while (true)
-			{
-				string question;
-				string* answers = new string[answersNumber];
-				int correctAnswerOption, pointsPerQuestion;
-				system("cls");
-				cout << "\nВведите вопрос:\n";
-				cin >> question;
-				cout << "\nВведите " << answersNumber << " ответа(ов)\n";
-				for (int i = 0; i < answersNumber; i++)
-				{
-					cout << "\nОтвет №" << i + 1 << ": ";
-					cin >> answers[i];
-				}
-				cout << "\nВведите номер правильного ответа: ";
-				cin >> correctAnswerOption;
-				cout << "\nВведите количество баллов за вопрос: \n";
-				cin >> pointsPerQuestion;
-				ptrQuestionList->push_back(new Question(question, answers, correctAnswerOption, pointsPerQuestion, answersNumber));
-				system("cls");
-				cout << "\nЖелаете ввести еще один вопрос? 1 - да, 0 - нет\n";
-				bool choice;
-				cin >> choice;
-				if (!choice)
-					break;
-			}
-			(*ptrFilteredTestList)->push_back(new Test(uniqueID, shortDiscription, subject, course, ptrQuestionList));
+			(*ptrFilteredTestList)->push_back(CreateTest());
 			break;
 		}
 		case DELETE_TEST:
 		{
 			string uniqueID;
-			for (auto ptrTest : **ptrFilteredTestList)
-			{
-				ptrTest->PrintTestBriefly();
-				cout << "\n";
-			}
+			PrintAvailableTest(ptrFilteredTestList);
 			cout << "\nВведите ID теста, которого хотите удалить (1 колонка)\n";
 			cin >> uniqueID;
 			for (auto iter = (*ptrFilteredTestList)->begin(); iter != (*ptrFilteredTestList)->end(); iter++)
@@ -103,29 +62,19 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			this->PrintInformation();
 			break;
 		case EDIT_TEST:
+			PrintAvailableTest(ptrFilteredTestList);
+
 			break;
 		case VIEW_ALL_AVAIBLE_TEST:
-			for (auto ptrTest : **ptrFilteredTestList)
-			{
-				ptrTest->PrintTestBriefly();
-				cout << "\n";
-			}
+			PrintAvailableTest(ptrFilteredTestList);
 			break;
 		case VIEW_ALL_STUDENTS:
-			for (auto ptrStudent : *ptrFilteredStudentList)
-			{
-				ptrStudent->PrintInformation();
-				cout << "\n";
-			}
+			PrintOwnStudents(ptrFilteredStudentList);
 			break;
 		case VIEW_ONE_STUDENT:
 		{
+			PrintAvailableTest(ptrFilteredTestList);
 			int ID;
-			for (auto ptrStudent : *ptrFilteredStudentList)
-			{
-				ptrStudent->PrintInformation();
-				cout << "\n";
-			}
 			cout << "\nВведите ID студента: ";
 			cin >> ID;
 			for (auto ptrStudent : *ptrFilteredStudentList)
@@ -136,15 +85,30 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 				}
 			break;
 		}
-		default:
+		case VIEW_ONE_TEST_FULLY:
+		{
+			PrintAvailableTest(ptrFilteredTestList);
+			string uniqueID;
+			cout << "\nВведите ID теста, которого хотите удалить (1 колонка)\n";
+			cin >> uniqueID;
+			for (auto test : **ptrFilteredTestList)
+			{
+				if (test->GetID() == uniqueID)
+				{
+					test->PrintTest();
+					break;
+				}
+			}
+			cout << "\nТест не найден\n";
 			break;
+		}
+		default:
+			return;
 		}
 		cout << "\n\n";
 		system("pause");
 	}
-
 }
-
 
 void Teacher::PrintInformation()
 {
@@ -175,5 +139,84 @@ string Teacher::GetSubject()
 list<int>* Teacher::ptrGetGroupList()
 {
 	return this->ptrGroupList;
+}
+
+Test* Teacher::CreateTest()
+{
+	string uniqueID, shortDiscription, subject = this->subject;
+	int course, answersNumber;
+	list<Question*>* ptrQuestionList = new list<Question*>;
+	cout << "\nВведите уникальный ID теста: ";
+	cin.ignore();
+	getline(cin, uniqueID);
+	cout << "\nВведите короткое описание теста: ";
+	getline(cin, shortDiscription);
+	cout << "\nВведите курс: ";
+	cin >> course;
+	cout << "\nВведите количество ответов на вопрос (для каждого вопроса будет установлено это значение количества ответов): ";
+	cin >> answersNumber;
+	bool isContinue=true;
+	do
+	{
+		ptrQuestionList->push_back(CreateQuestion(answersNumber));
+		system("cls");
+		cout << "\nЖелаете ввести еще один вопрос? 1 - да, 0 - нет\n";
+		cin >> isContinue;
+	} while (isContinue);
+	return new Test(uniqueID, shortDiscription, subject, course, ptrQuestionList);
+}
+
+Question* Teacher::CreateQuestion(int answersNumber)
+{
+	string question;
+	string* answers = new string[answersNumber];
+	int correctAnswerOption, pointsPerQuestion;
+	system("cls");
+	cout << "\nВведите вопрос: ";
+	cin.ignore();
+	getline(cin, question);
+	cout << "\nВведите " << answersNumber << " ответа(ов)\n";
+	for (int i = 0; i < answersNumber; i++)
+	{
+		cout << "Ответ №" << i + 1 << ": ";
+		getline(cin, answers[i]);
+	}
+	cout << "\nВведите номер правильного ответа: ";
+	cin >> correctAnswerOption;
+	cout << "\nВведите количество баллов за вопрос: ";
+	cin >> pointsPerQuestion;
+	return new Question(question, answers, correctAnswerOption, pointsPerQuestion, answersNumber);
+}
+
+void Teacher::PrintAvailableTest(list<Test*>** ptrFilteredTestList)
+{
+	if (!(*ptrFilteredTestList)->size())
+	{
+		cout << "\nСписок доступных тестов пуст\n";
+		return;
+	}
+	for (auto ptrTest : **ptrFilteredTestList)
+	{
+		ptrTest->PrintTestBriefly();
+		cout << "\n";
+	}
+}
+
+void Teacher::PrintOwnStudents(list<Student*>* ptrFilteredStudentList)
+{
+	if (!ptrFilteredStudentList->size())
+	{
+		cout << "\nСписок доступных тестов пуст\n";
+		return;
+	}
+	for (auto ptrStudent : *ptrFilteredStudentList)
+	{
+		ptrStudent->PrintInformation();
+		cout << "\n";
+	}
+}
+
+Test* Teacher::SearchAvailableTest(list<Test*>**)
+{
 }
 

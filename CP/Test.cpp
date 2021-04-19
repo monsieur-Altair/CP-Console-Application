@@ -40,10 +40,20 @@ Test::~Test()
 
 void Test::PrintTest()
 {
-	cout << "\nТЕСТ " << this->uniqueID << "\nПредмет: " << this->subject;
-	cout << "\nКурс: " << this->course << "\nКраткое описание: " << shortDescription;
+	//cout << "\nТЕСТ " << this->uniqueID << "\nПредмет: " << this->subject;
+	//cout << "\nКурс: " << this->course << "\nКраткое описание: " << shortDescription;
+	//for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
+	//	(*iter)->PrintQuestion();
+	cout << "\nПредмет: " << this->subject << "\nКурс: " << this->course << "\nКраткое описание: " << shortDescription << "\n";
+	system("pause");
+	system("cls");
 	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
+	{
 		(*iter)->PrintQuestion();
+		cout << "\n";
+		system("pause");
+		system("cls");
+	}
 }
 
 int Test::GetMaxPointsPerTest()
@@ -95,6 +105,7 @@ void Test::DownloadFromFile(string dataFilePath)
 	getline(dataFile, this->uniqueID);
 	getline(dataFile, this->subject);
 	getline(dataFile, this->shortDescription);
+	this->ptrQuestionList = new list<Question*>;
 
 	while (dataFile.tellg() <= fileSize)
 	{
@@ -129,8 +140,12 @@ string Test::GetID()
 
 SolvedTest* Test::Solving()
 {
+	system("cls");
 	list<int>* answers = new list<int>;
 	int answ, receivedPoints = 0;
+	cout << "\nДля решения предоставлен тест " << this->uniqueID << "\n" << this->shortDescription << "\n";
+	cout << "Количество вопросов: " << this->ptrQuestionList->size() << "\nНАЧАТЬ ТЕСТИРОВАНИЕ\n\n";
+	system("pause");
 	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 	{
 		system("cls");
@@ -146,6 +161,7 @@ SolvedTest* Test::Solving()
 		}
 		else
 			cout << "\nОтвет неверный - вы получаете 0 баллов\n";
+		cout << "\n";
 		system("pause");
 	}
 	system("cls");
@@ -165,7 +181,7 @@ void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrT
 		cout << "\nПравильный ответ: " << correctAnswer;
 		cout << "\nВаш ответ: " << userAnswer;
 		pointsForQuestion = (correctAnswer == userAnswer) ? (*ptrQuestionIter)->GetPoints() : 0;
-		cout << "\nВы получили: " << pointsForQuestion<<" баллов\n";
+		cout << "\nВы получили: " << pointsForQuestion << " баллов\n";
 		system("pause");
 		system("cls");
 	}

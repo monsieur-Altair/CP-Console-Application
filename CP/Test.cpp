@@ -61,6 +61,11 @@ int Test::GetMaxPointsPerTest()
 	return maxPointsPerTest;
 }
 
+int Test::GetNumberOfQuestions()
+{
+	return this->numberOfQuestions;
+}
+
 void Test::PrintTestBriefly()
 {
 	cout << "\n" << this->uniqueID << "\t" << this->subject;

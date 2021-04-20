@@ -210,6 +210,17 @@ SolvedTest* Student::SearchSolvedTestWithID(string testID)
 	return nullptr;
 }
 
+void Student::DeleteEditedSolvedTest(string uniqueID)
+{
+	for(auto iter=this->ptrSolvedTestList->begin();iter!=this->ptrSolvedTestList->end();iter++)
+		if (uniqueID == (*iter)->GetID())
+		{
+			delete (*iter);
+			this->ptrSolvedTestList->erase(iter);
+			break;
+		}
+}
+
 Test* SearchTestWithID(list<Test*>* ptrFilteredTestList, string testID)
 {
 	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)

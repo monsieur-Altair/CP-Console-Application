@@ -43,6 +43,7 @@ public:
     list<string>*       GetPtrSubjectList();
     list<SolvedTest*>*  GetPtrSolvedTestList();
     SolvedTest*         SearchSolvedTestWithID(string);
+    void DeleteEditedSolvedTest(string);
 };
 
 Test* SearchTestWithID(list<Test*>*,string);

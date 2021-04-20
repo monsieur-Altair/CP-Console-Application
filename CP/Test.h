@@ -18,6 +18,7 @@ public:
 	void PrintTest();
 	void PrintTestBriefly();
 	int GetMaxPointsPerTest();
+	int GetNumberOfQuestions();
 	void SetMaxPointsPerTest();
 	void DownloadFromFile(string);
 	void UnloadTest(string);

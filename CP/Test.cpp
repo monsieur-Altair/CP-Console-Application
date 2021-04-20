@@ -50,7 +50,7 @@ void Test::PrintTest()
 	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 	{
 		(*iter)->PrintQuestion();
-		cout << "\n";
+		cout << "\nПравильный ответ: " << (*iter)->GetCorrectAnswerOption() << "\nКоличество баллов: " << (*iter)->GetPoints() << "\n";
 		system("pause");
 		system("cls");
 	}
@@ -72,7 +72,6 @@ void Test::SetMaxPointsPerTest()
 	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 		this->maxPointsPerTest += (*iter)->GetPoints();
 }
-
 
 void Test::UnloadTest(string Path)
 {

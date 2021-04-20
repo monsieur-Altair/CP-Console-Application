@@ -77,7 +77,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		case VIEW_ONE_STUDENT:
 		{
-			PrintAvailableTest(ptrFilteredTestList);
+			PrintOwnStudents(ptrFilteredStudentList);
 			int ID;
 			cout << "\nВведите ID студента: ";
 			cin >> ID;
@@ -225,69 +225,88 @@ Test* Teacher::SearchAvailableTest(list<Test*>** ptrFilteredTestList)
 
 void EditTest(Teacher* ptrTeacher, Test* ptrTest)
 {
-	string password;
-	cout << "\n\n";
-	cin >> password;
-	if (password != ptrTeacher->GetPassword())
+	while (true)
 	{
-		cout << "\nВ доступе отказано\n";
-		return;
-	}
-	int value;
-	cout << "\nВыберите поле изменения:\n1 - Краткое описание\n2 - Вопрос\n0 - Выйти\n";
-	cin >> value;
-	system("cls");
-	switch (value)
-	{
-	case 1:
-		cout << "\nВведите новое краткое описание\n";
-		cin >> ptrTest->shortDescription;
-		break;
-	case 2:
-	{
-		int i = 1, number;
-		for (auto q : *(ptrTest->ptrQuestionList))
-			cout << "\nВопрос № " << i << ": " << q->question;
-		cout << "\n\nВведите номер вопроса: ";
-		cin >> number;
-		auto iter = ptrTest->ptrQuestionList->begin();
-		advance(iter, number - 1);
-		cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
-		cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n0 - Выйти\n\n";
+		system("cls");
+		string password;
+		cout << "\nВведите ваш пароль: ";
+		cin >> password;
+		if (password != ptrTeacher->GetPassword())
+		{
+			cout << "\nВ доступе отказано\n";
+			return;
+		}
+		int value;
+		cout << "\nВыберите поле изменения:\n1 - Краткое описание\n2 - Вопрос\n0 - Выйти\n";
 		cin >> value;
+		system("cls");
 		switch (value)
 		{
 		case 1:
-			delete * iter;
-			ptrTest->ptrQuestionList->erase(iter);
+			cout << "\nВведите новое краткое описание\n";
+			cin >> ptrTest->shortDescription;
 			break;
 		case 2:
-			cout << "\nВведите новый вопрос: ";
-			cin >> (*iter)->question;
+		{
+			while (true)
+			{
+				system("cls");
+				int i = 1, number;
+				for (auto q : *(ptrTest->ptrQuestionList))
+					cout << "\nВопрос № " << i++ << ": " << q->question;
+				cout << "\n\nВведите номер вопроса (0 - выйти): ";
+				cin >> number;
+				if (!number)
+					break;
+				auto iter = ptrTest->ptrQuestionList->begin();
+				advance(iter, number - 1);
+				do
+				{
+					system("cls");
+					cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
+					cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n0 - Выйти\n\n";
+					cin >> value;
+					switch (value)
+					{
+					case 1:
+						delete * iter;
+						ptrTest->ptrQuestionList->erase(iter);
+						break;
+					case 2:
+						cout << "\nВведите новый вопрос: ";
+						cin.ignore();
+						getline(cin, (*iter)->question);
+						break;
+					case 3:
+						for (int i = 0; i < (*iter)->numberOfAnswers; i++)
+							cout << "\nОтвет №" << i + 1 << " :" << (*iter)->answerOptions[i];
+						cout << "\n\nВведите номер ответа для изменения: ";
+						cin >> number;
+						cin.ignore();
+						cout << "\nВведите новый ответ: ";
+						getline(cin, (*iter)->answerOptions[number - 1]);
+						break;
+					case 4:
+						cout << "\n" << (*iter)->question;
+						for (int i = 0; i < (*iter)->numberOfAnswers; i++)
+							cout << "\nОтвет №" << i + 1 << " :" << (*iter)->answerOptions[i];
+						cout << "\nВведите новый правильный вариант ответа: ";
+						cin >> (*iter)->correctAnswerOption;
+						break;
+					case 5:
+						cout << "\nВведите новое количество баллов за вопрос: ";
+						cin >> (*iter)->pointsPerQuestion;
+						break;
+					default:
+						break;
+					}
+				} while (!value);
+			}
 			break;
-		case 3:
-			for (int i = 0; i < (*iter)->numberOfAnswers; i++)
-				cout << "\nОтвет №" << i + 1 << (*iter)->answerOptions[i];
-			cout << "\n\nВведите номер ответа для изменения: ";
-			cin >> number;
-			cin.ignore();
-			cout << "\nВведите новый ответ: ";
-			getline(cin, (*iter)->answerOptions[number - 1]);
-			break;
-		case 4:
-			cout << "\nВведите новый правильный вариант ответа: ";
-			cin >> (*iter)->correctAnswerOption;
-			break;
-		case 5:
-			cout << "\nВведите новое количество баллов за вопрос: ";
-			cin >> (*iter)->pointsPerQuestion;
-			break;
+		}
 		default:
 			return;
 		}
-	}
-	default:
-		return;
 	}
 }
 

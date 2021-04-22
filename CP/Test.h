@@ -27,7 +27,11 @@ public:
 	string GetID();
 	SolvedTest* Solving();
 	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
-	friend void EditTest(Teacher*, Test*,bool*);
+	friend void EditTest(Teacher*, Test*,bool*);	
+	friend bool SortTestBySubject(const Test*, const Test*);
 };
 
-
+bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
+{
+	return (ptr1->subject.compare(ptr2->subject) < 0);
+}

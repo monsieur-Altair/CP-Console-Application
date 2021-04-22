@@ -33,6 +33,16 @@ string SolvedTest::GetID()
 	return this->uniqueID;
 }
 
+float SolvedTest::GetPercent()
+{
+	return (float)receivedPoints / maxPoints;
+}
+
+string SolvedTest::GetSubject()
+{
+	return this->subject;
+}
+
 ofstream& operator<<(ofstream& file, const SolvedTest& obj)
 {
 	file << obj.uniqueID << "\n" << obj.subject << "\n" << obj.shortDiscription << "\n";
@@ -52,3 +62,5 @@ ostream& operator<<(ostream& out, const SolvedTest& obj)
 		out << " " << (*iter);
 	return out;
 }
+
+

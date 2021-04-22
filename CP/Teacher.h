@@ -14,7 +14,9 @@ class Teacher : public User
         VIEW_ALL_AVAIBLE_TEST,
         VIEW_ALL_STUDENTS,
         VIEW_ONE_STUDENT,
-        VIEW_ONE_TEST_FULLY
+        VIEW_ONE_TEST_FULLY, 
+        SORT_STUDENTS_BY_GROUPS,
+        SORT_STUDENT_ALPHABETICAL
     };
 public:
     Teacher();

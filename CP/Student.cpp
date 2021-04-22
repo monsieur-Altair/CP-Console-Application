@@ -39,6 +39,18 @@ Student::~Student()
 	cout << "\nДеструктор STUDENT " << this;
 }
 
+bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
+{
+	return (ptr1->GetPercent() > ptr2->GetPercent());
+}
+
+bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
+{
+	return (ptr1->subject.compare(ptr2->subject) < 0);
+}
+
+
+
 void Student::Menu(list<Test*>* ptrFilteredTestList)
 {
 	//list<Test*>* ptrFilteredTestList = ptrFilteredTestList;
@@ -48,7 +60,10 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		system("cls");
 		cout << "\nВы вошли как студент\nВыберите желаемое действие:\n1 - решить тест";
 		cout << "\n2 - просмотреть доступные тесты\n3 - просмотреть информацию о себе";
-		cout << "\n4 - просмотреть решенные тесты\n5 - посмотреть один решенный тест полностью\n0 - Выйти\n\n";
+		cout << "\n4 - просмотреть решенные тесты\n5 - посмотреть один решенный тест полностью";
+		cout << "\n6 - Отсортировать список решенных тестов по предметам"; 
+		cout << "\n7 - Отсортировать список решенных тестов по проценту правильных ответов";
+		cout << "\n8 - Отсортировать список доступх по предметам (А-Я)\n0 - Выйти\n\n";
 		cin >> choice;
 		system("cls");
 		switch (choice)
@@ -98,6 +113,17 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			ViewQuestionAndUserAnswer(ptrSolvedTest, ptrOriginalTest);
 			break;
 		}
+		case SORT_SOLVED_BY_SUBJECTS:
+			ptrSolvedTestList->sort(SortSolvedBySubject);
+			cout << "\nСписок осортирован\n";
+			break;
+		case SORT_SOLVED_BY_PERCENTAGE:
+			ptrSolvedTestList->sort(SortByAnswerPercentage);
+			cout << "\nСписок отсортирован\n";
+			break;
+		case SORT_AVAILABLE_BY_SUBJECTS:
+			ptrFilteredTestList->sort(SortTestBySubject);
+			cout << "\nСписок отсортирован\n";
 		default:
 			delete ptrFilteredTestList;
 			return;

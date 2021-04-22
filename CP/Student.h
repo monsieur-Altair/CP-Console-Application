@@ -13,7 +13,10 @@ class Student : public User
         VIEW_ALL_AVAIBLE_TEST,
         VIEW_OWN_INF,
         VIEW_ALL_SOLVED_TESTS_BRIEFLY,
-        VIEW_ONE_SOLVED_TEST_FULLY
+        VIEW_ONE_SOLVED_TEST_FULLY,
+        SORT_SOLVED_BY_SUBJECTS,
+        SORT_SOLVED_BY_PERCENTAGE,
+        SORT_AVAILABLE_BY_SUBJECTS
     };
 public:
     Student();
@@ -44,6 +47,18 @@ public:
     list<SolvedTest*>*  GetPtrSolvedTestList();
     SolvedTest*         SearchSolvedTestWithID(string);
     void DeleteEditedSolvedTest(string);
+    friend bool SortStudentByGroups(const Student*, const Student*);
+    friend bool SortStudentAlphabetic(Student*, Student*);
 };
 
 Test* SearchTestWithID(list<Test*>*,string);
+
+bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
+{
+    return (ptr1->group) < (ptr2->group);
+}
+
+bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
+{
+    return (ptr1->GetName().compare(ptr2->GetName())<0);
+}

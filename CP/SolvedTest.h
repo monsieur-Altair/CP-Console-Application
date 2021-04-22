@@ -18,8 +18,12 @@ public:
 	void PrintAnswer();
 	void PrintBriefly();
 	string GetID();
+	float GetPercent();
+	string GetSubject();
 	friend ofstream& operator<<(ofstream&, const SolvedTest&);
 	friend ostream& operator<<(ostream&, const SolvedTest&);
 	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
+	friend bool SortByAnswerPercentage(SolvedTest*, SolvedTest*);
+	friend bool SortSolvedBySubject(const SolvedTest*,const SolvedTest*);
 };
 

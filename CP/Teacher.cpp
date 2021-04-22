@@ -32,7 +32,8 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		cout << "\nВы вошли как преподаватель\nВыберите желаемое действие:\n1 - создать тест";
 		cout << "\n2 - удалить тест\n3 - просмотреть информацию о себе\n4 - редактировать конкретный тест";
 		cout << "\n5 - просмотреть все доступные тесты\n6 - просмотреть всех студентов своих групп";
-		cout << "\n7 - просмотреть конкретного студента\n8 - просмотреть вопросы одного теста\n0 - Выйти\n\n";
+		cout << "\n7 - просмотреть конкретного студента\n8 - просмотреть вопросы одного теста";
+		cout << "\n9 - Отсортировать студентов по группам (по возрастанию)\n10 - Отсортировать студентов по ФИО\n0 - Выйти\n\n";
 		cin >> choice;
 		system("cls");
 		switch (choice)
@@ -112,6 +113,14 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 				test->PrintTest();
 			break;
 		}
+		case SORT_STUDENTS_BY_GROUPS:
+			ptrFilteredStudentList->sort(SortStudentAlphabetic);
+			cout << "\nСписок отсортирован\n";
+			break;
+		case SORT_STUDENT_ALPHABETICAL:
+			ptrFilteredStudentList->sort(SortStudentByGroups);
+			cout << "\nСписок отсортирован\n";
+			break;
 		default:
 			return;
 		}
@@ -330,6 +339,8 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 		}
 	}
 }
+
+
 
 string Teacher::GetPassword()
 {

@@ -41,6 +41,11 @@ int User::GetID()
 	return this->id;
 }
 
+string User::GetName()
+{
+	return this->fullName;
+}
+
 string User::GetPassword()
 {
 	return this->password;

@@ -202,6 +202,11 @@ bool Student::PrintAllSolvedTestBriefly(string subject)
 	return false;
 }
 
+string Student::GetName()
+{
+	return User::GetName();
+}
+
 SolvedTest* Student::SearchSolvedTestWithID(string testID)
 {
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)

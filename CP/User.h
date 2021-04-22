@@ -16,12 +16,12 @@ public:
 		int		//id
 	);
 	virtual	~User();
-	//virtual void Menu() = 0;
 	virtual void PrintInformation() = 0;
 	void PrintUserInformation();
 	void Unload(ofstream&);
 	bool Searching(int, string);
 	int GetID();
+	string GetName();
 	string GetPassword();
 };
 

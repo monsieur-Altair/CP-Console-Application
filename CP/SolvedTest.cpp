@@ -1,13 +1,13 @@
 #include "SolvedTest.h"
 
-SolvedTest::SolvedTest(list<int>* answers, string shortDiscription, string uniqueID, int receivedPoints, int maxPoints)
+SolvedTest::SolvedTest(list<int>* answers, string shortDiscription, string uniqueID, string subject, int receivedPoints, int maxPoints)
 {
 	this->maxPoints = maxPoints;
 	this->receivedPoints = receivedPoints;
 	this->answers = answers;
 	this->shortDiscription = shortDiscription;
 	this->uniqueID = uniqueID;
-	//this->size = answers->size();
+	this->subject = subject;
 	cout << "\nÊîíñòðóêòîð ÎÒÂÅÒÎÂ " << this;
 }
 
@@ -25,7 +25,7 @@ void SolvedTest::PrintAnswer()
 
 void SolvedTest::PrintBriefly()
 {
-	cout << "\n" << this->uniqueID << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
+	cout << "\n" << this->uniqueID << "\t" << this->subject << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
 }
 
 string SolvedTest::GetID()
@@ -35,17 +35,17 @@ string SolvedTest::GetID()
 
 ofstream& operator<<(ofstream& file, const SolvedTest& obj)
 {
-	file << obj.uniqueID << "\n" << obj.shortDiscription<<"\n";
+	file << obj.uniqueID << "\n" << obj.subject << "\n" << obj.shortDiscription << "\n";
 	file << obj.receivedPoints << " " << obj.maxPoints << "\n";
 	file << obj.answers->size();
 	for (auto iter = obj.answers->begin(); iter != obj.answers->end(); iter++)
-		file << " "<< (*iter);
+		file << " " << (*iter);
 	return file;
 }
 
 ostream& operator<<(ostream& out, const SolvedTest& obj)
 {
-	out << obj.uniqueID << "\n" << obj.shortDiscription << "\n";
+	out << obj.uniqueID << "\n" << obj.subject << "\n" << obj.shortDiscription << "\n";
 	out << obj.receivedPoints << " " << obj.maxPoints << "\n";
 	out << obj.answers->size();
 	for (auto iter = obj.answers->begin(); iter != obj.answers->end(); iter++)

@@ -9,11 +9,11 @@ class Test;
 
 class SolvedTest
 {
-	string shortDiscription, uniqueID;
+	string shortDiscription, uniqueID, subject;
 	list<int>* answers;
 	int maxPoints, receivedPoints;
 public:
-	SolvedTest(list<int>*, string, string, int, int);
+	SolvedTest(list<int>*, string, string, string, int, int);
 	~SolvedTest();
 	void PrintAnswer();
 	void PrintBriefly();

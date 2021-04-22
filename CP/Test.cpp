@@ -170,7 +170,7 @@ SolvedTest* Test::Solving()
 	}
 	system("cls");
 	cout << "\nТест пройден, спасибо за потраченное время, ваши ответы записаны\n";
-	return new SolvedTest(answers, this->shortDescription, this->uniqueID, receivedPoints, this->maxPointsPerTest);
+	return new SolvedTest(answers, this->shortDescription, this->uniqueID, this->subject, receivedPoints, this->maxPointsPerTest);
 }
 
 void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrTest)

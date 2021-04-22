@@ -64,18 +64,23 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		case EDIT_TEST:
 		{
-			//
-			ПРОВЕРКА
 			PrintAvailableTest(ptrFilteredTestList);
 			Test* test = SearchAvailableTest(ptrFilteredTestList);
-			EditTest(this, test);
-			for (auto ptrStudent : *ptrFilteredStudentList)
-				ptrStudent->DeleteEditedSolvedTest(test->GetID());
+			bool isEdit = false;
+			EditTest(this, test, &isEdit);
+			if (isEdit)
+				for (auto ptrStudent : *ptrFilteredStudentList)
+					ptrStudent->DeleteEditedSolvedTest(test->GetID());
+
 			if (test->GetNumberOfQuestions() == 0)
 				for (auto iter = (*ptrFilteredTestList)->begin(); iter != (*ptrFilteredTestList)->end(); iter++)
 					if (test->GetID() == (*iter)->GetID())
+					{
+						cout << "\n\nТест стал пустым и его пришлось удалить\n";
 						(*ptrFilteredTestList)->erase(iter);
-			delete test;
+						delete test;
+					}
+			test = nullptr;
 			break;
 		}
 		case VIEW_ALL_AVAIBLE_TEST:
@@ -93,6 +98,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			for (auto ptrStudent : *ptrFilteredStudentList)
 				if (ptrStudent->GetID() == ID)
 				{
+					cout << "\nРешенные тесты студента " << ptrStudent->GetName();
 					ptrStudent->PrintAllSolvedTestBriefly();
 					break;
 				}
@@ -232,7 +238,7 @@ Test* Teacher::SearchAvailableTest(list<Test*>** ptrFilteredTestList)
 	return nullptr;
 }
 
-void EditTest(Teacher* ptrTeacher, Test* ptrTest)
+void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 {
 	while (true)
 	{
@@ -254,6 +260,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest)
 		case 1:
 			cout << "\nВведите новое краткое описание\n";
 			cin >> ptrTest->shortDescription;
+			*isEdit = true;
 			break;
 		case 2:
 		{
@@ -275,6 +282,8 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest)
 					cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
 					cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n6 - Добавить новый вопрос\n0 - Выйти\n\n";
 					cin >> value;
+					if (value)
+						*isEdit = true;
 					switch (value)
 					{
 					case 1:

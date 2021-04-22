@@ -1,3 +1,3 @@
-D:\OOP\CP\стууудент1.txt
-D:\OOP\CP\стууудент2.txt
-D:\OOP\CP\стууудент3.txt
+D:\OOP\CP\студент1.txt
+D:\OOP\CP\студент2.txt
+D:\OOP\CP\студент3.txt

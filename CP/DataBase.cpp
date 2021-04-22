@@ -138,11 +138,14 @@ void DataBase::AuthorizationMenu()
 	short userChoice, userType;
 	system("cls");
 	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам!";
-	cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n0 - выйти\n\n";
+	cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n";
+	cin >> userChoice;
+	if (!userChoice)
+		return;
+	cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n";
 	cin >> userType;
 	system("cls");
-	cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n\n";
-	cin >> userChoice;
+	
 	switch (userType)
 	{
 	case STUDENT:
@@ -166,7 +169,8 @@ void DataBase::AuthorizationMenu()
 		string teacherSubject = ptrCurrentTeacher->GetSubject();
 		list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
 		ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
-		this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+		if(ptrFilteredTest->size())
+			this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
 		ptrCurrentTeacher = nullptr;
 		delete ptrFilteredTest;//smart pointer
 		break;
@@ -444,7 +448,7 @@ void DataBase::Unload(string dataBaseFilePath)
 		exit(-10);
 	for (auto iter = listOfTests.begin(); iter != listOfTests.end(); iter++)
 	{
-		currPath = "D:\\OOP\\CP\\тееест" + to_string(i++) + ".txt";
+		currPath = "D:\\OOP\\CP\\тест" + to_string(i++) + ".txt";
 		allTestFile << currPath << "\n";
 		(*iter)->UnloadTest(currPath);
 	}
@@ -469,7 +473,7 @@ void DataBase::Unload(string dataBaseFilePath)
 		exit(-10);
 	for (auto iter = listOfStudents.begin(); iter != listOfStudents.end(); iter++)
 	{
-		currPath = "D:\\OOP\\CP\\стууудент" + to_string(i++) + ".txt";
+		currPath = "D:\\OOP\\CP\\студент" + to_string(i++) + ".txt";
 		allStudentFile << currPath << "\n";
 		(*iter)->Unload(currPath);
 	}
@@ -623,9 +627,11 @@ Student* CreateStudentFromFile(string filePath)
 	//file.seekg(sizeof("\n"), ios::cur);
 	for (int i = 0; i < listSize; i++)
 	{
+		string subject;
 		list<int>* answers = new list<int>;
 		file.seekg(sizeof("\n"), ios::cur);
 		getline(file, uniqueID);
+		getline(file, subject);
 		getline(file, shortDiscription);
 		file >> receivedPoints >> maxPoints;
 		file.seekg(sizeof("\n"), ios::cur);
@@ -636,7 +642,7 @@ Student* CreateStudentFromFile(string filePath)
 			file >> oneAnswer;
 			answers->push_back(oneAnswer);
 		}
-		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, receivedPoints, maxPoints));
+		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, subject ,receivedPoints, maxPoints));
 		//answers->clear();
 	}
 	file.close();

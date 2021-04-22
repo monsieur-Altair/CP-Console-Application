@@ -22,13 +22,12 @@ public:
 	void SetMaxPointsPerTest();
 	void DownloadFromFile(string);
 	void UnloadTest(string);
-	//friend void DataBase::PrintTestsWithFilter(int, list<string>*);
 	string GetSubject();
 	int GetCourse();
 	string GetID();
 	SolvedTest* Solving();
 	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
-	friend void EditTest(Teacher*, Test*);
+	friend void EditTest(Teacher*, Test*,bool*);
 };
 
 

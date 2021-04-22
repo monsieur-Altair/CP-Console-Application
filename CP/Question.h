@@ -23,7 +23,6 @@ public:
 	void PrintCorrectAnswer();
 	int GetNumberOfAnswers();
 	void UnloadQuestion(ofstream&);
-	friend void EditTest(Teacher*, Test*);
-	//void PrintQuestionOnly();
+	friend void EditTest(Teacher*, Test*,bool*);
 };
 

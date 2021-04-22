@@ -38,7 +38,7 @@ public:
     void PrintAvailableTest(list<Test*>**);
     void PrintOwnStudents(list<Student*>*);
     Test* SearchAvailableTest(list<Test*>**);
-    friend void EditTest(Teacher*, Test*);
+    friend void EditTest(Teacher*, Test*,bool*);
     string GetSubject();
     string GetPassword();
 };

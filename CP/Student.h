@@ -52,6 +52,5 @@ public:
 };
 
 Test* SearchTestWithID(list<Test*>*,string);
-
-
-
+bool SortStudentByGroups(const Student*, const Student*);
+bool SortStudentAlphabetic(Student*, Student*);

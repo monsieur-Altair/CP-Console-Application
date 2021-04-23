@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#define DEBUG
 using namespace std;
 
 class Teacher;

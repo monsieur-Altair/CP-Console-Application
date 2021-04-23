@@ -17,11 +17,6 @@ SolvedTest::~SolvedTest()
 	cout << "\nÄåñòğóêòîğ ÎÒÂÅÒÎÂ " << this;
 }
 
-void SolvedTest::PrintAnswer()
-{
-	//for(auto iter=answers->begin();iter!=answers->end();iter++)
-	//	cout<<
-}
 
 void SolvedTest::PrintBriefly()
 {
@@ -61,6 +56,16 @@ ostream& operator<<(ostream& out, const SolvedTest& obj)
 	for (auto iter = obj.answers->begin(); iter != obj.answers->end(); iter++)
 		out << " " << (*iter);
 	return out;
+}
+
+bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
+{
+	return (ptr1->GetPercent() > ptr2->GetPercent());
+}
+
+bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
+{
+	return (ptr1->subject.compare(ptr2->subject) < 0);
 }
 
 

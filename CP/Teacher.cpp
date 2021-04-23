@@ -22,21 +22,6 @@ Teacher::~Teacher()
 	cout << "\nДеструктор TEACHER " << this;
 }
 
-bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
-{
-	return (ptr1->group) < (ptr2->group);
-}
-
-bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
-{
-	return (ptr1->GetName().compare(ptr2->GetName()) < 0);
-}
-
-//bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
-//{
-//	return (ptr1->subject.compare(ptr2->subject) < 0);
-//}
-
 void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFilteredStudentList)
 {
 	//list<Test*>* ptrFilteredTestList;
@@ -50,6 +35,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		cout << "\n7 - просмотреть конкретного студента\n8 - просмотреть вопросы одного теста";
 		cout << "\n9 - Отсортировать студентов по группам (по возрастанию)\n10 - Отсортировать студентов по ФИО\n0 - Выйти\n\n";
 		cin >> choice;
+		Check(&choice, 0, 10);
 		system("cls");
 		switch (choice)
 		{
@@ -111,6 +97,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			int ID;
 			cout << "\nВведите ID студента: ";
 			cin >> ID;
+			Check(&ID, 1, 100000000);
 			for (auto ptrStudent : *ptrFilteredStudentList)
 				if (ptrStudent->GetID() == ID)
 				{
@@ -197,8 +184,10 @@ Test* Teacher::CreateTest()
 	getline(cin, shortDiscription);
 	cout << "\nВведите курс: ";
 	cin >> course;
+	Check(&course, 1, 6);
 	cout << "\nВведите количество ответов на вопрос (для каждого вопроса будет установлено это значение количества ответов): ";
 	cin >> answersNumber;
+	Check(&answersNumber, 1, 5);
 	bool isContinue = true;
 	do
 	{
@@ -206,6 +195,7 @@ Test* Teacher::CreateTest()
 		system("cls");
 		cout << "\nЖелаете ввести еще один вопрос? 1 - да, 0 - нет\n";
 		cin >> isContinue;
+		Check(&isContinue, 0, 1);
 	} while (isContinue);
 	return new Test(uniqueID, shortDiscription, subject, course, ptrQuestionList);
 }
@@ -227,8 +217,10 @@ Question* Teacher::CreateQuestion(int answersNumber)
 	}
 	cout << "\nВведите номер правильного ответа: ";
 	cin >> correctAnswerOption;
+	Check(&correctAnswerOption, 1, answersNumber);
 	cout << "\nВведите количество баллов за вопрос: ";
 	cin >> pointsPerQuestion;
+	Check(&pointsPerQuestion, 1, 1000);
 	return new Question(question, answers, correctAnswerOption, pointsPerQuestion, answersNumber);
 }
 
@@ -288,6 +280,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 		int value;
 		cout << "\nВыберите поле изменения:\n1 - Краткое описание\n2 - Вопрос\n0 - Выйти\n";
 		cin >> value;
+		Check(&value, 0, 2);
 		system("cls");
 		switch (value)
 		{
@@ -306,6 +299,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 					cout << "\nВопрос № " << i++ << ": " << q->question;
 				cout << "\n\nВведите номер вопроса (0 - выйти): ";
 				cin >> number;
+				Check(&number, 0, ptrTest->ptrQuestionList->size());
 				if (!number)
 					break;
 				auto iter = ptrTest->ptrQuestionList->begin();
@@ -316,6 +310,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 					cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
 					cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n6 - Добавить новый вопрос\n0 - Выйти\n\n";
 					cin >> value;
+					Check(&value, 0, 6);
 					if (value)
 						*isEdit = true;
 					switch (value)
@@ -369,5 +364,3 @@ string Teacher::GetPassword()
 {
 	return User::GetPassword();
 }
-
-

@@ -45,3 +45,28 @@ public:
     string GetPassword();
 };
 
+//bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
+//{
+//    return (ptr1->GetPercent() > ptr2->GetPercent());
+//}
+//
+//bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
+//{
+//    return (ptr1->subject.compare(ptr2->subject) < 0);
+//}
+
+
+//bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
+//{
+//    return (ptr1->subject.compare(ptr2->subject) < 0);
+//}
+
+//bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
+//{
+//    return (ptr1->group) < (ptr2->group);
+//}
+//
+//bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
+//{
+//    return (ptr1->GetName().compare(ptr2->GetName()) < 0);
+//}

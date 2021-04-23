@@ -10,65 +10,93 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	string allTestFilePath, allStudentFilePath, allTeacherFilePath;
 	string someTestFilePath, someStudentFilePath, someTeacherFilePath;
 	ifstream dataBaseFile, allTestFile, studentFile, teacherFile;
+	dataBaseFile.exceptions(ifstream::badbit | ifstream::failbit);
+	allTestFile.exceptions(ifstream::badbit | ifstream::failbit);
+	studentFile.exceptions(ifstream::badbit | ifstream::failbit);
+	teacherFile.exceptions(ifstream::badbit | ifstream::failbit);
 	int size;
 
-	dataBaseFile.open(dataBaseFilePath);
-	if (!dataBaseFile.is_open())
-		exit(-10);
-	getline(dataBaseFile, allTestFilePath);
-	getline(dataBaseFile, allStudentFilePath);
-	getline(dataBaseFile, allTeacherFilePath);
-	dataBaseFile.close();
-
-
-	allTestFile.open(allTestFilePath);
-	allTestFile.seekg(0, ios::end);
-	size = allTestFile.tellg();
-	allTestFile.seekg(0, ios::beg);
-
-	if (!allTestFile.is_open())
-		exit(-10);
-	while (allTestFile.tellg() < (size))//-sizeof("\n")))
+	try
 	{
-		getline(allTestFile, someTestFilePath);
-		//testFile >> someTestFilePath;
-		//testFile.seekg(sizeof("\n"), ios::cur);
-		listOfTests.push_back(new Test(someTestFilePath));
+		dataBaseFile.open(dataBaseFilePath);
+		getline(dataBaseFile, allTestFilePath);
+		getline(dataBaseFile, allStudentFilePath);
+		getline(dataBaseFile, allTeacherFilePath);
+		dataBaseFile.close();
 	}
-	allTestFile.close();
-
-
-	studentFile.open(allStudentFilePath);
-	if (!studentFile.is_open())
-		exit(-10);
-	studentFile.seekg(0, ios::end);
-	size = studentFile.tellg();
-	studentFile.seekg(0, ios::beg);
-
-	while (studentFile.tellg() < size)
+	catch (const ifstream::failure)
 	{
-		getline(studentFile, someStudentFilePath);
-		listOfStudents.push_back(CreateStudentFromFile(someStudentFilePath));
+		cout << "\nОшибка открытия файла: " << dataBaseFilePath << "\nРекомендуется проверить наличие файла и его путь\n";
+		exit(-1);
 	}
-	studentFile.close();
 
 
-	teacherFile.open(allTeacherFilePath);
-	if (!teacherFile.is_open())
-		exit(-10);
-	teacherFile.seekg(0, ios::end);
-	size = teacherFile.tellg();
-	teacherFile.seekg(0, ios::beg);
-
-	while (teacherFile.tellg() < (size))
+	try
 	{
-		getline(teacherFile, someTeacherFilePath);
-		listOfTeachers.push_back(CreateTeacherFromFile(someTeacherFilePath));
+		allTestFile.open(allTestFilePath);
+		allTestFile.seekg(0, ios::end);
+		size = allTestFile.tellg();
+		allTestFile.seekg(0, ios::beg);
+		while (allTestFile.tellg() < (size))
+		{
+			getline(allTestFile, someTestFilePath);
+			listOfTests.push_back(new Test(someTestFilePath));
+		}
+		allTestFile.close();
 	}
-	teacherFile.close();
+	catch (const ifstream::failure)
+	{
+		cout << "\nОшибка открытия файла: " << allTestFilePath;
+		cout << "\nРекомендуется проверить наличие файла и его путь\nТесты не были загружены\n";
+	}
 
+	try
+	{
+		studentFile.open(allStudentFilePath);
 
+		studentFile.seekg(0, ios::end);
+		size = studentFile.tellg();
+		studentFile.seekg(0, ios::beg);
+
+		while (studentFile.tellg() < size)
+		{
+			getline(studentFile, someStudentFilePath);
+			listOfStudents.push_back(CreateStudentFromFile(someStudentFilePath));
+		}
+		studentFile.close();
+	}
+	catch (const ifstream::failure)
+	{
+		cout << "\nОшибка открытия файла: " << allStudentFilePath;
+		cout << "\nРекомендуется проверить наличие файла и его путь\nСтуденты не были загружены\n";
+	}
+
+	try
+	{
+		teacherFile.open(allTeacherFilePath);
+		if (!teacherFile.is_open())
+			exit(-10);
+		teacherFile.seekg(0, ios::end);
+		size = teacherFile.tellg();
+		teacherFile.seekg(0, ios::beg);
+
+		while (teacherFile.tellg() < (size))
+		{
+			getline(teacherFile, someTeacherFilePath);
+			listOfTeachers.push_back(CreateTeacherFromFile(someTeacherFilePath));
+		}
+		teacherFile.close();
+	}
+	catch (const ifstream::failure)
+	{
+		cout << "\nОшибка открытия файла: " << allTeacherFilePath;
+		cout << "\nРекомендуется проверить наличие файла и его путь\nПреподаватели не были загружены\n";
+	}
+
+#ifdef DEBUG
 	cout << "\nКонструктор DATABASE " << this;
+#endif // DEBUG
+
 }
 
 DataBase::~DataBase()
@@ -79,7 +107,10 @@ DataBase::~DataBase()
 		delete (*iter);
 	for (auto iter = listOfTeachers.begin(); iter != listOfTeachers.end(); iter++)
 		delete (*iter);
+
+#ifdef DEBUG
 	cout << "\nДеструктор DATABASE " << this;
+#endif // DEBUG
 }
 
 //void DataBase::AuthorizationMenu()
@@ -140,12 +171,13 @@ void DataBase::AuthorizationMenu()
 	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам!";
 	cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n";
 	cin >> userChoice;
+	Check(&userChoice, 0, 2);
 	if (!userChoice)
 		return;
 	cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n";
-	cin >> userType;
+	Check(&userType, 0, 1);
 	system("cls");
-	
+
 	switch (userType)
 	{
 	case STUDENT:
@@ -169,7 +201,7 @@ void DataBase::AuthorizationMenu()
 		string teacherSubject = ptrCurrentTeacher->GetSubject();
 		list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
 		ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
-		if(ptrFilteredTest->size())
+		if (ptrFilteredTest->size())
 			this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
 		ptrCurrentTeacher = nullptr;
 		delete ptrFilteredTest;//smart pointer
@@ -280,11 +312,12 @@ Student* DataBase::Registration(Student* ptrStudent)
 	//check value
 	cout << "\nВведите ФИО\n";
 	cin.ignore();
-	getline(cin,fullName);
+	getline(cin, fullName);
 	cout << "\nВведите пароль\n";
-	getline(cin,password);
+	getline(cin, password);
 	cout << "\nВведите ID\n";
 	cin >> id;
+	Check(&id, 10000000, 99999999);
 
 	string faculty;
 	list<string>* ptrList = new list<string>;
@@ -292,18 +325,20 @@ Student* DataBase::Registration(Student* ptrStudent)
 	int group, course;//CHECK
 	cout << "\nВведите факультет\n";
 	cin.ignore();
-	getline(cin,faculty);
+	getline(cin, faculty);
 	cout << "\nВведите группу\n";
 	cin >> group;
+	Check(&group, 100000, 999999);
 	cout << "\nВведите курс\n";
 	cin >> course;
+	Check(&course, 1, 5);
 	cout << "\nВведите свою учебную дисцпиплину\nВыйти - 0\n";
 	cin.ignore();
 	while (true)
 	{
 		string subject;
 		cout << "\nПредмет: ";
-		getline(cin,subject);
+		getline(cin, subject);
 		if (subject == "0")
 			break;
 		ptrList->push_back(subject);
@@ -329,18 +364,20 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 	getline(cin, password);
 	cout << "\nВведите ID\n";
 	cin >> id;
+	Check(&id, 10000000, 99999999);
 
 	string subject;
 	list<int>* ptrGroupList = new list<int>;
 	cout << "\nВведите преподаваемую дисциплину: \n";
 	cin.ignore();
-	getline(cin,subject);
+	getline(cin, subject);
 	cout << "\nВведите группы, в которых преподаете\nВыйти - 0\n";
 	while (true)
 	{
 		int group;
 		cout << "\nГруппа: ";
 		cin >> group;
+		Check(&group, 0, 999999);
 		if (!group)
 			break;
 		ptrGroupList->push_back(group);
@@ -392,6 +429,7 @@ Student* DataBase::Login(Student* userStudent)
 	//while(true)
 	cout << "\nВведите свой ID ";
 	cin >> id;
+	Check(&id, 10000000, 99999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
 	for (auto ptrStudent : listOfStudents)
@@ -412,6 +450,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	string password;
 	cout << "\nВведите свой ID ";
 	cin >> id;
+	Check(&id, 10000000, 99999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
 	for (auto ptrTeacher : listOfTeachers)
@@ -608,8 +647,6 @@ Student* CreateStudentFromFile(string filePath)
 	int maxPoints, receivedPoints;
 
 	file.open(filePath);
-	if (!file.is_open())
-		exit(-9);
 	getline(file, name);
 	getline(file, password);
 	file >> id;
@@ -624,7 +661,7 @@ Student* CreateStudentFromFile(string filePath)
 		ptrSubjectList->push_back(subject);
 	}
 	file >> listSize;
-	//file.seekg(sizeof("\n"), ios::cur);
+
 	for (int i = 0; i < listSize; i++)
 	{
 		string subject;
@@ -642,7 +679,7 @@ Student* CreateStudentFromFile(string filePath)
 			file >> oneAnswer;
 			answers->push_back(oneAnswer);
 		}
-		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, subject ,receivedPoints, maxPoints));
+		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, subject, receivedPoints, maxPoints));
 		//answers->clear();
 	}
 	file.close();

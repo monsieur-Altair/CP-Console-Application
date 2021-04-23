@@ -1,5 +1,7 @@
 #include "Test.h"
 
+
+
 Test::Test()
 {
 	this->shortDescription = "";
@@ -27,7 +29,9 @@ Test::Test(string DataFilePath)
 	this->DownloadFromFile(DataFilePath);
 	this->SetMaxPointsPerTest();
 	this->numberOfQuestions = ptrQuestionList->size();
+#ifdef DEBUG
 	cout << "\nКонструктор TEST " << this;
+#endif // DEBUG
 }
 
 Test::~Test()
@@ -35,7 +39,9 @@ Test::~Test()
 	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
 		delete (*iter);
 	delete ptrQuestionList;
+#ifdef DEBUG
 	cout << "\nДеструктор TEST " << this;
+#endif // DEBUG
 }
 
 void Test::PrintTest()
@@ -93,38 +99,57 @@ void Test::UnloadTest(string Path)
 void Test::DownloadFromFile(string dataFilePath)
 {
 	ifstream dataFile;
+	dataFile.exceptions(ifstream::badbit | ifstream::failbit);
 	string question, answer;
 	int pointPerQuestion, correctAnswer, numberOfAnswers;
 	int i, fileSize;
-	dataFile.open(dataFilePath);
-	if (!dataFile.is_open())
-		exit(-1);
-
-	dataFile.seekg(0, ios::end);//перемещаем указатель в конец и считываем колво байт в итоге размер файла
-	fileSize = dataFile.tellg();
-	dataFile.seekg(0, ios::beg);
-
-	dataFile >> numberOfAnswers >> this->course;
-	dataFile.seekg(2, ios::cur);//переходим на новую строку (2 = размер "\n")
-	getline(dataFile, this->uniqueID);
-	getline(dataFile, this->subject);
-	getline(dataFile, this->shortDescription);
-	this->ptrQuestionList = new list<Question*>;
-
-	while (dataFile.tellg() <= fileSize)
+	try
 	{
-		i = 0;
-		string* answ = new string[numberOfAnswers];
-		getline(dataFile, question);
+		dataFile.open(dataFilePath);
 
-		while (i < numberOfAnswers)
-			getline(dataFile, answ[i++]);//считываем ответы на вопрос
+		dataFile.seekg(0, ios::end);//перемещаем указатель в конец и считываем колво байт в итоге размер файла
+		fileSize = dataFile.tellg();
+		dataFile.seekg(0, ios::beg);
 
-		dataFile >> pointPerQuestion >> correctAnswer;
-		ptrQuestionList->push_back(new Question(question, answ, correctAnswer, pointPerQuestion, numberOfAnswers));
-		dataFile.seekg(2, ios::cur);
+		dataFile >> numberOfAnswers >> this->course;
+		if(this->course<0)
+			throw runtime_error("\nНекорректные данные при считывании\n");
+		dataFile.seekg(2, ios::cur);//переходим на новую строку (2 = размер "\n")
+		getline(dataFile, this->uniqueID);
+		getline(dataFile, this->subject);
+		getline(dataFile, this->shortDescription);
+		this->ptrQuestionList = new list<Question*>;
+
+		while (dataFile.tellg() <= fileSize)
+		{
+			i = 0;
+			string* answ = new string[numberOfAnswers];
+			getline(dataFile, question);
+
+			while (i < numberOfAnswers)
+				getline(dataFile, answ[i++]);//считываем ответы на вопрос
+
+			dataFile >> pointPerQuestion >> correctAnswer;
+			if (correctAnswer < 0 || pointPerQuestion < 0 || numberOfAnswers < 0)
+				throw runtime_error("\nНекорректные данные при считывании\n");
+			ptrQuestionList->push_back(new Question(question, answ, correctAnswer, pointPerQuestion, numberOfAnswers));
+			dataFile.seekg(2, ios::cur);
+		}
+		dataFile.close();
 	}
-	dataFile.close();
+	catch (const ifstream::failure)
+	{
+		cout << "\nОшибка открытия файла: " << dataFilePath;
+		cout << "\nРекомендуется проверить наличие файла и его путь\nТест ";
+#ifdef DEBUG
+		cout << this;
+#endif // DEBUG
+		cout<<"не был загружены\n";
+	}
+	catch (runtime_error ex)
+	{
+		cout<<ex.what();
+	}
 }
 
 string Test::GetSubject()
@@ -156,6 +181,7 @@ SolvedTest* Test::Solving()
 		(*iter)->PrintQuestion();
 		cout << "\nВаш ответ: ";
 		cin >> answ;
+		Check(&answ, 1, (*iter)->GetNumberOfAnswers());
 		answers->push_back(answ);
 		if (answ == (*iter)->GetCorrectAnswerOption())
 		{
@@ -193,4 +219,9 @@ void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrT
 		system("pause");
 		system("cls");
 	}
+}
+
+bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
+{
+	return (ptr1->subject.compare(ptr2->subject) < 0);
 }

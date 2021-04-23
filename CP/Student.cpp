@@ -18,8 +18,7 @@ Student::Student
 	int course,
 	list<string>* listPtr,
 	list<SolvedTest*>* ptrSolvedTest
-)
-	:User(name, password, id)
+):User(name, password, id)
 {
 	this->group = group;
 	this->faculty = faculty;
@@ -39,25 +38,13 @@ Student::~Student()
 	cout << "\nДеструктор STUDENT " << this;
 }
 
-bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
-{
-	return (ptr1->GetPercent() > ptr2->GetPercent());
-}
 
-bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
-{
-	return (ptr1->subject.compare(ptr2->subject) < 0);
-}
 
-bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
-{
-	return (ptr1->subject.compare(ptr2->subject) < 0);
-}
+
 
 
 void Student::Menu(list<Test*>* ptrFilteredTestList)
 {
-	//list<Test*>* ptrFilteredTestList = ptrFilteredTestList;
 	while (true)
 	{
 		short choice;
@@ -69,6 +56,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		cout << "\n7 - Отсортировать список решенных тестов по проценту правильных ответов";
 		cout << "\n8 - Отсортировать список доступх по предметам (А-Я)\n0 - Выйти\n\n";
 		cin >> choice;
+		Check(&choice, 0, 8);
 		system("cls");
 		switch (choice)
 		{
@@ -277,4 +265,14 @@ Test* SearchTestWithID(list<Test*>* ptrFilteredTestList, string testID)
 		if (testID == (*iter)->GetID())
 			return (*iter);
 	return nullptr;
+}
+
+bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
+{
+	return (ptr1->group) < (ptr2->group);
+}
+
+bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
+{
+	return (ptr1->GetName().compare(ptr2->GetName()) < 0);
 }

@@ -173,6 +173,10 @@ SolvedTest* Test::Solving()
 	return new SolvedTest(answers, this->shortDescription, this->uniqueID, this->subject, receivedPoints, this->maxPointsPerTest);
 }
 
+
+
+
+
 void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrTest)
 {
 	int correctAnswer, userAnswer, pointsForQuestion;

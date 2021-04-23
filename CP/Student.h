@@ -53,12 +53,5 @@ public:
 
 Test* SearchTestWithID(list<Test*>*,string);
 
-bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
-{
-    return (ptr1->group) < (ptr2->group);
-}
 
-bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
-{
-    return (ptr1->GetName().compare(ptr2->GetName())<0);
-}
+

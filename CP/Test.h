@@ -4,7 +4,6 @@
 #include "SolvedTest.h"
 
 
-
 class Test
 {
 	list<Question*> *ptrQuestionList;
@@ -31,7 +30,3 @@ public:
 	friend bool SortTestBySubject(const Test*, const Test*);
 };
 
-bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
-{
-	return (ptr1->subject.compare(ptr2->subject) < 0);
-}

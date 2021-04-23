@@ -22,6 +22,21 @@ Teacher::~Teacher()
 	cout << "\nДеструктор TEACHER " << this;
 }
 
+bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
+{
+	return (ptr1->group) < (ptr2->group);
+}
+
+bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
+{
+	return (ptr1->GetName().compare(ptr2->GetName()) < 0);
+}
+
+//bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
+//{
+//	return (ptr1->subject.compare(ptr2->subject) < 0);
+//}
+
 void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFilteredStudentList)
 {
 	//list<Test*>* ptrFilteredTestList;
@@ -114,12 +129,22 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		}
 		case SORT_STUDENTS_BY_GROUPS:
-			ptrFilteredStudentList->sort(SortStudentAlphabetic);
-			cout << "\nСписок отсортирован\n";
+			if (ptrFilteredStudentList->size())
+			{
+				ptrFilteredStudentList->sort(SortStudentByGroups);
+				cout << "\nСписок отсортирован\n";
+			}
+			else
+				cout << "\nСписок пуст\n";
 			break;
 		case SORT_STUDENT_ALPHABETICAL:
-			ptrFilteredStudentList->sort(SortStudentByGroups);
-			cout << "\nСписок отсортирован\n";
+			if (ptrFilteredStudentList->size())
+			{
+				ptrFilteredStudentList->sort(SortStudentAlphabetic);
+				cout << "\nСписок отсортирован\n";
+			}
+			else
+				cout << "\nСписок пуст\n";
 			break;
 		default:
 			return;
@@ -339,8 +364,6 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 		}
 	}
 }
-
-
 
 string Teacher::GetPassword()
 {

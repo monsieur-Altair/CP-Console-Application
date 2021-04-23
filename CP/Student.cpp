@@ -10,15 +10,15 @@ Student::Student() :User()
 
 Student::Student
 (
-	string name, 
-	string password, 
-	string faculty, 
-	int id, 
-	int group, 
-	int course, 
-	list<string>* listPtr, 
+	string name,
+	string password,
+	string faculty,
+	int id,
+	int group,
+	int course,
+	list<string>* listPtr,
 	list<SolvedTest*>* ptrSolvedTest
-) 
+)
 	:User(name, password, id)
 {
 	this->group = group;
@@ -49,6 +49,10 @@ bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
 	return (ptr1->subject.compare(ptr2->subject) < 0);
 }
 
+bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
+{
+	return (ptr1->subject.compare(ptr2->subject) < 0);
+}
 
 
 void Student::Menu(list<Test*>* ptrFilteredTestList)
@@ -61,7 +65,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		cout << "\nВы вошли как студент\nВыберите желаемое действие:\n1 - решить тест";
 		cout << "\n2 - просмотреть доступные тесты\n3 - просмотреть информацию о себе";
 		cout << "\n4 - просмотреть решенные тесты\n5 - посмотреть один решенный тест полностью";
-		cout << "\n6 - Отсортировать список решенных тестов по предметам"; 
+		cout << "\n6 - Отсортировать список решенных тестов по предметам";
 		cout << "\n7 - Отсортировать список решенных тестов по проценту правильных ответов";
 		cout << "\n8 - Отсортировать список доступх по предметам (А-Я)\n0 - Выйти\n\n";
 		cin >> choice;
@@ -70,7 +74,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		{
 		case SOLVE_TEST:
 		{
-			if(PrintAvailableAndNoSolvedTest(ptrFilteredTestList))
+			if (PrintAvailableAndNoSolvedTest(ptrFilteredTestList))
 			{
 				string testID;
 				cout << "\n\nВведите ID желаемого теста (1 колонка)\n";
@@ -114,16 +118,31 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			break;
 		}
 		case SORT_SOLVED_BY_SUBJECTS:
-			ptrSolvedTestList->sort(SortSolvedBySubject);
-			cout << "\nСписок осортирован\n";
+			if (ptrSolvedTestList->size())
+			{
+				ptrSolvedTestList->sort(SortSolvedBySubject);
+				cout << "\nСписок осортирован\n";
+			}
+			else
+				cout << "\nСписок пуст\n";
 			break;
 		case SORT_SOLVED_BY_PERCENTAGE:
-			ptrSolvedTestList->sort(SortByAnswerPercentage);
-			cout << "\nСписок отсортирован\n";
+			if (ptrSolvedTestList->size())
+			{
+				ptrSolvedTestList->sort(SortByAnswerPercentage);
+				cout << "\nСписок отсортирован\n";
+			}
+			else
+				cout << "\nСписок пуст\n";
 			break;
 		case SORT_AVAILABLE_BY_SUBJECTS:
-			ptrFilteredTestList->sort(SortTestBySubject);
-			cout << "\nСписок отсортирован\n";
+			if (ptrFilteredTestList->size())
+			{
+				ptrFilteredTestList->sort(SortTestBySubject);
+				cout << "\nСписок отсортирован\n";
+			}
+			else
+				cout << "\nСписок пуст\n";
 		default:
 			delete ptrFilteredTestList;
 			return;
@@ -163,14 +182,14 @@ void Student::Unload(string path)
 	if (!file.is_open())
 		exit(-11);
 	User::Unload(file);
-	file << this->faculty <<"\n"<<this->group << " " << this->course << " " << ptrSubjectList->size()<<"\n";
-	for (auto iter=ptrSubjectList->begin(); iter!=ptrSubjectList->end(); iter++)
+	file << this->faculty << "\n" << this->group << " " << this->course << " " << ptrSubjectList->size() << "\n";
+	for (auto iter = ptrSubjectList->begin(); iter != ptrSubjectList->end(); iter++)
 	{
-		file << (*iter)<<"\n";
+		file << (*iter) << "\n";
 	}
 	file << ptrSolvedTestList->size();
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
-		file << "\n" << *(*iter) ;
+		file << "\n" << *(*iter);
 }
 
 list<SolvedTest*>* Student::GetPtrSolvedTestList()
@@ -243,7 +262,7 @@ SolvedTest* Student::SearchSolvedTestWithID(string testID)
 
 void Student::DeleteEditedSolvedTest(string uniqueID)
 {
-	for(auto iter=this->ptrSolvedTestList->begin();iter!=this->ptrSolvedTestList->end();iter++)
+	for (auto iter = this->ptrSolvedTestList->begin(); iter != this->ptrSolvedTestList->end(); iter++)
 		if (uniqueID == (*iter)->GetID())
 		{
 			delete (*iter);

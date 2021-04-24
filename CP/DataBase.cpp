@@ -85,7 +85,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 			}
 			catch (const runtime_error& ex)
 			{
-				ex.what();
+				cout<<ex.what();
 			}
 		}
 		studentFile.close();
@@ -120,7 +120,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 			}
 			catch (const runtime_error& ex)
 			{
-				ex.what();
+				cout << ex.what();
 			}
 		}
 
@@ -363,7 +363,7 @@ Student* DataBase::Registration(Student* ptrStudent)
 	Check(&id, 10000000, 99999999);
 
 	string faculty;
-	list<string>* ptrList = new list<string>;
+	shared_ptr<list<string>> ptrList(new list<string>);
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
 	int group, course;
 	cout << "\n¬ведите факультет\n";
@@ -409,7 +409,7 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 	Check(&id, 10000000, 99999999);
 
 	string subject;
-	list<int>* ptrGroupList = new list<int>;
+	shared_ptr<list<int>> ptrGroupList ( new list<int>);
 	cout << "\n¬ведите преподаваемую дисциплину: \n";
 	cin.ignore();
 	getline(cin, subject);
@@ -590,7 +590,7 @@ void DataBase::Unload(string dataBaseFilePath)
 //	return ptrFilterTestList;
 //}
 
-list<Test*>* DataBase::LoadTestsWithFilter(int course, list<string>* ptrSubjList)//убрать последний аргумент
+list<Test*>* DataBase::LoadTestsWithFilter(int course, shared_ptr<list<string>> ptrSubjList)
 {
 	list<Test*>* ptrFilterTestList = new list<Test*>;
 	for (auto somePtrTestIter = listOfTests.begin(); somePtrTestIter != listOfTests.end(); somePtrTestIter++)
@@ -624,7 +624,7 @@ list<Test*>* DataBase::LoadTestsWithFilter(string subject)
 	return ptrFilteredTestList;
 }
 
-list<Student*>* DataBase::LoadStudentsFilter(string subject, list<int>* ptrGroupList)
+list<Student*>* DataBase::LoadStudentsFilter(string subject, shared_ptr<list<int>> ptrGroupList)
 {
 	bool isFindGroup;
 	bool isFindSubject;
@@ -644,7 +644,7 @@ list<Student*>* DataBase::LoadStudentsFilter(string subject, list<int>* ptrGroup
 		if (!isFindGroup)
 			continue;
 
-		list<string>* ptrSubjectList = (*iter)->GetPtrSubjectList();
+		shared_ptr<list<string>> ptrSubjectList = (*iter)->GetPtrSubjectList();
 		for (auto subj : *ptrSubjectList)
 			if (subject == subj)
 			{
@@ -665,7 +665,7 @@ Teacher* CreateTeacherFromFile(string filePath)
 	ifstream file;
 	string name, password, subject;
 	int id, listSize;
-	list<int>* ptrGroupList = new list<int>;
+	shared_ptr<list<int>> ptrGroupList (new list<int>);
 	file.open(filePath);
 	if (!file.is_open())
 		exit(-9);
@@ -695,7 +695,7 @@ Student* CreateStudentFromFile(string filePath)
 {
 	ifstream file;
 	string name, password, faculty;
-	list<string>* ptrSubjectList = new list<string>;
+	shared_ptr<list<string>> ptrSubjectList(new list<string>);
 	int id, group, course, listSize;
 
 	string shortDiscription, uniqueID;
@@ -724,7 +724,7 @@ Student* CreateStudentFromFile(string filePath)
 	for (int i = 0; i < listSize; i++)
 	{
 		string subject;
-		list<int>* answers = new list<int>;
+		shared_ptr<list<int>> answers (new list<int>);
 		file.seekg(sizeof("\n"), ios::cur);
 		getline(file, uniqueID);
 		getline(file, subject);

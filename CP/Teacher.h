@@ -4,7 +4,7 @@
 class Teacher : public User
 {
     string subject;
-    list<int>* ptrGroupList;
+    shared_ptr<list<int>> ptrGroupList;
     enum MenuChoice
     {
         CREATE_TEST = 1,
@@ -36,7 +36,7 @@ public:
         string,     //password
         int,        //id
         string,     //subject
-        list<int>*  //list of groups
+        shared_ptr<list<int>>  //list of groups
     );
 
     ~Teacher();
@@ -44,7 +44,7 @@ public:
     void PrintInformation() override;
     void Unload(string);
 
-    list<int>* ptrGetGroupList();
+    shared_ptr<list<int>> ptrGetGroupList();
     Test* CreateTest();
     Question* CreateQuestion(int);
     void PrintAvailableTest(list<Test*>**);

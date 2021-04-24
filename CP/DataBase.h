@@ -2,7 +2,7 @@
 
 #include "Student.h"
 #include "Teacher.h"
-#include <xmemory>
+#include <memory>
 
 class DataBase
 {
@@ -28,9 +28,9 @@ public:
 	//bool Login(Student**, Teacher**);
 	//bool SearchUser(int, string, Student**, Teacher**);
 	void Unload(string);
-	list<Test*>* LoadTestsWithFilter(int, list<string>*);
+	list<Test*>* LoadTestsWithFilter(int, shared_ptr<list<string>>);
 	list<Test*>* LoadTestsWithFilter(string);
-	list<Student*>* LoadStudentsFilter(string, list<int>*);
+	list<Student*>* LoadStudentsFilter(string, shared_ptr<list<int>>);
 };
 
 Teacher* CreateTeacherFromFile(string);

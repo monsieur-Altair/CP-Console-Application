@@ -16,7 +16,7 @@ Student::Student
 	int id,
 	int group,
 	int course,
-	list<string>* listPtr,
+	shared_ptr<list<string>> listPtr,
 	list<SolvedTest*>* ptrSolvedTest
 ):User(name, password, id)
 {
@@ -34,7 +34,7 @@ Student::~Student()
 		delete* iter;
 	delete ptrSolvedTestList;
 	ptrSubjectList->clear();
-	delete ptrSubjectList;
+	//delete ptrSubjectList;
 	cout << "\nДеструктор STUDENT " << this;
 }
 
@@ -159,7 +159,7 @@ void Student::PrintInformation()
 		cout << (*iter) << ", ";
 }
 
-list<string>* Student::GetPtrSubjectList()
+shared_ptr<list<string>> Student::GetPtrSubjectList()
 {
 	return this->ptrSubjectList;
 }

@@ -1,6 +1,6 @@
 #include "SolvedTest.h"
 
-SolvedTest::SolvedTest(list<int>* answers, string shortDiscription, string uniqueID, string subject, int receivedPoints, int maxPoints)
+SolvedTest::SolvedTest(shared_ptr<list<int>> answers, string shortDiscription, string uniqueID, string subject, int receivedPoints, int maxPoints)
 {
 	this->maxPoints = maxPoints;
 	this->receivedPoints = receivedPoints;
@@ -13,7 +13,7 @@ SolvedTest::SolvedTest(list<int>* answers, string shortDiscription, string uniqu
 
 SolvedTest::~SolvedTest()
 {
-	delete answers;
+	//delete answers;
 	cout << "\nÄåñòðóêòîð ÎÒÂÅÒÎÂ " << this;
 }
 

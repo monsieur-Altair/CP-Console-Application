@@ -154,7 +154,7 @@ string Test::GetID()
 SolvedTest* Test::Solving()
 {
 	system("cls");
-	list<int>* answers = new list<int>;
+	shared_ptr<list<int>> answers (new list<int>);
 	int answ, receivedPoints = 0;
 	cout << "\nДля решения предоставлен тест " << this->uniqueID << "\n" << this->shortDescription << "\n";
 	cout << "Количество вопросов: " << this->ptrQuestionList->size() << "\nНАЧАТЬ ТЕСТИРОВАНИЕ\n\n";

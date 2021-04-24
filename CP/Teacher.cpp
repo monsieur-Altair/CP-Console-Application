@@ -8,7 +8,7 @@ Teacher::Teacher() :User()
 	cout << "\nКонструктор TEACHER " << this;
 }
 
-Teacher::Teacher(string name, string password, int id, string subject, list<int>* ptrList) : User(name, password, id)
+Teacher::Teacher(string name, string password, int id, string subject, shared_ptr<list<int>> ptrList) : User(name, password, id)
 {
 	this->subject = subject;
 	this->ptrGroupList = ptrList;
@@ -18,7 +18,7 @@ Teacher::Teacher(string name, string password, int id, string subject, list<int>
 Teacher::~Teacher()
 {
 	//if(this)
-	delete ptrGroupList;
+	//delete ptrGroupList;
 	cout << "\nДеструктор TEACHER " << this;
 }
 
@@ -182,7 +182,7 @@ string Teacher::GetSubject()
 	return this->subject;
 }
 
-list<int>* Teacher::ptrGetGroupList()
+shared_ptr<list<int>> Teacher::ptrGetGroupList()
 {
 	return this->ptrGroupList;
 }

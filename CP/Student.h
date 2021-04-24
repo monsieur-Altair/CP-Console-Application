@@ -5,7 +5,7 @@ class Student : public User
 {
     string faculty;
     int group, course;
-    list<string>* ptrSubjectList;
+    shared_ptr<list<string>> ptrSubjectList;
     list<SolvedTest*>* ptrSolvedTestList;
     enum MenuChoice
     {
@@ -28,7 +28,7 @@ public:
         int,    //id
         int,    //group
         int,    //course
-        list<string>*, //strings for list
+        shared_ptr<list<string>>, //strings for list
         list<SolvedTest*>*
     );
     ~Student();
@@ -43,7 +43,7 @@ public:
     bool PrintAllSolvedTestBriefly();
     //bool PrintAllSolvedTestBriefly(string);
     string GetName();
-    list<string>*       GetPtrSubjectList();
+    shared_ptr<list<string>>       GetPtrSubjectList();
     list<SolvedTest*>*  GetPtrSolvedTestList();
     //SolvedTest*         SearchSolvedTestWithID(string);
     void DeleteEditedSolvedTest(string);

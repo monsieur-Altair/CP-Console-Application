@@ -10,10 +10,10 @@ class Test;
 class SolvedTest
 {
 	string shortDiscription, uniqueID, subject;
-	list<int>* answers;
+	shared_ptr<list<int>> answers;
 	int maxPoints, receivedPoints;
 public:
-	SolvedTest(list<int>*, string, string, string, int, int);
+	SolvedTest(shared_ptr<list<int>>, string, string, string, int, int);
 	~SolvedTest();
 	void PrintBriefly();
 	string GetID();

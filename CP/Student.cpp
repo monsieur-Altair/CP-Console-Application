@@ -119,7 +119,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		case SORT_SOLVED_BY_SUBJECTS:
 			if (ptrSolvedTestList->size())
 			{
-				ptrSolvedTestList->sort(SortSolvedBySubject);
+				ptrSolvedTestList->sort(sort::SortSolvedBySubject);
 				cout << "\nСписок осортирован\n";
 			}
 			else
@@ -128,7 +128,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		case SORT_SOLVED_BY_PERCENTAGE:
 			if (ptrSolvedTestList->size())
 			{
-				ptrSolvedTestList->sort(SortByAnswerPercentage);
+				ptrSolvedTestList->sort(sort::SortByAnswerPercentage);
 				cout << "\nСписок отсортирован\n";
 			}
 			else
@@ -137,7 +137,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		case SORT_AVAILABLE_BY_SUBJECTS:
 			if (ptrFilteredTestList->size())
 			{
-				ptrFilteredTestList->sort(SortTestBySubject);
+				ptrFilteredTestList->sort(sort::SortTestBySubject);
 				cout << "\nСписок отсортирован\n";
 			}
 			else
@@ -279,12 +279,12 @@ Test* SearchTestWithID(list<Test*>* ptrFilteredTestList, string testID)
 	return nullptr;
 }
 
-bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
+bool sort::SortStudentByGroups(const Student* ptr1, const Student* ptr2)
 {
 	return (ptr1->group) < (ptr2->group);
 }
 
-bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
+bool sort::SortStudentAlphabetic(Student* ptr1, Student* ptr2)
 {
 	return (ptr1->GetName().compare(ptr2->GetName()) < 0);
 }

@@ -28,7 +28,7 @@ public:
 	SolvedTest* Solving();
 	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
 	friend void EditTest(Teacher*, Test*,bool*);	
-	friend bool SortTestBySubject(const Test*, const Test*);
+	friend bool sort::SortTestBySubject(const Test*, const Test*);
 };
 
 template<class T>
@@ -69,5 +69,3 @@ void Check(T* value, double min = -10000000, double max = 1000000)
 		} while (x != 13);
 	} while (*value < min || *value > max);
 }
-
-bool SortTestBySubject(const Test*, const Test*);

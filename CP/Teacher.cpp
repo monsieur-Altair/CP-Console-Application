@@ -133,7 +133,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		case SORT_STUDENTS_BY_GROUPS:
 			if (ptrFilteredStudentList->size())
 			{
-				ptrFilteredStudentList->sort(SortStudentByGroups);
+				ptrFilteredStudentList->sort(sort::SortStudentByGroups);
 				cout << "\nСписок отсортирован\n";
 			}
 			else
@@ -142,7 +142,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		case SORT_STUDENT_ALPHABETICAL:
 			if (ptrFilteredStudentList->size())
 			{
-				ptrFilteredStudentList->sort(SortStudentAlphabetic);
+				ptrFilteredStudentList->sort(sort::SortStudentAlphabetic);
 				cout << "\nСписок отсортирован\n";
 			}
 			else

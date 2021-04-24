@@ -205,7 +205,7 @@ void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrT
 	}
 }
 
-bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
+bool sort::SortTestBySubject(const Test* ptr1, const Test* ptr2)
 {
 	return (ptr1->subject.compare(ptr2->subject) < 0);
 }

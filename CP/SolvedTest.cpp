@@ -58,12 +58,12 @@ ostream& operator<<(ostream& out, const SolvedTest& obj)
 	return out;
 }
 
-bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
+bool sort::SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
 {
 	return (ptr1->GetPercent() > ptr2->GetPercent());
 }
 
-bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
+bool sort::SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
 {
 	return (ptr1->subject.compare(ptr2->subject) < 0);
 }

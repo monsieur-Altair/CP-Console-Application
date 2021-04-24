@@ -47,10 +47,8 @@ public:
     list<SolvedTest*>*  GetPtrSolvedTestList();
     //SolvedTest*         SearchSolvedTestWithID(string);
     void DeleteEditedSolvedTest(string);
-    friend bool SortStudentByGroups(const Student*, const Student*);
-    friend bool SortStudentAlphabetic(Student*, Student*);
+    friend bool sort::SortStudentByGroups(const Student*, const Student*);
+    friend bool sort::SortStudentAlphabetic(Student*, Student*);
 };
 
 Test* SearchTestWithID(list<Test*>*,string);
-bool SortStudentByGroups(const Student*, const Student*);
-bool SortStudentAlphabetic(Student*, Student*);

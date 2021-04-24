@@ -69,4 +69,5 @@ void Check(T* value, double min = -10000000, double max = 1000000)
 		} while (x != 13);
 	} while (*value < min || *value > max);
 }
+
 bool SortTestBySubject(const Test*, const Test*);

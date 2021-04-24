@@ -39,13 +39,13 @@ public:
     void PrintInformation() override;
     void Unload(string);
     bool CheckSolvedTestList(Test*);
-    bool PrintAvailableAndNoSolvedTest(list<Test*>*);
+    bool PrintAvailableAndNoSolvedTest(list<Test*>*, int*);
     bool PrintAllSolvedTestBriefly();
-    bool PrintAllSolvedTestBriefly(string);
+    //bool PrintAllSolvedTestBriefly(string);
     string GetName();
     list<string>*       GetPtrSubjectList();
     list<SolvedTest*>*  GetPtrSolvedTestList();
-    SolvedTest*         SearchSolvedTestWithID(string);
+    //SolvedTest*         SearchSolvedTestWithID(string);
     void DeleteEditedSolvedTest(string);
     friend bool SortStudentByGroups(const Student*, const Student*);
     friend bool SortStudentAlphabetic(Student*, Student*);

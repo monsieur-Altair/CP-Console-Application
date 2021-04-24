@@ -18,6 +18,16 @@ class Teacher : public User
         SORT_STUDENTS_BY_GROUPS,
         SORT_STUDENT_ALPHABETICAL
     };
+    enum QuestionMenu
+    {
+        EXIT,
+        DELETE,
+        CHANGE_QUESTION,
+        CHANGE_ANSWER_OPTION,
+        CHANGE_CORRECT_ANSWER,
+        CHANGE_POINTS,
+        ADD_NEW_QUESTION
+    };
 public:
     Teacher();
     Teacher

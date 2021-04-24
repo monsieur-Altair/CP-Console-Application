@@ -13,3 +13,5 @@ teacher.cpp 52, 253 изменить на цифры
 #pragma once
 #ifndef _XIOSBASE_
 #define _XIOSBASE_
+
+24.04 посмотреть есть ли ошибки если не найден юзер или тест

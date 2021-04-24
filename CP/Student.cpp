@@ -38,11 +38,6 @@ Student::~Student()
 	cout << "\nДеструктор STUDENT " << this;
 }
 
-
-
-
-
-
 void Student::Menu(list<Test*>* ptrFilteredTestList)
 {
 	while (true)
@@ -56,31 +51,40 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		cout << "\n7 - Отсортировать список решенных тестов по проценту правильных ответов";
 		cout << "\n8 - Отсортировать список доступх по предметам (А-Я)\n0 - Выйти\n\n";
 		cin >> choice;
-		Check(&choice, 0, 8);
+		Check(&choice, 0, SORT_AVAILABLE_BY_SUBJECTS);
 		system("cls");
 		switch (choice)
 		{
 		case SOLVE_TEST:
 		{
-			if (PrintAvailableAndNoSolvedTest(ptrFilteredTestList))
+			int countPrintedTests = 0;
+			if (PrintAvailableAndNoSolvedTest(ptrFilteredTestList,&countPrintedTests))
 			{
-				string testID;
-				cout << "\n\nВведите ID желаемого теста (1 колонка)\n";
-				cin >> testID;
-				Test* currentTest = nullptr;
-				for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
-					if (testID == (*iter)->GetID())
-					{
-						currentTest = (*iter);
-						ptrSolvedTestList->push_back(currentTest->Solving());
-						break;
-					}
+				int number;
+				cout << "\n\nВведите номер желаемого теста (1 колонка)\n";
+				cin >> number;
+				Check(&number, 1, countPrintedTests);
+				auto iter = ptrFilteredTestList->begin();
+				advance(iter, number - 1);
+				Test* currentTest = *iter;
+				ptrSolvedTestList->push_back(currentTest->Solving());
+
+				//for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
+				//	if (testID == (*iter)->GetID())
+				//	{
+				//		currentTest = (*iter);
+				//		ptrSolvedTestList->push_back(currentTest->Solving());
+				//		break;
+				//	}
 			}
 			break;
 		}
 		case VIEW_ALL_AVAIBLE_TEST:
-			this->PrintAvailableAndNoSolvedTest(ptrFilteredTestList);
+		{
+			int i;
+			this->PrintAvailableAndNoSolvedTest(ptrFilteredTestList,&i);
 			break;
+		}
 		case VIEW_OWN_INF:
 			this->PrintInformation();
 			break;
@@ -91,17 +95,24 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		{
 			if (!this->PrintAllSolvedTestBriefly())
 				break;
-			string testID;
-			cout << "\n\nВведите ID желаемого теста (1 колонка)\n";
-			cin >> testID;
-			system("cls");
-			SolvedTest* ptrSolvedTest = this->SearchSolvedTestWithID(testID);
-			if (!ptrSolvedTest)
-			{
-				cout << "\nУказанный тест не найден\n";
-				break;
-			}
-			Test* ptrOriginalTest = SearchTestWithID(ptrFilteredTestList, testID);
+			//string testID;
+			int number;
+			cout << "\n\nВведите номер желаемого теста (1 колонка)\n";
+			//cout << "\n\nВведите ID желаемого теста (1 колонка)\n";
+			//cin >> testID;			
+			//system("cls");
+			//SolvedTest* ptrSolvedTest = this->SearchSolvedTestWithID(testID);
+			//if (!ptrSolvedTest)
+			//{
+			//	cout << "\nУказанный тест не найден\n";
+			//	break;
+			//}
+			cin >> number;
+			Check(&number, 1, ptrSolvedTestList->size());
+			auto iter = ptrSolvedTestList->begin();
+			advance(iter, number - 1);
+			SolvedTest* ptrSolvedTest = (*iter);
+			Test* ptrOriginalTest = SearchTestWithID(ptrFilteredTestList, ptrSolvedTest->GetID());
 			ViewQuestionAndUserAnswer(ptrSolvedTest, ptrOriginalTest);
 			break;
 		}
@@ -195,22 +206,23 @@ bool Student::CheckSolvedTestList(Test* somePtrTest)
 	return true;
 }
 
-bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList)
+bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, int* countPrintedTests)
 {
 	if (!ptrFilteredTestList->size())
 	{
 		cout << "\nДоступных тестов нет\n";
 		return false;
 	}
-	int countPrintedTets = 0;
+	int i = 1;
 	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
 	{
 		if (!CheckSolvedTestList(*iter))
 			continue;
+		cout << "\n " << i++ << ") ";
 		(*iter)->PrintTestBriefly();
-		countPrintedTets++;
+		(*countPrintedTests)++;
 	}
-	if (!countPrintedTets)
+	if (!(*countPrintedTests))
 	{
 		cout << "\n\nВы решили все доступные тесты\n";
 		return false;
@@ -225,28 +237,28 @@ bool Student::PrintAllSolvedTestBriefly()
 		cout << "\nРешенных тестов нет\n";
 		return false;
 	}
+	int i = 1;
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
+	{
+		cout << "\n" << i++ << ") ";
 		(*iter)->PrintBriefly();
+	}
 	return true;
 }
 
-bool Student::PrintAllSolvedTestBriefly(string subject)
-{
-	return false;
-}
 
 string Student::GetName()
 {
 	return User::GetName();
 }
 
-SolvedTest* Student::SearchSolvedTestWithID(string testID)
-{
-	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
-		if (testID == (*iter)->GetID())
-			return (*iter);
-	return nullptr;
-}
+//SolvedTest* Student::SearchSolvedTestWithID(string testID)
+//{
+//	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
+//		if (testID == (*iter)->GetID())
+//			return (*iter);
+//	return nullptr;
+//}
 
 void Student::DeleteEditedSolvedTest(string uniqueID)
 {

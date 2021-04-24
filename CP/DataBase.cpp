@@ -24,12 +24,11 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 		getline(dataBaseFile, allTeacherFilePath);
 		dataBaseFile.close();
 	}
-	catch (const ifstream::failure)
+	catch (const ifstream::failure&)
 	{
 		cout << "\nОшибка открытия файла: " << dataBaseFilePath << "\nРекомендуется проверить наличие файла и его путь\n";
 		exit(-1);
 	}
-
 
 	try
 	{
@@ -37,14 +36,28 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 		allTestFile.seekg(0, ios::end);
 		size = allTestFile.tellg();
 		allTestFile.seekg(0, ios::beg);
+
 		while (allTestFile.tellg() < (size))
 		{
-			getline(allTestFile, someTestFilePath);
-			listOfTests.push_back(new Test(someTestFilePath));
+			try
+			{
+				getline(allTestFile, someTestFilePath);
+				listOfTests.push_back(new Test(someTestFilePath));
+			}
+			catch (const ifstream::failure&)
+			{
+				cout << "\nОшибка открытия файла: " << someTestFilePath;
+				cout << "\nРекомендуется проверить наличие файла и его путь\nТест не был загружен\n";
+			}
+			catch (const runtime_error& ex)
+			{
+				cout << ex.what();
+			}
 		}
+
 		allTestFile.close();
 	}
-	catch (const ifstream::failure)
+	catch (const ifstream::failure&)
 	{
 		cout << "\nОшибка открытия файла: " << allTestFilePath;
 		cout << "\nРекомендуется проверить наличие файла и его путь\nТесты не были загружены\n";
@@ -60,16 +73,29 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 
 		while (studentFile.tellg() < size)
 		{
-			getline(studentFile, someStudentFilePath);
-			listOfStudents.push_back(CreateStudentFromFile(someStudentFilePath));
+			try
+			{
+				getline(studentFile, someStudentFilePath);
+				listOfStudents.push_back(CreateStudentFromFile(someStudentFilePath));
+			}
+			catch (const ifstream::failure&)
+			{
+				cout << "\nОшибка открытия файла: " << someStudentFilePath;
+				cout << "\nРекомендуется проверить наличие файла и его путь\nСтудент не был загружен\n";
+			}
+			catch (const runtime_error& ex)
+			{
+				ex.what();
+			}
 		}
 		studentFile.close();
 	}
-	catch (const ifstream::failure)
+	catch (const ifstream::failure&)
 	{
 		cout << "\nОшибка открытия файла: " << allStudentFilePath;
 		cout << "\nРекомендуется проверить наличие файла и его путь\nСтуденты не были загружены\n";
 	}
+
 
 	try
 	{
@@ -82,12 +108,25 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 
 		while (teacherFile.tellg() < (size))
 		{
-			getline(teacherFile, someTeacherFilePath);
-			listOfTeachers.push_back(CreateTeacherFromFile(someTeacherFilePath));
+			try
+			{
+				getline(teacherFile, someTeacherFilePath);
+				listOfTeachers.push_back(CreateTeacherFromFile(someTeacherFilePath));
+			}
+			catch (const ifstream::failure&)
+			{
+				cout << "\nОшибка открытия файла: " << someStudentFilePath;
+				cout << "\nРекомендуется проверить наличие файла и его путь\nПреподаватель не был загружен\n";
+			}
+			catch (const runtime_error& ex)
+			{
+				ex.what();
+			}
 		}
+
 		teacherFile.close();
 	}
-	catch (const ifstream::failure)
+	catch (const ifstream::failure&)
 	{
 		cout << "\nОшибка открытия файла: " << allTeacherFilePath;
 		cout << "\nРекомендуется проверить наличие файла и его путь\nПреподаватели не были загружены\n";
@@ -187,7 +226,9 @@ void DataBase::AuthorizationMenu()
 			ptrCurrentStudent = Registration(ptrCurrentStudent);
 		else if (userChoice == LOGIN)
 			ptrCurrentStudent = Login(ptrCurrentStudent);
-		ptrCurrentStudent->Menu(LoadTestsWithFilter(ptrCurrentStudent->GetCourse(), ptrCurrentStudent->GetPtrSubjectList()));
+		if(ptrCurrentStudent)
+			ptrCurrentStudent->Menu(LoadTestsWithFilter(ptrCurrentStudent->GetCourse(), ptrCurrentStudent->GetPtrSubjectList()));
+
 		ptrCurrentStudent = nullptr;
 		break;
 	}
@@ -198,13 +239,16 @@ void DataBase::AuthorizationMenu()
 			ptrCurrentTeacher = Registration(ptrCurrentTeacher);
 		else if (userChoice == LOGIN)
 			ptrCurrentTeacher = Login(ptrCurrentTeacher);
-		string teacherSubject = ptrCurrentTeacher->GetSubject();
-		list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
-		ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
-		if (ptrFilteredTest->size())
-			this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+		if (ptrCurrentTeacher)
+		{
+			string teacherSubject = ptrCurrentTeacher->GetSubject();
+			list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
+			ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
+			if (ptrFilteredTest->size())
+				this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+			delete ptrFilteredTest;//smart pointer
+		}
 		ptrCurrentTeacher = nullptr;
-		delete ptrFilteredTest;//smart pointer
 		break;
 	}
 	default:
@@ -306,10 +350,8 @@ void DataBase::PrintAllTeachers()
 
 Student* DataBase::Registration(Student* ptrStudent)
 {
-	//create BOOL
 	string fullName, password;
 	int id;
-	//check value
 	cout << "\nВведите ФИО\n";
 	cin.ignore();
 	getline(cin, fullName);
@@ -322,7 +364,7 @@ Student* DataBase::Registration(Student* ptrStudent)
 	string faculty;
 	list<string>* ptrList = new list<string>;
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
-	int group, course;//CHECK
+	int group, course;
 	cout << "\nВведите факультет\n";
 	cin.ignore();
 	getline(cin, faculty);
@@ -350,13 +392,12 @@ Student* DataBase::Registration(Student* ptrStudent)
 
 Teacher* DataBase::Registration(Teacher* ptrTeacher)
 {
-	//create BOOL
 	short userChoice;
 	string fullName, password;
 	int id;
 	cout << "\nУкажите тип пользователя\n1 - Студент\t2 - Преподаватель\n";
 	cin >> userChoice;
-	//check value
+	Check(&userChoice, 1, 2);
 	cin.ignore();
 	cout << "\nВведите ФИО\n";
 	getline(cin, fullName);
@@ -474,13 +515,21 @@ void DataBase::Unload(string dataBaseFilePath)
 	int i = 1;
 	string currPath;
 
-	dataBaseFile.open(dataBaseFilePath);
-	if (!dataBaseFile.is_open())
-		exit(-10);
-	getline(dataBaseFile, allTestFilePath);
-	getline(dataBaseFile, allStudentFilePath);
-	getline(dataBaseFile, allTeacherFilePath);
-	dataBaseFile.close();
+	dataBaseFile.exceptions(ifstream::badbit | ifstream::failbit);
+
+	try
+	{
+		dataBaseFile.open(dataBaseFilePath);
+		getline(dataBaseFile, allTestFilePath);
+		getline(dataBaseFile, allStudentFilePath);
+		getline(dataBaseFile, allTeacherFilePath);
+		dataBaseFile.close();
+	}
+	catch (const ifstream::failure&)
+	{
+		cout << "\nОшибка открытия файла: " << dataBaseFilePath;
+		cout << "\nРекомендуется проверить наличие файла и его путь\nТест не был загружен\n";
+	}
 
 	allTestFile.open(allTestFilePath);
 	if (!allTestFile.is_open())
@@ -625,10 +674,16 @@ Teacher* CreateTeacherFromFile(string filePath)
 	file.seekg(sizeof("\n"), ios::cur);
 	getline(file, subject);
 	file >> listSize;
+	if(listSize<0)
+		throw runtime_error("\nНекорректные данные при считывании\n");
+
 	for (int i = 0; i < listSize; i++)
 	{
 		int group;
 		file >> group;
+		if(group<0)
+			throw runtime_error("\nНекорректные данные при считывании\n");
+
 		ptrGroupList->push_back(group);
 	}
 	file.close();
@@ -662,6 +717,9 @@ Student* CreateStudentFromFile(string filePath)
 	}
 	file >> listSize;
 
+	if (id < 0 || group < 0 || course <= 0 || listSize <= 0)
+		throw runtime_error("\nНекорректные данные при считывании\n");
+
 	for (int i = 0; i < listSize; i++)
 	{
 		string subject;
@@ -678,9 +736,13 @@ Student* CreateStudentFromFile(string filePath)
 		{
 			file >> oneAnswer;
 			answers->push_back(oneAnswer);
+			if (oneAnswer < 0)
+				throw runtime_error("\nНекорректные данные при считывании\n");
 		}
+		if (receivedPoints < 0 || maxPoints < 0)
+			throw runtime_error("\nНекорректные данные при считывании\n");
+
 		ptrSolvedTestList->push_back(new SolvedTest(answers, shortDiscription, uniqueID, subject, receivedPoints, maxPoints));
-		//answers->clear();
 	}
 	file.close();
 

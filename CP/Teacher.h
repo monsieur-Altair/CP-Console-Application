@@ -4,7 +4,7 @@
 class Teacher : public User
 {
     string subject;
-    list<int>* ptrGroupList;//список групп препода, мб список спецух 
+    list<int>* ptrGroupList;
     enum MenuChoice
     {
         CREATE_TEST = 1,

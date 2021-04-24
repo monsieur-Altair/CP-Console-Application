@@ -24,7 +24,6 @@ Teacher::~Teacher()
 
 void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFilteredStudentList)
 {
-	//list<Test*>* ptrFilteredTestList;
 	while (true)
 	{
 		short choice;
@@ -46,19 +45,27 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		}
 		case DELETE_TEST:
 		{
-			string uniqueID;
+			//string uniqueID;
+			//PrintAvailableTest(ptrFilteredTestList);
+			//cout << "\nВведите ID теста (1 колонка)\n";
+			//cin >> uniqueID;
+			//for (auto iter = (*ptrFilteredTestList)->begin(); iter != (*ptrFilteredTestList)->end(); iter++)
+			//{
+			//	if ((*iter)->GetID() == uniqueID)
+			//	{
+			//		delete* iter;
+			//		(*ptrFilteredTestList)->erase(iter);
+			//		break;
+			//	}
+			//}
+			int number;
 			PrintAvailableTest(ptrFilteredTestList);
-			cout << "\nВведите ID теста (1 колонка)\n";
-			cin >> uniqueID;
-			for (auto iter = (*ptrFilteredTestList)->begin(); iter != (*ptrFilteredTestList)->end(); iter++)
-			{
-				if ((*iter)->GetID() == uniqueID)
-				{
-					delete* iter;
-					(*ptrFilteredTestList)->erase(iter);
-					break;
-				}
-			}
+			cout << "\nВведите номер теста (1 колонка)\n";
+			cin >> number;
+			auto iter = (*ptrFilteredTestList)->begin();
+			advance(iter, number - 1);
+			delete* iter;
+			(*ptrFilteredTestList)->erase(iter);
 			break;
 		}
 		case VIEW_OWN_INF:
@@ -251,7 +258,7 @@ void Teacher::PrintOwnStudents(list<Student*>* ptrFilteredStudentList)
 {
 	if (!ptrFilteredStudentList->size())
 	{
-		cout << "\nСписок доступных тестов пуст\n";
+		cout << "\nСписок студентов пуст\n";
 		return;
 	}
 	int i = 1;

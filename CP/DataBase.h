@@ -2,6 +2,7 @@
 
 #include "Student.h"
 #include "Teacher.h"
+#include <xmemory>
 
 class DataBase
 {

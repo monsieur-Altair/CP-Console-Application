@@ -242,6 +242,7 @@ void DataBase::AuthorizationMenu()
 		if (ptrCurrentTeacher)
 		{
 			string teacherSubject = ptrCurrentTeacher->GetSubject();
+			//shared_ptr<list<Test*>> ptrFilteredTest(LoadTestsWithFilter(teacherSubject));
 			list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
 			ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
 			if (ptrFilteredTest->size())

@@ -11,14 +11,14 @@ Student::Student() :User()
 Student::Student
 (
 	string name,
-	string password,
+	int hashedPassword,
 	string faculty,
 	int id,
 	int group,
 	int course,
 	shared_ptr<list<string>> listPtr,
 	list<SolvedTest*>* ptrSolvedTest
-):User(name, password, id)
+):User(name, hashedPassword, id)
 {
 	this->group = group;
 	this->faculty = faculty;

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <functional>
 #define DEBUG
 using namespace std;
 

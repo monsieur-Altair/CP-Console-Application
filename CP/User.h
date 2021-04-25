@@ -5,23 +5,23 @@ using namespace std;
 
 class User
 {
-	string fullName, password;
-	int id;
+	string fullName; 
+	int id, hashedPassword;
 public:
 	User();
 	User
 	(
 		string, //name
-		string, //password
+		int, //password
 		int		//id
 	);
 	virtual	~User();
 	virtual void PrintInformation() = 0;
 	void PrintUserInformation();
 	void Unload(ofstream&);
-	bool Searching(int, string);
+	bool Searching(int, int);
 	int GetID();
 	string GetName();
-	string GetPassword();
+	int GetHashedPassword();
 };
 

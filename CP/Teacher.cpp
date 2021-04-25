@@ -8,7 +8,14 @@ Teacher::Teacher() :User()
 	cout << "\nКонструктор TEACHER " << this;
 }
 
-Teacher::Teacher(string name, string password, int id, string subject, shared_ptr<list<int>> ptrList) : User(name, password, id)
+Teacher::Teacher
+(
+	string name, 
+	int hashedPassword, 
+	int id, 
+	string subject, 
+	shared_ptr<list<int>> ptrList
+) : User(name, hashedPassword, id)
 {
 	this->subject = subject;
 	this->ptrGroupList = ptrList;
@@ -294,9 +301,11 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 	{
 		system("cls");
 		string password;
+		hash<string> hashFunction;
 		cout << "\nВведите ваш пароль: ";
 		cin >> password;
-		if (password != ptrTeacher->GetPassword())
+		int hashedPassword = hashFunction(password);
+		if (hashedPassword != ptrTeacher->GetHashedPassword())
 		{
 			cout << "\nВ доступе отказано\n";
 			return;
@@ -384,7 +393,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 	}
 }
 
-string Teacher::GetPassword()
+int Teacher::GetHashedPassword()
 {
-	return User::GetPassword();
+	return User::GetHashedPassword();
 }

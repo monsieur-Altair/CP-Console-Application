@@ -3,15 +3,15 @@
 User::User()
 {
 	this->fullName = "имя";
-	this->password = "пароль";
+	this->hashedPassword = 0;
 	this->id = 0;
 	cout << "\nКонструктор USER " << this;
 }
 
-User::User(string name, string password, int id)
+User::User(string name, int hashedPassword, int id)
 {
 	this->fullName = name;
-	this->password = password;
+	this->hashedPassword = hashedPassword;
 	this->id = id;
 	cout << "\nКонструктор USER " << this;
 }
@@ -23,17 +23,17 @@ User::~User()
 
 void User::PrintUserInformation()
 {
-	cout << "\t" << fullName << "\t" << password << "\t" << id;
+	cout << "\t" << fullName << "\t" << hashedPassword << "\t" << id;
 }
 
 void User::Unload(ofstream& file)
 {
-	file << this->fullName << "\n" << this->password << "\n" << this->id << "\n";
+	file << this->fullName << "\n" << this->hashedPassword << "\n" << this->id << "\n";
 }
 
-bool User::Searching(int id, string password)
+bool User::Searching(int id, int hashedPassword)
 {
-	return ((this->id == id) && (this->password == password));
+	return ((this->id == id) && (this->hashedPassword == hashedPassword));
 }
 
 int User::GetID()
@@ -46,8 +46,8 @@ string User::GetName()
 	return this->fullName;
 }
 
-string User::GetPassword()
+int User::GetHashedPassword()
 {
-	return this->password;
+	return this->hashedPassword;
 }
 

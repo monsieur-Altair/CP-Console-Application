@@ -351,13 +351,15 @@ void DataBase::PrintAllTeachers()
 
 Student* DataBase::Registration(Student* ptrStudent)
 {
-	string fullName, password;
+	hash<string> hashFunction;
+	string fullName,password;
 	int id;
 	cout << "\nВведите ФИО\n";
 	cin.ignore();
 	getline(cin, fullName);
 	cout << "\nВведите пароль\n";
 	getline(cin, password);
+	int  hashedPassword = hashFunction(password);
 	cout << "\nВведите ID\n";
 	cin >> id;
 	Check(&id, 10000000, 99999999);
@@ -386,7 +388,7 @@ Student* DataBase::Registration(Student* ptrStudent)
 			break;
 		ptrList->push_back(subject);
 	}
-	ptrStudent = new Student(fullName, password, faculty, id, group, course, ptrList, ptrSolvedTestList);
+	ptrStudent = new Student(fullName, hashedPassword, faculty, id, group, course, ptrList, ptrSolvedTestList);
 	listOfStudents.push_back(ptrStudent);
 	return ptrStudent;
 }
@@ -404,6 +406,10 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 	getline(cin, fullName);
 	cout << "\nВведите пароль\n";
 	getline(cin, password);
+
+	hash<string> hashFunction;
+	int  hashedPassword = hashFunction(password);
+	
 	cout << "\nВведите ID\n";
 	cin >> id;
 	Check(&id, 10000000, 99999999);
@@ -424,7 +430,7 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 			break;
 		ptrGroupList->push_back(group);
 	}
-	ptrTeacher = new Teacher(fullName, password, id, subject, ptrGroupList);
+	ptrTeacher = new Teacher(fullName, hashedPassword, id, subject, ptrGroupList);
 	listOfTeachers.push_back(ptrTeacher);
 	return ptrTeacher;
 }
@@ -468,15 +474,16 @@ Student* DataBase::Login(Student* userStudent)
 {
 	int id;
 	string password;
-	//while(true)
+	hash<string> hashFunction;
 	cout << "\nВведите свой ID ";
 	cin >> id;
 	Check(&id, 10000000, 99999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
+	int hashedPassword = hashFunction(password);
 	for (auto ptrStudent : listOfStudents)
 	{
-		if (ptrStudent->Searching(id, password))
+		if (ptrStudent->Searching(id, hashedPassword))
 		{
 			cout << "\nПользователь найден\n";
 			return ptrStudent;
@@ -490,14 +497,16 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 {
 	int id;
 	string password;
+	hash<string> hashFunction;
 	cout << "\nВведите свой ID ";
 	cin >> id;
 	Check(&id, 10000000, 99999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
+	int hashedPassword = hashFunction(password);
 	for (auto ptrTeacher : listOfTeachers)
 	{
-		if (ptrTeacher->Searching(id, password))
+		if (ptrTeacher->Searching(id, hashedPassword))
 		{
 			cout << "\nПользователь найден\n";
 			return ptrTeacher;
@@ -663,14 +672,16 @@ list<Student*>* DataBase::LoadStudentsFilter(string subject, shared_ptr<list<int
 Teacher* CreateTeacherFromFile(string filePath)
 {
 	ifstream file;
-	string name, password, subject;
-	int id, listSize;
+	string name, subject;
+	int id, listSize, hashedPassword;
 	shared_ptr<list<int>> ptrGroupList (new list<int>);
 	file.open(filePath);
 	if (!file.is_open())
 		exit(-9);
 	getline(file, name);
-	getline(file, password);
+	//getline(file, hashedPassword);
+	file >> hashedPassword;
+	file.seekg(sizeof("\n"), ios::cur);
 	file >> id;
 	file.seekg(sizeof("\n"), ios::cur);
 	getline(file, subject);
@@ -688,15 +699,15 @@ Teacher* CreateTeacherFromFile(string filePath)
 		ptrGroupList->push_back(group);
 	}
 	file.close();
-	return new Teacher(name, password, id, subject, ptrGroupList);
+	return new Teacher(name, hashedPassword, id, subject, ptrGroupList);
 }
 
 Student* CreateStudentFromFile(string filePath)
 {
 	ifstream file;
-	string name, password, faculty;
+	string name, faculty;
 	shared_ptr<list<string>> ptrSubjectList(new list<string>);
-	int id, group, course, listSize;
+	int id, group, course, listSize, hashedPassword;
 
 	string shortDiscription, uniqueID;
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
@@ -704,7 +715,8 @@ Student* CreateStudentFromFile(string filePath)
 
 	file.open(filePath);
 	getline(file, name);
-	getline(file, password);
+	file >> hashedPassword;
+	file.seekg(sizeof("\n"), ios::cur);
 	file >> id;
 	file.seekg(sizeof("\n"), ios::cur);
 	getline(file, faculty);
@@ -747,6 +759,6 @@ Student* CreateStudentFromFile(string filePath)
 	}
 	file.close();
 
-	return new Student(name, password, faculty, id, group, course, ptrSubjectList, ptrSolvedTestList);
+	return new Student(name, hashedPassword, faculty, id, group, course, ptrSubjectList, ptrSolvedTestList);
 }
 

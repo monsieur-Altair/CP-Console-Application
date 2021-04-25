@@ -33,7 +33,7 @@ public:
     Teacher
     (
         string,     //name
-        string,     //password
+        int,     //Hashed password
         int,        //id
         string,     //subject
         shared_ptr<list<int>>  //list of groups
@@ -52,7 +52,7 @@ public:
     Test* SearchAvailableTest(list<Test*>**);
     friend void EditTest(Teacher*, Test*,bool*);
     string GetSubject();
-    string GetPassword();
+    int GetHashedPassword();
 };
 
 //bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)

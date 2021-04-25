@@ -20,14 +20,14 @@ namespace sort
 
 class SolvedTest
 {
-	string shortDiscription, uniqueID, subject;
+	string shortDiscription, subject;
 	shared_ptr<list<int>> answers;
-	int maxPoints, receivedPoints;
+	int uniqueID, maxPoints, receivedPoints;
 public:
-	SolvedTest(shared_ptr<list<int>>, string, string, string, int, int);
+	SolvedTest(shared_ptr<list<int>>, string, int, string, int, int);
 	~SolvedTest();
 	void PrintBriefly();
-	string GetID();
+	int GetID();
 	float GetPercent();
 	string GetSubject();
 	friend ofstream& operator<<(ofstream&, const SolvedTest&);

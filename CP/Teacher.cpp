@@ -10,11 +10,11 @@ Teacher::Teacher() :User()
 
 Teacher::Teacher
 (
-	string name, 
-	int hashedPassword, 
-	int id, 
-	string subject, 
-	shared_ptr<list<int>> ptrList
+	string	name, 
+	int		hashedPassword, 
+	int		id, 
+	string	subject, 
+	shared_ptr<list<int>>	ptrList
 ) : User(name, hashedPassword, id)
 {
 	this->subject = subject;
@@ -196,13 +196,15 @@ shared_ptr<list<int>> Teacher::ptrGetGroupList()
 
 Test* Teacher::CreateTest()
 {
-	string uniqueID, shortDiscription, subject = this->subject;
-	int course, answersNumber;
+	string shortDiscription, subject = this->subject;
+	int course, uniqueID, answersNumber;
+	hash<int> hashFunction;
 	list<Question*>* ptrQuestionList = new list<Question*>;
-	cout << "\n¬ведите уникальный ID теста: ";
+	//cout << "\n¬ведите уникальный ID теста: ";
 	cin.ignore();
-	getline(cin, uniqueID);
-	cout << "\n¬ведите короткое описание теста: ";
+	//getline(cin, uniqueID);
+	uniqueID = hashFunction(Test::GetEntityCount());
+	cout << "\n¬ведите краткое описание теста: ";
 	getline(cin, shortDiscription);
 	cout << "\n¬ведите курс: ";
 	cin >> course;

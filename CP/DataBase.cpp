@@ -354,15 +354,16 @@ Student* DataBase::Registration(Student* ptrStudent)
 	hash<string> hashFunction;
 	string fullName,password;
 	int id;
+	hash<int> hashFunctionInt;
+	id = hashFunctionInt(User::GetEntityCount());
+	cout << "\nВаш уникальный ID = " << id << " пожалуйста, запомните его!";
+
 	cout << "\nВведите ФИО\n";
 	cin.ignore();
 	getline(cin, fullName);
 	cout << "\nВведите пароль\n";
 	getline(cin, password);
 	int  hashedPassword = hashFunction(password);
-	cout << "\nВведите ID\n";
-	cin >> id;
-	Check(&id, 10000000, 99999999);
 
 	string faculty;
 	shared_ptr<list<string>> ptrList(new list<string>);
@@ -395,13 +396,12 @@ Student* DataBase::Registration(Student* ptrStudent)
 
 Teacher* DataBase::Registration(Teacher* ptrTeacher)
 {
-	short userChoice;
 	string fullName, password;
 	int id;
-	cout << "\nУкажите тип пользователя\n1 - Студент\t2 - Преподаватель\n";
-	cin >> userChoice;
-	Check(&userChoice, 1, 2);
+	hash<int> hashFunctionInt;
 	cin.ignore();
+	id = hashFunctionInt(User::GetEntityCount());
+	cout << "\nВаш уникальный ID = " << id << " пожалуйста, запомните его!";
 	cout << "\nВведите ФИО\n";
 	getline(cin, fullName);
 	cout << "\nВведите пароль\n";
@@ -409,10 +409,6 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 
 	hash<string> hashFunction;
 	int  hashedPassword = hashFunction(password);
-	
-	cout << "\nВведите ID\n";
-	cin >> id;
-	Check(&id, 10000000, 99999999);
 
 	string subject;
 	shared_ptr<list<int>> ptrGroupList ( new list<int>);
@@ -477,7 +473,7 @@ Student* DataBase::Login(Student* userStudent)
 	hash<string> hashFunction;
 	cout << "\nВведите свой ID ";
 	cin >> id;
-	Check(&id, 10000000, 99999999);
+	Check(&id, 0, 999999999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
@@ -500,7 +496,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	hash<string> hashFunction;
 	cout << "\nВведите свой ID ";
 	cin >> id;
-	Check(&id, 10000000, 99999999);
+	Check(&id, 0, 99999999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
@@ -709,9 +705,9 @@ Student* CreateStudentFromFile(string filePath)
 	shared_ptr<list<string>> ptrSubjectList(new list<string>);
 	int id, group, course, listSize, hashedPassword;
 
-	string shortDiscription, uniqueID;
+	string shortDiscription;
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
-	int maxPoints, receivedPoints;
+	int uniqueID, maxPoints, receivedPoints;
 
 	file.open(filePath);
 	getline(file, name);
@@ -738,7 +734,9 @@ Student* CreateStudentFromFile(string filePath)
 		string subject;
 		shared_ptr<list<int>> answers (new list<int>);
 		file.seekg(sizeof("\n"), ios::cur);
-		getline(file, uniqueID);
+		//getline(file, uniqueID);
+		file >> uniqueID;
+		file.seekg(sizeof("\n"), ios::cur);
 		getline(file, subject);
 		getline(file, shortDiscription);
 		file >> receivedPoints >> maxPoints;

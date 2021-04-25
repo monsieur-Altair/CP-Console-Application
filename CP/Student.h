@@ -46,9 +46,9 @@ public:
     shared_ptr<list<string>>       GetPtrSubjectList();
     list<SolvedTest*>*  GetPtrSolvedTestList();
     //SolvedTest*         SearchSolvedTestWithID(string);
-    void DeleteEditedSolvedTest(string);
+    void DeleteEditedSolvedTest(int);
     friend bool sort::SortStudentByGroups(const Student*, const Student*);
     friend bool sort::SortStudentAlphabetic(Student*, Student*);
 };
 
-Test* SearchTestWithID(list<Test*>*,string);
+Test* SearchTestWithID(list<Test*>*,int);

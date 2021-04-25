@@ -260,7 +260,7 @@ string Student::GetName()
 //	return nullptr;
 //}
 
-void Student::DeleteEditedSolvedTest(string uniqueID)
+void Student::DeleteEditedSolvedTest(int uniqueID)
 {
 	for (auto iter = this->ptrSolvedTestList->begin(); iter != this->ptrSolvedTestList->end(); iter++)
 		if (uniqueID == (*iter)->GetID())
@@ -271,7 +271,7 @@ void Student::DeleteEditedSolvedTest(string uniqueID)
 		}
 }
 
-Test* SearchTestWithID(list<Test*>* ptrFilteredTestList, string testID)
+Test* SearchTestWithID(list<Test*>* ptrFilteredTestList, int testID)
 {
 	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
 		if (testID == (*iter)->GetID())

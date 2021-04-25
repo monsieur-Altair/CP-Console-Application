@@ -7,6 +7,7 @@ class User
 {
 	string fullName; 
 	int id, hashedPassword;
+	static int entityCount;
 public:
 	User();
 	User
@@ -23,5 +24,6 @@ public:
 	int GetID();
 	string GetName();
 	int GetHashedPassword();
+	static int GetEntityCount();
 };
 

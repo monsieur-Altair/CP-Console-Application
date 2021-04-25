@@ -8,11 +8,12 @@
 class Test
 {
 	list<Question*> *ptrQuestionList;
-	string shortDescription, subject, uniqueID;
-	int maxPointsPerTest, numberOfQuestions, course;
+	string shortDescription, subject;
+	int uniqueID, maxPointsPerTest, numberOfQuestions, course;
+	static int entityCount;
 public:
 	Test();
-	Test(string, string, string, int, list<Question*>*);
+	Test(int, string, string, int, list<Question*>*);
 	Test(string);
 	~Test();
 	void PrintTest();
@@ -24,11 +25,12 @@ public:
 	void UnloadTest(string);
 	string GetSubject();
 	int GetCourse();
-	string GetID();
+	int GetID();
 	SolvedTest* Solving();
 	friend void ViewQuestionAndUserAnswer(const SolvedTest*, const Test*);
 	friend void EditTest(Teacher*, Test*,bool*);	
 	friend bool sort::SortTestBySubject(const Test*, const Test*);
+	static int GetEntityCount();
 };
 
 template<class T>

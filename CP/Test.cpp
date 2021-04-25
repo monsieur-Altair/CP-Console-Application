@@ -1,6 +1,6 @@
 #include "Test.h"
 
-
+int Test::entityCount = 0;
 
 Test::Test()
 {
@@ -9,11 +9,12 @@ Test::Test()
 	this->numberOfQuestions = 0;
 	this->course = 0;
 	this->subject = "";
-	this->uniqueID = "";
+	this->uniqueID = 0;
 	cout << "\nКонструктор TEST " << this;
+	entityCount++;
 }
 
-Test::Test(string uniqueID, string shortDiscription, string subject, int course, list<Question*>* ptrQuestionList)
+Test::Test(int uniqueID, string shortDiscription, string subject, int course, list<Question*>* ptrQuestionList)
 {
 	this->course = course;
 	this->ptrQuestionList = ptrQuestionList;
@@ -22,6 +23,7 @@ Test::Test(string uniqueID, string shortDiscription, string subject, int course,
 	this->subject = subject;
 	this->uniqueID = uniqueID;
 	this->SetMaxPointsPerTest();
+	entityCount++;
 }
 
 Test::Test(string DataFilePath)
@@ -32,6 +34,7 @@ Test::Test(string DataFilePath)
 #ifdef DEBUG
 	cout << "\nКонструктор TEST " << this;
 #endif // DEBUG
+	entityCount++;
 }
 
 Test::~Test()
@@ -42,6 +45,7 @@ Test::~Test()
 #ifdef DEBUG
 	cout << "\nДеструктор TEST " << this;
 #endif // DEBUG
+	entityCount--;
 }
 
 void Test::PrintTest()
@@ -113,7 +117,9 @@ void Test::DownloadFromFile(string dataFilePath)
 	if (this->course < 0)
 		throw runtime_error("\nНекорректные данные при считывании\n");
 	dataFile.seekg(2, ios::cur);//переходим на новую строку (2 = размер "\n")
-	getline(dataFile, this->uniqueID);
+	//getline(dataFile, this->uniqueID);
+	dataFile >> uniqueID;
+	dataFile.seekg(2, ios::cur);
 	getline(dataFile, this->subject);
 	getline(dataFile, this->shortDescription);
 	this->ptrQuestionList = new list<Question*>;
@@ -146,7 +152,7 @@ int Test::GetCourse()
 	return this->course;
 }
 
-string Test::GetID()
+int Test::GetID()
 {
 	return this->uniqueID;
 }
@@ -183,8 +189,10 @@ SolvedTest* Test::Solving()
 	return new SolvedTest(answers, this->shortDescription, this->uniqueID, this->subject, receivedPoints, this->maxPointsPerTest);
 }
 
-
-
+int Test::GetEntityCount()
+{
+	return entityCount;
+}
 
 
 void ViewQuestionAndUserAnswer(const SolvedTest* ptrSolvedTest, const Test* ptrTest)

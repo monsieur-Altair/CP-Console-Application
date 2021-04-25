@@ -1,11 +1,14 @@
 #include "User.h"
 
+int User::entityCount = 0;
+
 User::User()
 {
 	this->fullName = "имя";
 	this->hashedPassword = 0;
 	this->id = 0;
 	cout << "\nКонструктор USER " << this;
+	entityCount++;
 }
 
 User::User(string name, int hashedPassword, int id)
@@ -14,11 +17,13 @@ User::User(string name, int hashedPassword, int id)
 	this->hashedPassword = hashedPassword;
 	this->id = id;
 	cout << "\nКонструктор USER " << this;
+	entityCount++;
 }
 
 User::~User()
 {
 	cout << "\nДеструктор USER " << this;
+	entityCount--;
 }
 
 void User::PrintUserInformation()
@@ -49,5 +54,10 @@ string User::GetName()
 int User::GetHashedPassword()
 {
 	return this->hashedPassword;
+}
+
+int User::GetEntityCount()
+{
+	return entityCount;
 }
 

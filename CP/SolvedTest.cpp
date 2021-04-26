@@ -20,7 +20,7 @@ SolvedTest::~SolvedTest()
 
 void SolvedTest::PrintBriefly()
 {
-	cout << "\n" << this->uniqueID << "\t" << this->subject << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
+	cout <<"\t"<< this->uniqueID << "\t" << this->subject << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
 }
 
 int SolvedTest::GetID()

@@ -41,10 +41,11 @@ public:
     bool CheckSolvedTestList(Test*);
     bool PrintAvailableAndNoSolvedTest(list<Test*>*, int*);
     bool PrintAllSolvedTestBriefly();
+    void DeleteSolvedFromFilteredList(list<Test*>*, list<Test*>*);
     //bool PrintAllSolvedTestBriefly(string);
     string GetName();
-    shared_ptr<list<string>>       GetPtrSubjectList();
-    list<SolvedTest*>*  GetPtrSolvedTestList();
+    shared_ptr<list<string>>    GetPtrSubjectList();
+    list<SolvedTest*>*          GetPtrSolvedTestList();
     //SolvedTest*         SearchSolvedTestWithID(string);
     void DeleteEditedSolvedTest(int);
     friend bool sort::SortStudentByGroups(const Student*, const Student*);

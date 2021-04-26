@@ -306,7 +306,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 		hash<string> hashFunction;
 		cout << "\nВведите ваш пароль: ";
 		cin >> password;
-		float hashedPassword = hashFunction(password);
+		int hashedPassword = hashFunction(password);
 		if (hashedPassword != ptrTeacher->GetHashedPassword())
 		{
 			cout << "\nВ доступе отказано\n";
@@ -395,7 +395,7 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 	}
 }
 
-//float Teacher::GetHashedPassword()
-//{
-//	return User::GetHashedPassword();
-//}
+int Teacher::GetHashedPassword()
+{
+	return User::GetHashedPassword();
+}

@@ -78,7 +78,7 @@ int Test::GetNumberOfQuestions()
 
 void Test::PrintTestBriefly()
 {
-	cout << this->uniqueID << "\t" << this->subject;
+	cout << "\t" <<this->uniqueID << "\t" << this->subject;
 	cout << "\t" << this->course << "\t" << shortDescription;
 }
 

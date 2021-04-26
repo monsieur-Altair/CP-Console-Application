@@ -27,6 +27,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	catch (const ifstream::failure&)
 	{
 		cout << "\nОшибка открытия файла: " << dataBaseFilePath << "\nРекомендуется проверить наличие файла и его путь\n";
+		system("pause");
 		exit(-1);
 	}
 
@@ -48,10 +49,12 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 			{
 				cout << "\nОшибка открытия файла: " << someTestFilePath;
 				cout << "\nРекомендуется проверить наличие файла и его путь\nТест не был загружен\n";
+				system("pause");
 			}
 			catch (const runtime_error& ex)
 			{
 				cout << ex.what();
+				system("pause");
 			}
 		}
 
@@ -61,6 +64,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	{
 		cout << "\nОшибка открытия файла: " << allTestFilePath;
 		cout << "\nРекомендуется проверить наличие файла и его путь\nТесты не были загружены\n";
+		system("pause");
 	}
 
 	try
@@ -82,10 +86,12 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 			{
 				cout << "\nОшибка открытия файла: " << someStudentFilePath;
 				cout << "\nРекомендуется проверить наличие файла и его путь\nСтудент не был загружен\n";
+				system("pause");
 			}
 			catch (const runtime_error& ex)
 			{
 				cout<<ex.what();
+				system("pause");
 			}
 		}
 		studentFile.close();
@@ -94,6 +100,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	{
 		cout << "\nОшибка открытия файла: " << allStudentFilePath;
 		cout << "\nРекомендуется проверить наличие файла и его путь\nСтуденты не были загружены\n";
+		system("pause");
 	}
 
 
@@ -117,10 +124,12 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 			{
 				cout << "\nОшибка открытия файла: " << someStudentFilePath;
 				cout << "\nРекомендуется проверить наличие файла и его путь\nПреподаватель не был загружен\n";
+				system("pause");
 			}
 			catch (const runtime_error& ex)
 			{
 				cout << ex.what();
+				system("pause");
 			}
 		}
 
@@ -130,6 +139,7 @@ DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
 	{
 		cout << "\nОшибка открытия файла: " << allTeacherFilePath;
 		cout << "\nРекомендуется проверить наличие файла и его путь\nПреподаватели не были загружены\n";
+		system("pause");
 	}
 
 #ifdef DEBUG
@@ -260,11 +270,11 @@ void DataBase::AuthorizationMenu()
 
 void DataBase::PrintAllTests()
 {
+	cout << "\nВсе тесты";
 	for (auto iter = listOfTests.begin(); iter != listOfTests.end(); iter++)
 	{
 		cout << "\n";
-		(*iter)->PrintTest();
-		cout << "\n";
+		(*iter)->PrintTestBriefly();
 	}
 }
 
@@ -477,7 +487,7 @@ Student* DataBase::Login(Student* userStudent)
 	Check(&id, 0, 999999999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
-	float hashedPassword = hashFunction(password);
+	int hashedPassword = hashFunction(password);
 	for (auto ptrStudent : listOfStudents)
 	{
 		if (ptrStudent->Searching(id, hashedPassword))
@@ -500,7 +510,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	Check(&id, 0, 99999999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
-	float hashedPassword = hashFunction(password);
+	int hashedPassword = hashFunction(password);
 	for (auto ptrTeacher : listOfTeachers)
 	{
 		if (ptrTeacher->Searching(id, hashedPassword))
@@ -727,7 +737,7 @@ Student* CreateStudentFromFile(string filePath)
 	}
 	file >> listSize;
 
-	if (id < 0 || group < 0 || course <= 0 || listSize <= 0)
+	if (group < 0 || course <= 0 || listSize < 0)
 		throw runtime_error("\nНекорректные данные при считывании\n");
 
 	for (int i = 0; i < listSize; i++)

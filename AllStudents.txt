@@ -1,2 +1,3 @@
 D:\OOP\CP\студент1.txt
 D:\OOP\CP\студент2.txt
+D:\OOP\CP\студент3.txt

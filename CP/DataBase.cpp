@@ -215,57 +215,60 @@ DataBase::~DataBase()
 
 void DataBase::AuthorizationMenu()
 {
-	short userChoice, userType;
-	system("cls");
-	cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам!";
-	cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n";
-	cin >> userChoice;
-	Check(&userChoice, 0, 2);
-	if (!userChoice)
-		return;
-	cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n";
-	cin >> userType;
-	Check(&userType, 1, 2);
-	system("cls");
+	short userChoice=0, userType;
+	do 
+	{
+		system("cls");
+		cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам!";
+		cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n";
+		cin >> userChoice;
+		Check(&userChoice, 0, 2);
+		if (!userChoice)
+			return;
+		cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n";
+		cin >> userType;
+		Check(&userType, 1, 2);
+		system("cls");
 
-	switch (userType)
-	{
-	case STUDENT:
-	{
-		Student* ptrCurrentStudent = nullptr;
-		if (userChoice == REGISTRATION)
-			ptrCurrentStudent = Registration(ptrCurrentStudent);
-		else if (userChoice == LOGIN)
-			ptrCurrentStudent = Login(ptrCurrentStudent);
-		if(ptrCurrentStudent)
-			ptrCurrentStudent->Menu(LoadTestsWithFilter(ptrCurrentStudent->GetCourse(), ptrCurrentStudent->GetPtrSubjectList()));
-
-		ptrCurrentStudent = nullptr;
-		break;
-	}
-	case TEACHER:
-	{
-		Teacher* ptrCurrentTeacher = nullptr;
-		if (userChoice == REGISTRATION)
-			ptrCurrentTeacher = Registration(ptrCurrentTeacher);
-		else if (userChoice == LOGIN)
-			ptrCurrentTeacher = Login(ptrCurrentTeacher);
-		if (ptrCurrentTeacher)
+		switch (userType)
 		{
-			string teacherSubject = ptrCurrentTeacher->GetSubject();
-			//shared_ptr<list<Test*>> ptrFilteredTest(LoadTestsWithFilter(teacherSubject));
-			list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
-			ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
-			if (ptrFilteredTest->size())
-				this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
-			delete ptrFilteredTest;//smart pointer
+		case STUDENT:
+		{
+			Student* ptrCurrentStudent = nullptr;
+			if (userChoice == REGISTRATION)
+				ptrCurrentStudent = Registration(ptrCurrentStudent);
+			else if (userChoice == LOGIN)
+				ptrCurrentStudent = Login(ptrCurrentStudent);
+			if (ptrCurrentStudent)
+				ptrCurrentStudent->Menu(LoadTestsWithFilter(ptrCurrentStudent->GetCourse(), ptrCurrentStudent->GetPtrSubjectList()));
+
+			ptrCurrentStudent = nullptr;
+			break;
 		}
-		ptrCurrentTeacher = nullptr;
-		break;
-	}
-	default:
-		return;
-	}
+		case TEACHER:
+		{
+			Teacher* ptrCurrentTeacher = nullptr;
+			if (userChoice == REGISTRATION)
+				ptrCurrentTeacher = Registration(ptrCurrentTeacher);
+			else if (userChoice == LOGIN)
+				ptrCurrentTeacher = Login(ptrCurrentTeacher);
+			if (ptrCurrentTeacher)
+			{
+				string teacherSubject = ptrCurrentTeacher->GetSubject();
+				//shared_ptr<list<Test*>> ptrFilteredTest(LoadTestsWithFilter(teacherSubject));
+				list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
+				ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
+				if (ptrFilteredTest->size())
+					this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
+				delete ptrFilteredTest;//smart pointer
+			}
+			ptrCurrentTeacher = nullptr;
+			break;
+		}
+		}
+	} while (userChoice);
+	
+	
 }
 
 void DataBase::PrintAllTests()
@@ -367,6 +370,8 @@ Student* DataBase::Registration(Student* ptrStudent)
 	int id;
 	hash<int> hashFunctionInt;
 	id = hashFunctionInt(User::GetEntityCount());
+	if (id < 0)
+		id *= -1;
 	cout << "\nВаш уникальный ID = " << id << " пожалуйста, запомните его!";
 
 	cout << "\nВведите ФИО\n";
@@ -381,7 +386,7 @@ Student* DataBase::Registration(Student* ptrStudent)
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
 	int group, course;
 	cout << "\nВведите факультет\n";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, faculty);
 	cout << "\nВведите группу\n";
 	cin >> group;
@@ -412,6 +417,8 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 	hash<int> hashFunctionInt;
 	cin.ignore();
 	id = hashFunctionInt(User::GetEntityCount());
+	if (id < 0)
+		id *= -1;
 	cout << "\nВаш уникальный ID = " << id << " пожалуйста, запомните его!";
 	cout << "\nВведите ФИО\n";
 	getline(cin, fullName);
@@ -424,7 +431,7 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 	string subject;
 	shared_ptr<list<int>> ptrGroupList ( new list<int>);
 	cout << "\nВведите преподаваемую дисциплину: \n";
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, subject);
 	cout << "\nВведите группы, в которых преподаете\nВыйти - 0\n";
 	while (true)
@@ -497,6 +504,7 @@ Student* DataBase::Login(Student* userStudent)
 		}
 	}
 	cout << "\nПользователь не найден\n";
+	system("pause");
 	return nullptr;
 }
 
@@ -520,6 +528,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 		}
 	}
 	cout << "\nПользователь не найден\n";
+	system("pause");
 	return nullptr;
 }
 

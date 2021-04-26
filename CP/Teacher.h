@@ -47,7 +47,7 @@ public:
     shared_ptr<list<int>> ptrGetGroupList();
     Test* CreateTest();
     Question* CreateQuestion(int);
-    void PrintAvailableTest(list<Test*>**);
+    bool PrintAvailableTest(list<Test*>**);
     void PrintOwnStudents(list<Student*>*);
     Test* SearchAvailableTest(list<Test*>**);
     friend void EditTest(Teacher*, Test*,bool*);

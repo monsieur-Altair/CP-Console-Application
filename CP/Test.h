@@ -42,7 +42,7 @@ void Check(T* value, double min = -10000000, double max = 1000000)
 	cin.ignore(500, '\n');
 	do
 	{
-		cout << "\nНеверный ввод!\nВведите новое значение: ";
+		cout << "\nНеверный ввод!Вводить можно только цифры и в разумных пределах!\nВведите новое значение: ";
 		char x = 0;
 		*value = 0;
 		bool isMinus = false, isAppear = false;

@@ -6,7 +6,8 @@ using namespace std;
 class User
 {
 	string fullName; 
-	int id, hashedPassword;
+	int id;
+	float hashedPassword;
 	static int entityCount;
 public:
 	User();
@@ -20,10 +21,10 @@ public:
 	virtual void PrintInformation() = 0;
 	void PrintUserInformation();
 	void Unload(ofstream&);
-	bool Searching(int, int);
+	bool Searching(int, float);
 	int GetID();
 	string GetName();
-	int GetHashedPassword();
+	//float GetHashedPassword();
 	static int GetEntityCount();
 };
 

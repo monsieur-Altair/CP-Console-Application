@@ -214,7 +214,8 @@ void DataBase::AuthorizationMenu()
 	if (!userChoice)
 		return;
 	cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n";
-	Check(&userType, 0, 1);
+	cin >> userType;
+	Check(&userType, 1, 2);
 	system("cls");
 
 	switch (userType)
@@ -476,7 +477,7 @@ Student* DataBase::Login(Student* userStudent)
 	Check(&id, 0, 999999999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
-	int hashedPassword = hashFunction(password);
+	float hashedPassword = hashFunction(password);
 	for (auto ptrStudent : listOfStudents)
 	{
 		if (ptrStudent->Searching(id, hashedPassword))
@@ -499,7 +500,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	Check(&id, 0, 99999999999);
 	cout << "\nВведите свой пароль ";
 	cin >> password;
-	int hashedPassword = hashFunction(password);
+	float hashedPassword = hashFunction(password);
 	for (auto ptrTeacher : listOfTeachers)
 	{
 		if (ptrTeacher->Searching(id, hashedPassword))

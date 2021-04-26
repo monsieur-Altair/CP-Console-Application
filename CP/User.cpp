@@ -36,7 +36,7 @@ void User::Unload(ofstream& file)
 	file << this->fullName << "\n" << this->hashedPassword << "\n" << this->id << "\n";
 }
 
-bool User::Searching(int id, int hashedPassword)
+bool User::Searching(int id, float hashedPassword)
 {
 	return ((this->id == id) && (this->hashedPassword == hashedPassword));
 }
@@ -51,10 +51,10 @@ string User::GetName()
 	return this->fullName;
 }
 
-int User::GetHashedPassword()
-{
-	return this->hashedPassword;
-}
+//float User::GetHashedPassword()
+//{
+//	return this->hashedPassword;
+//}
 
 int User::GetEntityCount()
 {

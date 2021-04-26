@@ -52,7 +52,7 @@ public:
     Test* SearchAvailableTest(list<Test*>**);
     friend void EditTest(Teacher*, Test*,bool*);
     string GetSubject();
-    int GetHashedPassword();
+    //float GetHashedPassword();
 };
 
 //bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)

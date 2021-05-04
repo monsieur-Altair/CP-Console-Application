@@ -10,6 +10,7 @@ Test::Test()
 	this->course = 0;
 	this->subject = "";
 	this->uniqueID = 0;
+	this->ptrQuestionList = nullptr;
 	cout << "\nКонструктор TEST " << this;
 	entityCount++;
 }
@@ -39,9 +40,12 @@ Test::Test(string DataFilePath)
 
 Test::~Test()
 {
-	for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
-		delete (*iter);
-	delete ptrQuestionList;
+	if (ptrQuestionList)
+	{
+		for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
+			delete (*iter);
+		delete ptrQuestionList;
+	}
 #ifdef DEBUG
 	cout << "\nДеструктор TEST " << this;
 #endif // DEBUG

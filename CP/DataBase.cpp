@@ -639,6 +639,7 @@ list<Test*>* DataBase::LoadTestsWithFilter(int course, shared_ptr<list<string>> 
 list<Test*>* DataBase::LoadTestsWithFilter(string subject)
 {
 	list<Test*>* ptrFilteredTestList = new list<Test*>;
+	listOfTests.push_front(new Test());
 	for (auto iter = listOfTests.begin(); iter != listOfTests.end(); iter++)
 		if ((*iter)->GetSubject() == subject)
 		{
@@ -646,6 +647,9 @@ list<Test*>* DataBase::LoadTestsWithFilter(string subject)
 			advance(iter, -1);
 			ptrFilteredTestList->splice(ptrFilteredTestList->end(), listOfTests, iter1);
 		}
+	auto iter = listOfTests.begin();
+	delete* iter;
+	listOfTests.erase(iter);
 	return ptrFilteredTestList;
 }
 

@@ -62,6 +62,12 @@ Student::~Student()
 
 void Student::Menu(list<Test*>* ptrFilteredTestList)
 {
+	//
+	list<Test*>* ptrSolvedFullTest = new list<Test*>;
+	this->DeleteSolvedFromFilteredList(ptrFilteredTestList, ptrSolvedFullTest);
+	//
+
+
 	while (true)
 	{
 		short choice;
@@ -74,8 +80,9 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		cout << "\n8 - Отсортировать список доступных по предметам (А-Я)\n0 - Выйти\n\n";
 		cin >> choice;
 		Check(&choice, 0, SORT_AVAILABLE_BY_SUBJECTS);
-		list<Test*>* ptrSolvedFullTest = new list<Test*>;
-		//this->DeleteSolvedFromFilteredList(ptrFilteredTestList, ptrSolvedFullTest);
+
+
+		
 		system("cls");
 		switch (choice)
 		{
@@ -87,7 +94,8 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 				int number;
 				cout << "\n\nВведите номер желаемого теста (1 колонка)\n";
 				cin >> number;
-				Check(&number, 1, countPrintedTests);
+				Check(&number, 1, ptrFilteredTestList->size());
+				//Check(&number, 1, countPrintedTests);
 				auto iter = ptrFilteredTestList->begin();
 				advance(iter, number - 1);
 				Test* currentTest = *iter;
@@ -127,38 +135,58 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			auto iter = ptrSolvedTestList->begin();
 			advance(iter, number - 1);
 			SolvedTest* ptrSolvedTest = (*iter);
-			Test* ptrOriginalTest = SearchTestWithID(ptrFilteredTestList, ptrSolvedTest->GetID());
+			Test* ptrOriginalTest = SearchTestWithID(ptrSolvedFullTest, ptrSolvedTest->GetID());
 			system("cls");
+			if (ptrOriginalTest == nullptr)
+			{
+				cout << "\nТест не найден\n";
+				break;
+			}
 			ViewQuestionAndUserAnswer(ptrSolvedTest, ptrOriginalTest);
 			break;
 		}
 		case SORT_SOLVED_BY_SUBJECTS:
-			if (ptrSolvedTestList->size())
+		{
+			int size = ptrSolvedTestList->size();
+			if (size == 0)
+				cout << "\nСписок пуст\n";
+			else if (size == 1)
+				cout << "\nВ списке один элемент\n";
+			else
 			{
 				ptrSolvedTestList->sort(sort::SortSolvedBySubject);
-				cout << "\nСписок осортирован\n";
+				cout << "\nСписок отсортирован\n";
 			}
-			else
-				cout << "\nСписок пуст\n";
 			break;
+		}
 		case SORT_SOLVED_BY_PERCENTAGE:
-			if (ptrSolvedTestList->size())
+		{
+			int size = ptrSolvedTestList->size();
+			if (size == 0)
+				cout << "\nСписок пуст\n";
+			else if (size == 1)
+				cout << "\nВ списке один элемент\n";
+			else
 			{
 				ptrSolvedTestList->sort(sort::SortByAnswerPercentage);
 				cout << "\nСписок отсортирован\n";
 			}
-			else
-				cout << "\nСписок пуст\n";
 			break;
+		}
 		case SORT_AVAILABLE_BY_SUBJECTS:
-			if (ptrFilteredTestList->size())
+		{
+			int size = ptrFilteredTestList->size();
+			if (size == 0)
+				cout << "\nСписок пуст\n";
+			else if (size == 1)
+				cout << "\nВ списке один элемент\n";
+			else
 			{
 				ptrFilteredTestList->sort(sort::SortTestBySubject);
 				cout << "\nСписок отсортирован\n";
 			}
-			else
-				cout << "\nСписок пуст\n";
 			break;
+		}
 		default:
 			delete ptrFilteredTestList;
 			return;
@@ -223,29 +251,55 @@ bool Student::CheckSolvedTestList(Test* somePtrTest)
 	return true;
 }
 
+//bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, int* countPrintedTests)
+//{
+//	*countPrintedTests = 0;
+//	if (!ptrFilteredTestList->size())
+//	{
+//		cout << "\nДоступных тестов нет\n";
+//		return false;
+//	}
+//	int i = 1;
+//	cout << "№\tID\t\tПредмет\tКурс\tКраткое описание\n";
+//	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++,i++)
+//	{
+//		if (!CheckSolvedTestList(*iter))
+//			continue;
+//		cout << "\n " << i << ") ";
+//		(*iter)->PrintTestBriefly();
+//		(*countPrintedTests)++;
+//	}
+//	if (!(*countPrintedTests))
+//	{
+//		cout << "\n\nВы решили все доступные тесты\n";
+//		return false;
+//	}
+//	return true;
+//}
+
 bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, int* countPrintedTests)
 {
 	*countPrintedTests = 0;
 	if (!ptrFilteredTestList->size())
 	{
-		cout << "\nДоступных тестов нет\n";
+		cout << "\nДоступных тестов нет или вы решили все доступные тесты\n";
 		return false;
 	}
 	int i = 1;
 	cout << "№\tID\t\tПредмет\tКурс\tКраткое описание\n";
-	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++,i++)
+	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
 	{
-		if (!CheckSolvedTestList(*iter))
-			continue;
-		cout << "\n " << i << ") ";
+		//if (!CheckSolvedTestList(*iter))
+		//	continue;
+		cout << "\n " << i++ << ") ";
 		(*iter)->PrintTestBriefly();
-		(*countPrintedTests)++;
+		//(*countPrintedTests)++;
 	}
-	if (!(*countPrintedTests))
-	{
-		cout << "\n\nВы решили все доступные тесты\n";
-		return false;
-	}
+	//if (!(*countPrintedTests))
+	//{
+	//	cout << "\n\nВы решили все доступные тесты\n";
+	//	return false;
+	//}
 	return true;
 }
 
@@ -264,6 +318,30 @@ bool Student::PrintAllSolvedTestBriefly()
 		(*iter)->PrintBriefly();
 	}
 	return true;
+}
+
+void Student::DeleteSolvedFromFilteredList(list<Test*>* ptrFilteredTestList , list<Test*>* ptrSolvedFullTest)
+{
+	if (ptrFilteredTestList->size() == 0)
+		return;
+	ptrFilteredTestList->push_front(new Test());
+
+	for (auto iterOrigTest = ptrFilteredTestList->begin(); iterOrigTest != ptrFilteredTestList->end(); iterOrigTest++)
+	{
+		for(auto iterSolvedTest=ptrSolvedTestList->begin();iterSolvedTest!=ptrSolvedTestList->end();iterSolvedTest++)
+			if ((*iterOrigTest)->GetID() == (*iterSolvedTest)->GetID())
+			{
+				auto iterCopy = iterOrigTest;
+				advance(iterOrigTest, -1);
+				ptrSolvedFullTest->splice(ptrSolvedFullTest->end(), *ptrFilteredTestList, iterCopy);
+				break;
+			}
+	}
+
+
+	auto iter = ptrFilteredTestList->begin();
+	delete* iter;
+	ptrFilteredTestList->erase(iter);
 }
 
 
@@ -293,9 +371,9 @@ void Student::DeleteEditedSolvedTest(int uniqueID)
 		}
 }
 
-Test* SearchTestWithID(list<Test*>* ptrFilteredTestList, int testID)
+Test* SearchTestWithID(list<Test*>* ptrTestList, int testID)
 {
-	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
+	for (auto iter = ptrTestList->begin(); iter != ptrTestList->end(); iter++)
 		if (testID == (*iter)->GetID())
 			return (*iter);
 	return nullptr;

@@ -72,6 +72,10 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			cin >> number;
 			auto iter = (*ptrFilteredTestList)->begin();
 			advance(iter, number - 1);
+
+			for (auto ptrStudent : *ptrFilteredStudentList)
+				ptrStudent->DeleteEditedSolvedTest((*iter)->GetID());
+			
 			delete* iter;
 			(*ptrFilteredTestList)->erase(iter);
 			break;
@@ -142,23 +146,33 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		}
 		case SORT_STUDENTS_BY_GROUPS:
-			if (ptrFilteredStudentList->size())
+		{
+			int size = ptrFilteredStudentList->size();
+			if (size == 0)
+				cout << "\nСписок пуст\n";
+			else if (size == 1)
+				cout << "\nВ списке один элемент\n";
+			else
 			{
 				ptrFilteredStudentList->sort(sort::SortStudentByGroups);
 				cout << "\nСписок отсортирован\n";
 			}
-			else
-				cout << "\nСписок пуст\n";
 			break;
+		}
 		case SORT_STUDENT_ALPHABETICAL:
-			if (ptrFilteredStudentList->size())
+		{
+			int size = ptrFilteredStudentList->size();
+			if (size == 0)
+				cout << "\nСписок пуст\n";
+			else if (size == 1)
+				cout << "\nВ списке один элемент\n";
+			else
 			{
 				ptrFilteredStudentList->sort(sort::SortStudentAlphabetic);
 				cout << "\nСписок отсортирован\n";
 			}
-			else
-				cout << "\nСписок пуст\n";
 			break;
+		}
 		default:
 			return;
 		}

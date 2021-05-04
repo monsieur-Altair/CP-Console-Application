@@ -1,3 +1,4 @@
 D:\OOP\CP\тест1.txt
 D:\OOP\CP\тест2.txt
 D:\OOP\CP\тест3.txt
+D:\OOP\CP\тест4.txt

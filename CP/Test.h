@@ -36,7 +36,7 @@ public:
 template<class T>
 void Check(T* value, double min = -10000000, double max = 1000000)
 {
-	if (cin.good())
+	if (cin.good() && (*value) >= min && (*value) <= max)
 		return;
 	cin.clear();
 	cin.ignore(500, '\n');

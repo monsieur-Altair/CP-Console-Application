@@ -110,6 +110,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			break;
 		}
 		case VIEW_OWN_INF:
+			cout << "\tФИО\t\t\t\tПароль\t\tID\t\tФ-тет\tКурс\tГруппа\tПредметы\n";
 			this->PrintInformation();
 			break;
 		case VIEW_ALL_SOLVED_TESTS_BRIEFLY:
@@ -231,6 +232,7 @@ bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, in
 		return false;
 	}
 	int i = 1;
+	cout << "№\tID\t\tПредмет\tКурс\tКраткое описание\n";
 	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++,i++)
 	{
 		if (!CheckSolvedTestList(*iter))
@@ -255,6 +257,7 @@ bool Student::PrintAllSolvedTestBriefly()
 		return false;
 	}
 	int i = 1;
+	cout << "№\tID\t\tПредмет\tБаллы\tКраткое описание\n";
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
 	{
 		cout << "\n" << i++ << ") ";

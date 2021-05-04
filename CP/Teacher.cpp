@@ -77,6 +77,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		}
 		case VIEW_OWN_INF:
+			cout << "\tФИО\t\t\t\tПароль\t\tID\t\tПредмет\tГруппы\n";
 			this->PrintInformation();
 			break;
 		case EDIT_TEST:
@@ -128,7 +129,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			Check(&number, 1, ptrFilteredStudentList->size());
 			auto ptrStudentIter = ptrFilteredStudentList->begin();
 			advance(ptrStudentIter, number - 1);
-			cout << "\nРешенные тесты студента " << (*ptrStudentIter)->GetName();
+			cout << "\nРешенные тесты студента " << (*ptrStudentIter)->GetName()<<"\n";
 			(*ptrStudentIter)->PrintAllSolvedTestBriefly();
 			break;
 		}
@@ -259,6 +260,7 @@ bool Teacher::PrintAvailableTest(list<Test*>** ptrFilteredTestList)
 		return false;
 	}
 	int i = 1;
+	cout << "№\tID\t\tПредмет\tКурс\tКраткое описание\n";
 	for (auto ptrTest : **ptrFilteredTestList)
 	{
 		cout << "\n" << i++ << ") ";
@@ -275,6 +277,7 @@ void Teacher::PrintOwnStudents(list<Student*>* ptrFilteredStudentList)
 		return;
 	}
 	int i = 1;
+	cout << "№\tФИО\t\t\t\tПароль\t\tID\t\tФ-тет\tКурс\tГруппа\tПредметы\n";
 	for (auto ptrStudent : *ptrFilteredStudentList)
 	{
 		cout << "\n" << i++ << ") ";

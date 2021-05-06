@@ -23,7 +23,7 @@ public:
     Student
     (
         string, //name
-        int, //Hashed password
+        int,    //Hashed password
         string, //faculty
         int,    //id
         int,    //group

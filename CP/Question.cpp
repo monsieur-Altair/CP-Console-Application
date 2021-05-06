@@ -2,12 +2,14 @@
 
 Question::Question()
 {
-	this->question = "вопрос";
+	this->question = "";
 	this->answerOptions = nullptr;
 	this->numberOfAnswers = 0;
 	correctAnswerOption = 0;
 	pointsPerQuestion = 0;
+#ifdef DEBUG
 	cout << "\nКонструктор QUESTION " << this;
+#endif
 }
 
 Question::Question(string question, string* answ, int correctAnswerOption, int pointsPerQuestion, int numberOfAnswers)
@@ -17,13 +19,17 @@ Question::Question(string question, string* answ, int correctAnswerOption, int p
 	this->answerOptions = answ;
 	this->correctAnswerOption = correctAnswerOption;
 	this->pointsPerQuestion = pointsPerQuestion;
+#ifdef DEBUG
 	cout << "\nКонструктор QUESTION " << this;
+#endif
 }
 
 Question::~Question()
 {
 	delete[] answerOptions;
+#ifdef DEBUG
 	cout << "\nДеструктор QUESTION " << this;
+#endif
 }
 
 int Question::GetPoints()

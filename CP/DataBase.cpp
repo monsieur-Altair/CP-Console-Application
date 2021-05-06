@@ -2,7 +2,9 @@
 
 DataBase::DataBase()
 {
+#ifdef DEBUG
 	cout << "\nКонструктор DATABASE " << this;
+#endif
 }
 
 DataBase::DataBase(string dataBaseFilePath)//можно разбить на маленькие функции
@@ -204,12 +206,11 @@ void DataBase::AuthorizationMenu()
 			if (ptrCurrentTeacher)
 			{
 				string teacherSubject = ptrCurrentTeacher->GetSubject();
-				//shared_ptr<list<Test*>> ptrFilteredTest(LoadTestsWithFilter(teacherSubject));
 				list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
 				ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
 				if (ptrFilteredTest->size())
 					this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
-				delete ptrFilteredTest;//smart pointer
+				delete ptrFilteredTest;
 			}
 			ptrCurrentTeacher = nullptr;
 			break;
@@ -273,7 +274,6 @@ Student* DataBase::Registration(Student* ptrStudent)
 	list<SolvedTest*>* ptrSolvedTestList = new list<SolvedTest*>;
 	int group, course;
 	cout << "\nВведите факультет\n";
-	//cin.ignore();
 	getline(cin, faculty);
 	cout << "\nВведите группу\n";
 	cin >> group;
@@ -313,12 +313,11 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 	getline(cin, password);
 
 	hash<string> hashFunction;
-	int  hashedPassword = hashFunction(password);
+	int hashedPassword = hashFunction(password);
 
 	string subject;
 	shared_ptr<list<int>> ptrGroupList ( new list<int>);
 	cout << "\nВведите преподаваемую дисциплину: \n";
-	//cin.ignore();
 	getline(cin, subject);
 	cout << "\nВведите группы, в которых преподаете\nВыйти - 0\n";
 	while (true)
@@ -344,7 +343,7 @@ Student* DataBase::Login(Student* userStudent)
 	cout << "\nВведите свой ID ";
 	cin >> id;
 	Check(&id, 0, 999999999999);
-	cout << "\nВведите свой пароль ";
+	cout << "\nВведите свой пароль (без пробелов)";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
 	for (auto ptrStudent : listOfStudents)
@@ -368,7 +367,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	cout << "\nВведите свой ID ";
 	cin >> id;
 	Check(&id, 0, 99999999999);
-	cout << "\nВведите свой пароль ";
+	cout << "\nВведите свой пароль без пробелов";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
 	for (auto ptrTeacher : listOfTeachers)
@@ -530,7 +529,6 @@ Teacher* CreateTeacherFromFile(string filePath)
 	if (!file.is_open())
 		exit(-9);
 	getline(file, name);
-	//getline(file, hashedPassword);
 	file >> hashedPassword;
 	file.seekg(sizeof("\n"), ios::cur);
 	file >> id;

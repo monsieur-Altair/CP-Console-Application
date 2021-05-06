@@ -5,7 +5,9 @@ Teacher::Teacher() :User()
 {
 	this->subject = "";
 	this->ptrGroupList = nullptr;
+#ifdef DEBUG
 	cout << "\nКонструктор TEACHER " << this;
+#endif
 }
 
 Teacher::Teacher
@@ -18,15 +20,17 @@ Teacher::Teacher
 ) : User(name, hashedPassword, id)
 {
 	this->subject = subject;
-	this->ptrGroupList = ptrList;
+	this->ptrGroupList = ptrList; 
+#ifdef DEBUG
 	cout << "\nКонструктор TEACHER " << this;
+#endif
 }
 
 Teacher::~Teacher()
 {
-	//if(this)
-	//delete ptrGroupList;
+#ifdef DEBUG
 	cout << "\nДеструктор TEACHER " << this;
+#endif
 }
 
 void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFilteredStudentList)
@@ -52,19 +56,6 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 		}
 		case DELETE_TEST:
 		{
-			//string uniqueID;
-			//PrintAvailableTest(ptrFilteredTestList);
-			//cout << "\nВведите ID теста (1 колонка)\n";
-			//cin >> uniqueID;
-			//for (auto iter = (*ptrFilteredTestList)->begin(); iter != (*ptrFilteredTestList)->end(); iter++)
-			//{
-			//	if ((*iter)->GetID() == uniqueID)
-			//	{
-			//		delete* iter;
-			//		(*ptrFilteredTestList)->erase(iter);
-			//		break;
-			//	}
-			//}
 			int number;
 			if (!PrintAvailableTest(ptrFilteredTestList))
 				break;
@@ -114,18 +105,6 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		case VIEW_ONE_STUDENT:
 		{
-			//PrintOwnStudents(ptrFilteredStudentList);
-			//int ID;
-			//cout << "\nВведите ID студента: ";
-			//cin >> ID;
-			//Check(&ID, 1, 100000000);
-			//for (auto ptrStudent : *ptrFilteredStudentList)
-			//	if (ptrStudent->GetID() == ID)
-			//	{
-			//		cout << "\nРешенные тесты студента " << ptrStudent->GetName();
-			//		ptrStudent->PrintAllSolvedTestBriefly();
-			//		break;
-			//	}
 			PrintOwnStudents(ptrFilteredStudentList);
 			int number;
 			cout << "\nВведите номер студента: ";
@@ -218,9 +197,7 @@ Test* Teacher::CreateTest()
 	int course, uniqueID, answersNumber;
 	hash<int> hashFunction;
 	list<Question*>* ptrQuestionList = new list<Question*>;
-	//cout << "\nВведите уникальный ID теста: ";
 	cin.ignore();
-	//getline(cin, uniqueID);
 	uniqueID = hashFunction(Test::GetEntityCount());
 	cout << "\nВведите краткое описание теста: ";
 	getline(cin, shortDiscription);
@@ -301,13 +278,6 @@ void Teacher::PrintOwnStudents(list<Student*>* ptrFilteredStudentList)
 
 Test* Teacher::SearchAvailableTest(list<Test*>** ptrFilteredTestList)
 {
-	//string uniqueID;
-	//cout << "\nВведите ID теста (1 колонка)\n";
-	//cin >> uniqueID;
-	//for (auto test : **ptrFilteredTestList)
-	//	if (test->GetID() == uniqueID)
-	//		return test;
-	//cout << "\nТест не найден\n";
 	int number;
 	cout << "\nВведите номер теста (1 колонка)\n";
 	cin >> number;
@@ -315,7 +285,6 @@ Test* Teacher::SearchAvailableTest(list<Test*>** ptrFilteredTestList)
 	auto iter = (*ptrFilteredTestList)->begin();
 	advance(iter, number - 1);
 	return *iter;
-	//return nullptr;
 }
 
 void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
@@ -341,8 +310,9 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 		switch (value)
 		{
 		case 1:
+			cin.ignore();
 			cout << "\nВведите новое краткое описание\n";
-			cin >> ptrTest->shortDescription;
+			getline(cin, ptrTest->shortDescription);
 			*isEdit = true;
 			break;
 		case 2:
@@ -360,53 +330,6 @@ void EditTest(Teacher* ptrTeacher, Test* ptrTest, bool* isEdit)
 					break;
 				auto iter = ptrTest->ptrQuestionList->begin();
 				advance(iter, number - 1);
-				//do
-				//{
-				//	system("cls");
-				//	cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
-				//	cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n6 - Добавить новый вопрос\n0 - Выйти\n\n";
-				//	cin >> value;
-				//	Check(&value, 0, Teacher::ADD_NEW_QUESTION);
-				//	if (value)
-				//		*isEdit = true;
-				//	switch (value)
-				//	{
-				//	case Teacher::DELETE:
-				//		delete * iter;
-				//		ptrTest->ptrQuestionList->erase(iter);
-				//		break;
-				//	case Teacher::CHANGE_QUESTION:
-				//		cout << "\nВведите новый вопрос: ";
-				//		cin.ignore();
-				//		getline(cin, (*iter)->question);
-				//		break;
-				//	case Teacher::CHANGE_ANSWER_OPTION:
-				//		for (int i = 0; i < (*iter)->numberOfAnswers; i++)
-				//			cout << "\nОтвет №" << i + 1 << " :" << (*iter)->answerOptions[i];
-				//		cout << "\n\nВведите номер ответа для изменения: ";
-				//		cin >> number;
-				//		cin.ignore();
-				//		cout << "\nВведите новый ответ: ";
-				//		getline(cin, (*iter)->answerOptions[number - 1]);
-				//		break;
-				//	case Teacher::CHANGE_CORRECT_ANSWER:
-				//		cout << "\n" << (*iter)->question;
-				//		for (int i = 0; i < (*iter)->numberOfAnswers; i++)
-				//			cout << "\nОтвет №" << i + 1 << " :" << (*iter)->answerOptions[i];
-				//		cout << "\nВведите новый правильный вариант ответа: ";
-				//		cin >> (*iter)->correctAnswerOption;
-				//		break;
-				//	case Teacher::CHANGE_POINTS:
-				//		cout << "\nВведите новое количество баллов за вопрос: ";
-				//		cin >> (*iter)->pointsPerQuestion;
-				//		break;
-				//	case Teacher::ADD_NEW_QUESTION:
-				//		ptrTest->ptrQuestionList->push_back(ptrTeacher->CreateQuestion((*iter)->numberOfAnswers));
-				//		break;
-				//	default:
-				//		break;
-				//	}
-				//} while (!value);
 				system("cls");
 				cout << "\nЧто вы хотите сделать с вопросом?\n1 - удалить\n2 - изменить вопрос\n3 - изменить вариант ответа";
 				cout << "\n4 - изменить правильный вариант ответа\n5 - изменить количество баллов за вопрос\n6 - Добавить новый вопрос\n0 - Выйти\n\n";

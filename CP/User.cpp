@@ -4,7 +4,7 @@ int User::entityCount = 0;
 
 User::User()
 {
-	this->fullName = "имя";
+	this->fullName = "";
 	this->hashedPassword = 0;
 	this->id = 0;
 	cout << "\nКонструктор USER " << this;
@@ -22,7 +22,9 @@ User::User(string name, int hashedPassword, int id)
 
 User::~User()
 {
+#ifdef DEBUG
 	cout << "\nДеструктор USER " << this;
+#endif
 	entityCount--;
 }
 

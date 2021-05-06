@@ -8,19 +8,26 @@ SolvedTest::SolvedTest(shared_ptr<list<int>> answers, string shortDiscription, i
 	this->shortDiscription = shortDiscription;
 	this->uniqueID = uniqueID;
 	this->subject = subject;
+#ifdef DEBUG
 	cout << "\nÊîíñòðóêòîð ÎÒÂÅÒÎÂ " << this;
+#endif
 }
 
 SolvedTest::~SolvedTest()
 {
 	//delete answers;
+#ifdef DEBUG
 	cout << "\nÄåñòðóêòîð ÎÒÂÅÒÎÂ " << this;
+#endif
 }
 
 
 void SolvedTest::PrintBriefly()
 {
-	cout <<"\t"<< this->uniqueID << "\t" << this->subject << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
+	cout << "\t" << this->uniqueID << "\t";
+	if (this->uniqueID < 9999999)
+		cout << "\t";
+	cout << this->subject << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
 }
 
 int SolvedTest::GetID()

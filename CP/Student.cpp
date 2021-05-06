@@ -2,22 +2,24 @@
 
 Student::Student() :User()
 {
-	this->faculty = "факультет";
+	this->faculty = "";
 	this->group = 0;
 	this->ptrSubjectList = nullptr;
+#ifdef DEBUG
 	cout << "\nКонструктор STUDENT " << this;
+#endif
 }
 
 Student::Student
 (
-	string name,
-	int hashedPassword,
-	string faculty,
-	int id,
-	int group,
-	int course,
+	string	name,
+	int		hashedPassword,
+	string	faculty,
+	int		id,
+	int		group,
+	int		course,
 	shared_ptr<list<string>> listPtr,
-	list<SolvedTest*>* ptrSolvedTest
+	list<SolvedTest*>*		 ptrSolvedTest
 ):User(name, hashedPassword, id)
 {
 	this->group = group;
@@ -25,7 +27,9 @@ Student::Student
 	this->course = course;
 	this->ptrSubjectList = listPtr;
 	this->ptrSolvedTestList = ptrSolvedTest;
+#ifdef DEBUG
 	cout << "\nКонструктор STUDENT " << this;
+#endif
 }
 
 Student::~Student()
@@ -34,8 +38,9 @@ Student::~Student()
 		delete* iter;
 	delete ptrSolvedTestList;
 	ptrSubjectList->clear();
-	//delete ptrSubjectList;
+#ifdef DEBUG
 	cout << "\nДеструктор STUDENT " << this;
+#endif
 }
 
 //void Student::DeleteSolvedFromFilteredList(list<Test*>* ptrFilteredTestList, list<Test*>* ptrSolvedFullTest)
@@ -137,7 +142,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			SolvedTest* ptrSolvedTest = (*iter);
 			Test* ptrOriginalTest = SearchTestWithID(ptrSolvedFullTest, ptrSolvedTest->GetID());
 			system("cls");
-			if (ptrOriginalTest == nullptr)
+			if (!ptrOriginalTest)
 			{
 				cout << "\nТест не найден\n";
 				break;
@@ -189,6 +194,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		}
 		default:
 			delete ptrFilteredTestList;
+			delete ptrSolvedFullTest;
 			return;
 		}
 		cout << "\n\n";
@@ -228,9 +234,7 @@ void Student::Unload(string path)
 	User::Unload(file);
 	file << this->faculty << "\n" << this->group << " " << this->course << " " << ptrSubjectList->size() << "\n";
 	for (auto iter = ptrSubjectList->begin(); iter != ptrSubjectList->end(); iter++)
-	{
 		file << (*iter) << "\n";
-	}
 	file << ptrSolvedTestList->size();
 	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
 		file << "\n" << *(*iter);
@@ -243,11 +247,9 @@ list<SolvedTest*>* Student::GetPtrSolvedTestList()
 
 bool Student::CheckSolvedTestList(Test* somePtrTest)
 {
-	for (auto somePtrSolvedTestIter = this->ptrSolvedTestList->begin(); somePtrSolvedTestIter != this->ptrSolvedTestList->end(); somePtrSolvedTestIter++)
-	{
+	for (auto somePtrSolvedTestIter = ptrSolvedTestList->begin(); somePtrSolvedTestIter != ptrSolvedTestList->end(); somePtrSolvedTestIter++)
 		if (somePtrTest->GetID() == (*somePtrSolvedTestIter)->GetID())
 			return false;
-	}
 	return true;
 }
 
@@ -279,7 +281,6 @@ bool Student::CheckSolvedTestList(Test* somePtrTest)
 
 bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, int* countPrintedTests)
 {
-	*countPrintedTests = 0;
 	if (!ptrFilteredTestList->size())
 	{
 		cout << "\nДоступных тестов нет или вы решили все доступные тесты\n";
@@ -289,17 +290,9 @@ bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, in
 	cout << "№\tID\t\tПредмет\tКурс\tКраткое описание\n";
 	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++)
 	{
-		//if (!CheckSolvedTestList(*iter))
-		//	continue;
 		cout << "\n " << i++ << ") ";
 		(*iter)->PrintTestBriefly();
-		//(*countPrintedTests)++;
 	}
-	//if (!(*countPrintedTests))
-	//{
-	//	cout << "\n\nВы решили все доступные тесты\n";
-	//	return false;
-	//}
 	return true;
 }
 
@@ -351,14 +344,6 @@ string Student::GetName()
 {
 	return User::GetName();
 }
-
-//SolvedTest* Student::SearchSolvedTestWithID(string testID)
-//{
-//	for (auto iter = ptrSolvedTestList->begin(); iter != ptrSolvedTestList->end(); iter++)
-//		if (testID == (*iter)->GetID())
-//			return (*iter);
-//	return nullptr;
-//}
 
 void Student::DeleteEditedSolvedTest(int uniqueID)
 {

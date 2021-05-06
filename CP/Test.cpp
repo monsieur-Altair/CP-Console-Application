@@ -11,7 +11,9 @@ Test::Test()
 	this->subject = "";
 	this->uniqueID = 0;
 	this->ptrQuestionList = nullptr;
+#ifdef DEBUG
 	cout << "\nКонструктор TEST " << this;
+#endif
 	entityCount++;
 }
 
@@ -54,10 +56,7 @@ Test::~Test()
 
 void Test::PrintTest()
 {
-	//cout << "\nТЕСТ " << this->uniqueID << "\nПредмет: " << this->subject;
-	//cout << "\nКурс: " << this->course << "\nКраткое описание: " << shortDescription;
-	//for (auto iter = ptrQuestionList->begin(); iter != ptrQuestionList->end(); iter++)
-	//	(*iter)->PrintQuestion();
+	system("cls");
 	cout << "\nПредмет: " << this->subject << "\nКурс: " << this->course << "\nКраткое описание: " << shortDescription << "\n";
 	system("pause");
 	system("cls");
@@ -82,7 +81,10 @@ int Test::GetNumberOfQuestions()
 
 void Test::PrintTestBriefly()
 {
-	cout << "\t" <<this->uniqueID << "\t" << this->subject;
+	cout << "\t" << this->uniqueID << "\t";
+	if (this->uniqueID < 9999999)
+		cout << "\t";
+	cout << this->subject;
 	cout << "\t" << this->course << "\t" << shortDescription;
 }
 
@@ -164,7 +166,7 @@ int Test::GetID()
 SolvedTest* Test::Solving()
 {
 	system("cls");
-	shared_ptr<list<int>> answers (new list<int>);
+	shared_ptr<list<int>> answers(new list<int>);
 	int answ, receivedPoints = 0;
 	cout << "\nДля решения предоставлен тест " << this->uniqueID << "\n" << this->shortDescription << "\n";
 	cout << "Количество вопросов: " << this->ptrQuestionList->size() << "\nНАЧАТЬ ТЕСТИРОВАНИЕ\n\n";

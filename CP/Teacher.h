@@ -32,51 +32,24 @@ public:
     Teacher();
     Teacher
     (
-        string,     //name
-        int,     //Hashed password
-        int,        //id
-        string,     //subject
+        string,  //name
+        int,     //hashed password
+        int,     //id
+        string,  //subject
         shared_ptr<list<int>>  //list of groups
     );
-
     ~Teacher();
-    void Menu(list<Test*>**,list<Student*>*);
+    void Unload(string)     override;
     void PrintInformation() override;
-    void Unload(string);
-
-    shared_ptr<list<int>> ptrGetGroupList();
-    Test* CreateTest();
-    Question* CreateQuestion(int);
-    bool PrintAvailableTest(list<Test*>**);
     void PrintOwnStudents(list<Student*>*);
-    Test* SearchAvailableTest(list<Test*>**);
-    friend void EditTest(Teacher*, Test*,bool*);
+    void Menu(list<Test*>**,list<Student*>*);
+    int  GetHashedPassword();
+    bool PrintAvailableTest(list<Test*>**);
+    shared_ptr<list<int>> ptrGetGroupList();
     string GetSubject();
-    int GetHashedPassword();
+    Test*  CreateTest();
+    Test*  SearchAvailableTest(list<Test*>**);
+    Question* CreateQuestion(int);
+    friend void EditTest(Teacher*, Test*,bool*);
+
 };
-
-//bool SortByAnswerPercentage(SolvedTest* ptr1, SolvedTest* ptr2)
-//{
-//    return (ptr1->GetPercent() > ptr2->GetPercent());
-//}
-//
-//bool SortSolvedBySubject(const SolvedTest* ptr1, const SolvedTest* ptr2)
-//{
-//    return (ptr1->subject.compare(ptr2->subject) < 0);
-//}
-
-
-//bool SortTestBySubject(const Test* ptr1, const Test* ptr2)
-//{
-//    return (ptr1->subject.compare(ptr2->subject) < 0);
-//}
-
-//bool SortStudentByGroups(const Student* ptr1, const Student* ptr2)
-//{
-//    return (ptr1->group) < (ptr2->group);
-//}
-//
-//bool SortStudentAlphabetic(Student* ptr1, Student* ptr2)
-//{
-//    return (ptr1->GetName().compare(ptr2->GetName()) < 0);
-//}

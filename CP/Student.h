@@ -29,7 +29,7 @@ public:
         int,    //group
         int,    //course
         shared_ptr<list<string>>, //strings for list
-        list<SolvedTest*>*
+        list<SolvedTest*>*        //list of solved test
     );
     ~Student();
 
@@ -37,14 +37,14 @@ public:
     int  GetGroup();
     void Menu(list<Test*>*);
     void PrintInformation() override;
-    void Unload(string);
+    void Unload(string)     override;
     bool CheckSolvedTestList(Test*);
-    bool PrintAvailableAndNoSolvedTest(list<Test*>*, int*);
+    bool PrintAvailableAndNoSolvedTest(list<Test*>*);
     bool PrintAllSolvedTestBriefly();
     void DeleteSolvedFromFilteredList(list<Test*>*, list<Test*>*);
     string GetName();
-    shared_ptr<list<string>>    GetPtrSubjectList();
-    list<SolvedTest*>*          GetPtrSolvedTestList();
+    shared_ptr<list<string>>GetPtrSubjectList();
+    list<SolvedTest*>*      GetPtrSolvedTestList();
     void DeleteEditedSolvedTest(int);
     friend bool sort::SortStudentByGroups(const Student*, const Student*);
     friend bool sort::SortStudentAlphabetic(Student*, Student*);

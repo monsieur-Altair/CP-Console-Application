@@ -18,3 +18,5 @@ int main()
 	//cout << sizeof('\n');
 	return 0;
 }
+
+//2069 строк 07.05

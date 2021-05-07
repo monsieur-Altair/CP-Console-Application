@@ -343,7 +343,7 @@ Student* DataBase::Login(Student* userStudent)
 	cout << "\n¬ведите свой ID ";
 	cin >> id;
 	Check(&id, 0, 999999999999);
-	cout << "\n¬ведите свой пароль (без пробелов)";
+	cout << "\n¬ведите свой пароль (без пробелов) ";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
 	for (auto ptrStudent : listOfStudents)
@@ -367,7 +367,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	cout << "\n¬ведите свой ID ";
 	cin >> id;
 	Check(&id, 0, 99999999999);
-	cout << "\n¬ведите свой пароль без пробелов";
+	cout << "\n¬ведите свой пароль (без пробелов) ";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
 	for (auto ptrTeacher : listOfTeachers)

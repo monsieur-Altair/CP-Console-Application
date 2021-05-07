@@ -25,7 +25,7 @@ SolvedTest::~SolvedTest()
 void SolvedTest::PrintBriefly()
 {
 	cout << "\t" << this->uniqueID << "\t";
-	if (this->uniqueID < 9999999)
+	if (abs(this->uniqueID) < 9999999)
 		cout << "\t";
 	cout << this->subject << "\t" << this->receivedPoints << "/" << this->maxPoints << "\t" << this->shortDiscription;
 }

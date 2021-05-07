@@ -82,7 +82,7 @@ int Test::GetNumberOfQuestions()
 void Test::PrintTestBriefly()
 {
 	cout << "\t" << this->uniqueID << "\t";
-	if (this->uniqueID < 9999999)
+	if (abs(this->uniqueID) < 9999999)
 		cout << "\t";
 	cout << this->subject;
 	cout << "\t" << this->course << "\t" << shortDescription;

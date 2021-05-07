@@ -9,9 +9,6 @@ class DataBase
 	list<Test*>		listOfTests;
 	list<Student*>	listOfStudents;
 	list<Teacher*>	listOfTeachers;
-
-	
-
 	enum MenuChoice
 	{
 		EXIT, REGISTRATION, LOGIN
@@ -37,13 +34,5 @@ public:
 	list<Test*>*	LoadTestsWithFilter(string);
 	list<Student*>* LoadStudentsFilter(string, shared_ptr<list<int>>);
 };
-
-
 Teacher* CreateTeacherFromFile(string);
 Student* CreateStudentFromFile(string);
-
-
-
-
-
-

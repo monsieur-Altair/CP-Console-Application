@@ -6,3 +6,30 @@ if(id<9999999)
 "\t\t"
 
 проверить нормально ли работает сплайс
+
+//bool Student::PrintAvailableAndNoSolvedTest(list<Test*>* ptrFilteredTestList, int* countPrintedTests)
+//{
+//	*countPrintedTests = 0;
+//	if (!ptrFilteredTestList->size())
+//	{
+//		cout << "\nДоступных тестов нет\n";
+//		return false;
+//	}
+//	int i = 1;
+//	cout << "№\tID\t\tПредмет\tКурс\tКраткое описание\n";
+//	for (auto iter = ptrFilteredTestList->begin(); iter != ptrFilteredTestList->end(); iter++,i++)
+//	{
+//		if (!CheckSolvedTestList(*iter))
+//			continue;
+//		cout << "\n " << i << ") ";
+//		(*iter)->PrintTestBriefly();
+//		(*countPrintedTests)++;
+//	}
+//	if (!(*countPrintedTests))
+//	{
+//		cout << "\n\nВы решили все доступные тесты\n";
+//		return false;
+//	}
+//	return true;
+//}
+

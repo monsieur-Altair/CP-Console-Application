@@ -2,7 +2,6 @@
 #include "Test.h"
 using namespace std;
 
-
 class User
 {
 	string fullName; 
@@ -13,17 +12,18 @@ public:
 	User
 	(
 		string, //name
-		int, //password
+		int,	//password
 		int		//id
 	);
 	virtual	~User();
 	virtual void PrintInformation() = 0;
+	virtual void Unload(string) = 0;
 	void PrintUserInformation();
 	void Unload(ofstream&);
 	bool Searching(int, int);
-	int GetID();
+	int  GetID();
+	int  GetHashedPassword();
 	string GetName();
-	int GetHashedPassword();
 	static int GetEntityCount();
 };
 

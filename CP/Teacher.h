@@ -45,7 +45,7 @@ public:
     void Menu(list<Test*>**,list<Student*>*);
     int  GetHashedPassword();
     bool PrintAvailableTest(list<Test*>**);
-    shared_ptr<list<int>> ptrGetGroupList();
+    shared_ptr<list<int>> GetPtrGroupList();
     string GetSubject();
     Test*  CreateTest();
     Test*  SearchAvailableTest(list<Test*>**);

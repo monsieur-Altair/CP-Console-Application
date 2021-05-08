@@ -186,7 +186,7 @@ string Teacher::GetSubject()
 	return this->subject;
 }
 
-shared_ptr<list<int>> Teacher::ptrGetGroupList()
+shared_ptr<list<int>> Teacher::GetPtrGroupList()
 {
 	return this->ptrGroupList;
 }

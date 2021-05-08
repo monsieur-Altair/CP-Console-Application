@@ -207,7 +207,7 @@ void DataBase::AuthorizationMenu()
 			{
 				string teacherSubject = ptrCurrentTeacher->GetSubject();
 				list<Test*>* ptrFilteredTest = LoadTestsWithFilter(teacherSubject);
-				ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->ptrGetGroupList()));
+				ptrCurrentTeacher->Menu(&ptrFilteredTest, LoadStudentsFilter(teacherSubject, ptrCurrentTeacher->GetPtrGroupList()));
 				if (ptrFilteredTest->size())
 					this->listOfTests.splice(listOfTests.end(), *ptrFilteredTest);//обратно измененный фильтрованный список возращаем в бд
 				delete ptrFilteredTest;

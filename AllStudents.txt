@@ -2,3 +2,11 @@ D:\OOP\CP\студент1.txt
 D:\OOP\CP\студент2.txt
 D:\OOP\CP\студент3.txt
 D:\OOP\CP\студент4.txt
+D:\OOP\CP\студент5.txt
+D:\OOP\CP\студент6.txt
+D:\OOP\CP\студент7.txt
+D:\OOP\CP\студент8.txt
+D:\OOP\CP\студент9.txt
+D:\OOP\CP\студент10.txt
+D:\OOP\CP\студент11.txt
+D:\OOP\CP\студент12.txt

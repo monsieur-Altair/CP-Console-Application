@@ -31,9 +31,9 @@ User::~User()
 void User::PrintUserInformation()
 {
 	if(fullName.size()<24)
-		cout << "\t" << fullName << "\t\t" << hashedPassword << "\t" << id;
+		cout << "\t" << fullName << "\t\t"  << id;
 	else
-		cout << "\t" << fullName << "\t" << hashedPassword << "\t" << id;
+		cout << "\t" << fullName << "\t" << id;
 }
 
 void User::Unload(ofstream& file)

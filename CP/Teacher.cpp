@@ -72,7 +72,7 @@ void Teacher::Menu(list<Test*>** ptrFilteredTestList, list<Student*>* ptrFiltere
 			break;
 		}
 		case VIEW_OWN_INF:
-			cout << "\tÔÈÎ\t\t\t\tÏàðîëü\t\tID\t\tÏðåäìåò\tÃðóïïû\n";
+			cout << "\tÔÈÎ\t\t\t\tID\t\tÏðåäìåò\tÃðóïïû\n";
 			this->PrintInformation();
 			break;
 		case EDIT_TEST:
@@ -268,7 +268,7 @@ void Teacher::PrintOwnStudents(list<Student*>* ptrFilteredStudentList)
 		return;
 	}
 	int i = 1;
-	cout << "¹\tÔÈÎ\t\t\t\tÏàðîëü\t\tID\t\tÔ-òåò\tÊóðñ\tÃðóïïà\tÏðåäìåòû\n";
+	cout << "¹\tÔÈÎ\t\t\t\tID\t\tÔ-òåò\tÊóðñ\tÃðóïïà\tÏðåäìåòû\n";
 	for (auto ptrStudent : *ptrFilteredStudentList)
 	{
 		cout << "\n" << i++ << ") ";

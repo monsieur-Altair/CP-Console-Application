@@ -84,7 +84,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			this->PrintAvailableAndNoSolvedTest(ptrFilteredTestList);
 			break;
 		case VIEW_OWN_INF:
-			cout << "\tÔÈÎ\t\t\t\tÏàðîëü\t\tID\t\tÔ-òåò\tÊóðñ\tÃðóïïà\tÏðåäìåòû\n";
+			cout << "\tÔÈÎ\t\t\t\tID\t\tÔ-òåò\tÊóðñ\tÃðóïïà\tÏðåäìåòû\n";
 			this->PrintInformation();
 			break;
 		case VIEW_ALL_SOLVED_TESTS_BRIEFLY:

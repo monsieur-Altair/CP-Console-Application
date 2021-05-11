@@ -17,8 +17,6 @@ int main()
 #endif // DEBUG
 	db0.AuthorizationMenu();
 	db0.Unload(dataBaseFilePath);
-	//cout <<"\n\n\n\n" <<sizeof(list<double>)<<"\n\n\n\n";
-	//cout << sizeof('\n');
 	return 0;
 }
 

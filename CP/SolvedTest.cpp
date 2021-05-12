@@ -8,7 +8,7 @@ SolvedTest::SolvedTest(shared_ptr<list<int>> answers, string shortDiscription, i
 	this->shortDiscription = shortDiscription;
 	this->uniqueID = uniqueID;
 	this->subject = subject;
-#ifdef DEBUG
+#ifdef DEBUG_1
 	cout << "\nÊîíñòðóêòîð ÎÒÂÅÒÎÂ " << this;
 #endif
 }
@@ -16,7 +16,7 @@ SolvedTest::SolvedTest(shared_ptr<list<int>> answers, string shortDiscription, i
 SolvedTest::~SolvedTest()
 {
 	//delete answers;
-#ifdef DEBUG
+#ifdef DEBUG_1
 	cout << "\nÄåñòðóêòîð ÎÒÂÅÒÎÂ " << this;
 #endif
 }

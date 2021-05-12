@@ -173,12 +173,12 @@ void DataBase::AuthorizationMenu()
 		cout << "\n\nПриветствуем в автоматизированной системе обработки тестирования по различным темам!";
 		cout << "\nЧто вы желаете сделать?\n1 - Зарегистрироваться\n2 - Войти\n0 - Уйти\n";
 		cin >> userChoice;
-		Check(&userChoice, 0, 2);
+		AdditionalFunctions<short>::Check(&userChoice, 0, 2);
 		if (!userChoice)
 			return;
 		cout << "\nВыберите тип пользователя:\n1 - студент\n2 - преподаватель\n";
 		cin >> userType;
-		Check(&userType, 1, 2);
+		AdditionalFunctions<short>::Check(&userType, 1, 2);
 		system("cls");
 
 		switch (userType)
@@ -277,10 +277,10 @@ Student* DataBase::Registration(Student* ptrStudent)
 	getline(cin, faculty);
 	cout << "\nВведите группу\n";
 	cin >> group;
-	Check(&group, 100000, 999999);
+	AdditionalFunctions<int>::Check(&group, 100000, 999999);
 	cout << "\nВведите курс\n";
 	cin >> course;
-	Check(&course, 1, 5);
+	AdditionalFunctions<int>::Check(&course, 1, 5);
 	cout << "\nВведите свою учебную дисцпиплину\nВыйти - 0\n";
 	cin.ignore();
 	while (true)
@@ -325,7 +325,7 @@ Teacher* DataBase::Registration(Teacher* ptrTeacher)
 		int group;
 		cout << "\nГруппа: ";
 		cin >> group;
-		Check(&group, 0, 999999);
+		AdditionalFunctions<int>::Check(&group, 0, 999999);
 		if (!group)
 			break;
 		ptrGroupList->push_back(group);
@@ -342,7 +342,7 @@ Student* DataBase::Login(Student* userStudent)
 	hash<string> hashFunction;
 	cout << "\nВведите свой ID ";
 	cin >> id;
-	Check(&id, 0, 999999999999);
+	AdditionalFunctions<int>::Check(&id, 0, 999999999999);
 	cout << "\nВведите свой пароль (без пробелов) ";
 	cin >> password;
 	int hashedPassword = hashFunction(password);
@@ -366,7 +366,7 @@ Teacher* DataBase::Login(Teacher* userTeacher)
 	hash<string> hashFunction;
 	cout << "\nВведите свой ID ";
 	cin >> id;
-	Check(&id, 0, 99999999999);
+	AdditionalFunctions<int>::Check(&id, 0, 99999999999);
 	cout << "\nВведите свой пароль (без пробелов) ";
 	cin >> password;
 	int hashedPassword = hashFunction(password);

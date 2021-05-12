@@ -59,7 +59,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 		cout << "\n7 - Отсортировать список решенных тестов по проценту правильных ответов";
 		cout << "\n8 - Отсортировать список доступных по предметам (А-Я)\n0 - Выйти\n\n";
 		cin >> choice;
-		Check(&choice, 0, SORT_AVAILABLE_BY_SUBJECTS);
+		AdditionalFunctions<short>::Check(&choice, 0, SORT_AVAILABLE_BY_SUBJECTS);
 		system("cls");
 		switch (choice)
 		{
@@ -70,7 +70,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 				int number;
 				cout << "\n\nВведите номер желаемого теста (1 колонка)\n";
 				cin >> number;
-				Check(&number, 1, ptrFilteredTestList->size());
+				AdditionalFunctions<int>::Check(&number, 1, ptrFilteredTestList->size());
 				auto iter = ptrFilteredTestList->begin();
 				advance(iter, number - 1);
 				Test* currentTest = *iter;
@@ -97,7 +97,7 @@ void Student::Menu(list<Test*>* ptrFilteredTestList)
 			int number;
 			cout << "\n\nВведите номер желаемого теста (1 колонка)\n";
 			cin >> number;
-			Check(&number, 1, ptrSolvedTestList->size());
+			AdditionalFunctions<int>::Check(&number, 1, ptrSolvedTestList->size());
 			auto iter = ptrSolvedTestList->begin();
 			advance(iter, number - 1);
 			SolvedTest* ptrSolvedTest = (*iter);

@@ -177,7 +177,7 @@ SolvedTest* Test::Solving()
 		(*iter)->PrintQuestion();
 		cout << "\nВаш ответ: ";
 		cin >> answ;
-		Check(&answ, 1, (*iter)->GetNumberOfAnswers());
+		AdditionalFunctions<int>::Check(&answ, 1, (*iter)->GetNumberOfAnswers());
 		answers->push_back(answ);
 		if (answ == (*iter)->GetCorrectAnswerOption())
 		{

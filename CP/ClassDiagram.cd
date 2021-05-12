@@ -12,13 +12,6 @@
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
-    <NestedTypes>
-      <Enum Name="Student::MenuChoice" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Student.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>QAAAgQCEyAAAgAAARAAAAAAAAAQKQAAEAAAAAAAABEQ=</HashCode>
       <FileName>Student.h</FileName>
@@ -29,18 +22,6 @@
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
-    <NestedTypes>
-      <Enum Name="Teacher::MenuChoice" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Teacher.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-      <Enum Name="Teacher::QuestionMenu" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Teacher.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AIEAgACAAFACAAAAAAAABACAAAAIAACAJAAAAAAABEA=</HashCode>
       <FileName>Teacher.h</FileName>
@@ -51,18 +32,6 @@
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
-    <NestedTypes>
-      <Enum Name="DataBase::MenuChoice" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>DataBase.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-      <Enum Name="DataBase::UserType" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>DataBase.h</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAQAACAiCAACAACRAAAAAgAAAABAAAAAAAQAAAECAA=</HashCode>
       <FileName>DataBase.h</FileName>

@@ -3,7 +3,7 @@
 #include <list>
 #include <string>
 #include <fstream>
-#define DEBUG
+//#define DEBUG_1
 using namespace std;
 
 class Test;

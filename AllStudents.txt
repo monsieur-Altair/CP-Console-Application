@@ -10,3 +10,4 @@ D:\OOP\CP\студент9.txt
 D:\OOP\CP\студент10.txt
 D:\OOP\CP\студент11.txt
 D:\OOP\CP\студент12.txt
+D:\OOP\CP\студент13.txt

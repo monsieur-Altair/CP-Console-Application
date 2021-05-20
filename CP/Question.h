@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 #include <functional>
-#define DEBUG
+//#define DEBUG
 using namespace std;
 
 class Teacher;
